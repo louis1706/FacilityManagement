@@ -1,0 +1,70 @@
+name: MSBuild
+
+on: [push]
+
+env:
+  EXILED_REFERENCES_URL: https://www.exiled.host/build_deps/Master.zip
+  TEMP_PATH: ${{ github.workspace }}/Temp
+  REFERENCES_PATH: ${{ github.workspace }}/References
+  SOLUTION_FILE_PATH: FacilityManagement.csproj
+  BUILD_CONFIGURATION: Release
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Add MSBuild to PATH
+      uses: microsoft/setup-msbuild@v1.0.2
+      
+    - name: Download Exiled latest release
+      uses: robinraju/release-downloader@v1.4
+      with: 
+        repository: "Exiled-Team/EXILED"
+        latest: true
+        out-file-path: ${{github.workspace}}
+        
+    - name: Extract Release and add to References
+      shell: pwsh
+      run: |
+        mkdir ${{ env.REFERENCES_PATH }}
+        mkdir ${{env.TEMP_PATH}}
+        tar -xzvf 'Exiled.tar.gz' -C ${{ github.workspace }}/Temp
+        Get-ChildItem -Path ${{ github.workspace }}/Temp/EXILED -Recurse -File | Move-Item -Destination ${{ env.REFERENCES_PATH }}
+      
+    - name: Get references
+      shell: pwsh
+      run: |
+        Invoke-WebRequest -Uri ${{ env.EXILED_REFERENCES_URL }} -OutFile ${{ github.workspace }}/References.zip
+        Expand-Archive -Path References.zip -DestinationPath ${{ env.REFERENCES_PATH }}
+        
+    - name: Restore NuGet packages
+      working-directory: ${{env.GITHUB_WORKSPACE}}
+      run: nuget restore ${{env.SOLUTION_FILE_PATH}}
+
+    - name: Build
+      working-directory: ${{env.GITHUB_WORKSPACE}}
+      run: msbuild ${{env.SOLUTION_FILE_PATH}} /m /p:ReferencePath=${{ env.REFERENCES_PATH }}
+      
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: commit_${{ github.sha }}
+        release_name: Commit ${{ github.sha }}
+        draft: false
+        prerelease: false
+    - name: Release Build
+      id: release-win
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: bin\Debug\FacilityManagement.dll
+        asset_name: FacilityManagement.dll
+        asset_content_type: application/octet-stream
