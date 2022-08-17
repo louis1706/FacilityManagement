@@ -22,31 +22,34 @@ namespace FacilityManagement
         public void HandleRoundStart()
         {
             LuresCount = 0;
-            if (plugin.Config.WindowHealth is not null)
+            if (plugin.Config.CustomWindows is not null)
             {
                 foreach (Window window in Window.List)
                 {
-                    if (plugin.Config.WindowHealth.TryGetValue(window.Type, out float WindowHealth))
-                        window.Health = WindowHealth;
-                }
-            }
-            if (plugin.Config.DoorHealth is not null)
-            {
-                foreach (Door door in Door.List)
-                {
-                    if (plugin.Config.DoorHealth.TryGetValue(door.Type, out float DoorHealth))
+                    if (plugin.Config.CustomWindows.TryGetValue(window.Type, out GlassBuild glassBuild))
                     {
-                        door.MaxHealth = DoorHealth;
-                        door.Health = DoorHealth;
+                        if (glassBuild.Health is not null)
+                            window.Health = glassBuild.Health.Value;
+                        if (glassBuild.DisableScpDamage is not null)
+                            window.DisableScpDamage = glassBuild.DisableScpDamage.Value;
                     }
                 }
             }
-            if (plugin.Config.DoorDamageTypeIgnored is not null)
+            if (plugin.Config.CustomDoors is not null)
             {
                 foreach (Door door in Door.List)
                 {
-                    if (plugin.Config.DoorDamageTypeIgnored.TryGetValue(door.Type, out DoorDamageType doorDamageType))
-                        door.IgnoredDamageTypes = doorDamageType;
+                    if (plugin.Config.CustomDoors.TryGetValue(door.Type,out DoorBuild doorBuild))
+                    {
+                        if (doorBuild.Health is not null)
+                            door.Health = doorBuild.Health.Value;
+                        if (doorBuild.DamageTypeIgnored is not null)
+                            door.IgnoredDamageTypes = doorBuild.DamageTypeIgnored.Value;
+                        if (doorBuild.RequiredPermission is not null)
+                            door.RequiredPermissions.RequiredPermissions = doorBuild.RequiredPermission.Value;
+                        if (doorBuild.RequireAllPermission is not null)
+                            door.RequiredPermissions.RequireAll = doorBuild.RequireAllPermission.Value;
+                    }
                 }
             }
             if (plugin.Config.LiftMoveDuration is not null)
@@ -85,7 +88,7 @@ namespace FacilityManagement
 
         public void OnSpawning(SpawningEventArgs ev)
         {
-            if (plugin.Config.RoleTypeHumeShield is not null && plugin.Config.RoleTypeHumeShield.TryGetValue(ev.Player.Role.Type, out AhpProccessBuild ahpProccessBuild))
+            if (plugin.Config.RoleTypeHumeShield is not null && plugin.Config.RoleTypeHumeShield.TryGetValue(ev.Player.Role.Type, out ConfigBuild ahpProccessBuild))
             {
                 ev.Player.ActiveArtificialHealthProcesses.ToList().RemoveAll(x => true);
                 ev.Player.AddAhp(ahpProccessBuild.Amount, ahpProccessBuild.Amount, -ahpProccessBuild.Regen, ahpProccessBuild.Efficacy, ahpProccessBuild.Sustain, ahpProccessBuild.Regen > 0);
@@ -94,7 +97,7 @@ namespace FacilityManagement
 
         public void OnHurting(HurtingEventArgs ev)
         {
-            if (plugin.Config.RoleTypeHumeShield is not null && plugin.Config.RoleTypeHumeShield.TryGetValue(ev.Target.Role.Type, out AhpProccessBuild ahpProccessBuild))
+            if (plugin.Config.RoleTypeHumeShield is not null && plugin.Config.RoleTypeHumeShield.TryGetValue(ev.Target.Role.Type, out ConfigBuild ahpProccessBuild))
                 ev.Target.ActiveArtificialHealthProcesses.First().SustainTime = ahpProccessBuild.Sustain;
         }
 
