@@ -8,9 +8,9 @@ namespace FacilityManagement
 {
     public class AhpProccessBuild
     {
-        public float amount { get; set; }
-        public float regen { get; set; }
-        public float efficacy { get; set; }
-        public float sustain { get; set; }
+        public float Amount { get; set; }
+        public float Regen { get; set; }
+        public float Efficacy { get; set; }
+        public float Sustain { get; set; }
     }
 }

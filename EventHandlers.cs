@@ -88,14 +88,14 @@ namespace FacilityManagement
             if (plugin.Config.RoleTypeHumeShield is not null && plugin.Config.RoleTypeHumeShield.TryGetValue(ev.Player.Role.Type, out AhpProccessBuild ahpProccessBuild))
             {
                 ev.Player.ActiveArtificialHealthProcesses.ToList().RemoveAll(x => true);
-                ev.Player.AddAhp(ahpProccessBuild.amount, ahpProccessBuild.amount, -ahpProccessBuild.regen, ahpProccessBuild.efficacy, ahpProccessBuild.sustain, ahpProccessBuild.regen > 0);
+                ev.Player.AddAhp(ahpProccessBuild.Amount, ahpProccessBuild.Amount, -ahpProccessBuild.Regen, ahpProccessBuild.Efficacy, ahpProccessBuild.Sustain, ahpProccessBuild.Regen > 0);
             }
         }
 
         public void OnHurting(HurtingEventArgs ev)
         {
             if (plugin.Config.RoleTypeHumeShield is not null && plugin.Config.RoleTypeHumeShield.TryGetValue(ev.Target.Role.Type, out AhpProccessBuild ahpProccessBuild))
-                ev.Target.ActiveArtificialHealthProcesses.First().SustainTime = ahpProccessBuild.sustain;
+                ev.Target.ActiveArtificialHealthProcesses.First().SustainTime = ahpProccessBuild.Sustain;
         }
 
         public void HandleFemurEnter(EnteringFemurBreakerEventArgs ev)
