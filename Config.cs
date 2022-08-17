@@ -52,7 +52,7 @@ namespace FacilityManagement
         public Dictionary<ElevatorType, float> LiftMoveDuration { get; set; } = new();
 
         [Description(@"Custom intercom content. If there's no specific content, then the default client content is used.
-            Check GitHub ReadMe for more info (https://github.com/louis1706/FacilityManagement/blob/main/readme.md)")]
+        # Check GitHub ReadMe for more info (https://github.com/louis1706/FacilityManagement/blob/main/readme.md)")]
         public Dictionary<Intercom.State, string> CustomText { get; set; } = new() 
         {
             {Intercom.State.Muted, "Issou you are muted"},
