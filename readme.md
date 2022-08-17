@@ -21,7 +21,7 @@ This plugin make possible many things on your server.
 | CustomDoors | Dictionary<DoorType, DoorBuild> | Modify all the property of Door like you want (null make no change) |
 | RoleTypeHumeShield | Dictionary<RoleType, AhpProccessBuild> | Create a custoom AHP/HS for specified RoleType |
 
-## GlassType
+## GlassBuild
 
 |    PropertyName    | TypeValue | Description |
 | :-------------: | :---------: | :--------- |
