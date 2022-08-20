@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace FacilityManagement.Patches
 {
-    [HarmonyPatch(typeof(Intercom), nameof(Intercom.CustomContent), MethodType.Setter)]
+    //[HarmonyPatch(typeof(Intercom), nameof(Intercom.CustomContent), MethodType.Setter)]
     public static class IntercomTextCommandPatches
     {
         public static void Prefix(/*Intercom __instance,*/ ref string value) => FacilityManagement.Singleton.CustomText = value;
