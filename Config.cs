@@ -32,9 +32,13 @@ namespace FacilityManagement
         # Check GitHub ReadMe for more info (https://github.com/louis1706/FacilityManagement/blob/main/readme.md)")]
         public Dictionary<Intercom.State, string> CustomText { get; set; } = new()
         {
+            {Intercom.State.Ready, "Ready"},
+            {Intercom.State.Transmitting, "{intercom_speaker_nickname} speaking {intercom_speech_remaining_time}"},
+            {Intercom.State.Restarting, "Restarting please wait for {intercom_remaining_cooldown}"},
+            {Intercom.State.AdminSpeaking, "the Admin {intercom_speaker_nickname} is actually speaking"},
             {Intercom.State.Muted, "Issou you are muted"},
+            {Intercom.State.Custom, "{intercom_custom_text}"},
         };
-
         [Description("If all items and ragdolls in the facility should be removed after detonation.")]
         public bool WarheadCleanup { get; set; } = true;
 
@@ -84,9 +88,9 @@ namespace FacilityManagement
                 DoorType.GR18Inner,
                 new DoorBuild{
                             Health = 120,
-                            RequiredPermission = null,
+                            RequiredPermission = KeycardPermissions.None,
                             RequireAllPermission = null,
-                            DamageTypeIgnored = null,
+                            DamageTypeIgnored = (DoorDamageType)0,
                 }
             },
         };

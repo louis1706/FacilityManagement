@@ -94,6 +94,7 @@
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>..\..\..\jeux\SteamLibrary\steamapps\common\SCP Secret Laboratory Dedicated Server\SCPSL_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.PhysicsModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" />
     <Reference Include="YamlDotNet">
       <HintPath>C:\Users\louismonneyronpc\AppData\Roaming\EXILED\Plugins\dependencies\YamlDotNet.dll</HintPath>
     </Reference>
@@ -103,6 +104,7 @@
     <Compile Include="Config.cs" />
     <Compile Include="EventHandlers.cs" />
     <Compile Include="Patches\CommandIntercomTextFix.cs" />
+    <Compile Include="Patches\IntercomDisplayTextFix.cs" />
     <Compile Include="Patches\IntercomPatche.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Patches\NameFormaterPatche.cs" />

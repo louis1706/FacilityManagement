@@ -29,6 +29,7 @@
         public override void OnEnabled()
         {
             if (!Config.IsEnabled) return;
+            Singleton = this;
             base.OnEnabled();
 
             RegistEvents();
