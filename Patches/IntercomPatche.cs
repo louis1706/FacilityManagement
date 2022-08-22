@@ -18,6 +18,8 @@ namespace FacilityManagement.Patches
         }
         internal static Intercom.State SetContent(Intercom intercom, Intercom.State state)
         {
+            if (FacilityManagement.Singleton.CustomText is not null)
+                state = Intercom.State.Custom;
             if (FacilityManagement.Singleton.Config.CustomText is null || !FacilityManagement.Singleton.Config.CustomText.TryGetValue(state, out string content))
                 return state;
             if (!ServerConsole.singleton.NameFormatter.TryProcessExpression(content, "FacilityManagement", out string result))
