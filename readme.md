@@ -33,16 +33,16 @@ This plugin make possible many things on your server.
 |    PropertyName    | TypeValue | Description |
 | :-------------: | :---------: | :--------- |
 | Health | float? | Health of the door (Null disable the change) |
-| RequiredPermission | KeycardPermissions? | Change the RequiredPermission for interact with the Door (Null disable the change) |
-| RequireAllPermission | bool? | Required all the permission of RequiredPermission (Null disable the change) |
-| DamageTypeIgnored | DoorDamageType? | Modified the DamageType ignored by the Door  (Null disable the change) |
+| RequiredPermission | KeycardPermissions | Change the RequiredPermission for interact with the Door (Null disable the change) |
+| RequireAllPermission | bool? | Required all the permission of RequiredPermission (0 or None disable the change) |
+| DamageTypeIgnored | DoorDamageType | Modified the DamageType ignored by the Door  (0 disable the change) |
 
 ## AhpProccessBuild
 
 |    PropertyName    | TypeValue | Description |
 | :-------------: | :---------: | :--------- |
 | amount | float | Max AHP/HS |
-| regen | float | The ammount of Regen per secound (decay if negative) |
+| regen | float | Ammount of Regen per secound (decay if negative) |
 | efficacy | float | Ammount of damage take by AHP/HS (0 = Useless/ 1 = Perfect) |
 | sustain | float | Required time before regen reactive when player take damage |
 
@@ -50,22 +50,22 @@ This plugin make possible many things on your server.
 
 This plugin make possible to customise the IntercomText on your server it's will be actualise every tick
 
-This plugin use [CommandInterpolation](https://en.scpslgame.com/index.php?title=Command_Interpolation)
-it's permit you to make custom text who can change with with what is happening on the server
+This plugin use [CommandInterpolation](https://en.scpslgame.com/index.php?title=Command_Interpolation
+) it's permit you to make custom text who can change with with what is happening on the server
 
 whe have add just some CommandInterpolation for Intercom
 
 ### CommandInterpolation
 |     CommandInterpolation    | ReturnValue | Description |
 | :-------------: | :---------: | :--------- |
-| intercom_speech_remaining_time | Int | The remaining speech time of the player to talk at intercom_bypass_speaking. |
-| intercom_remaining_cooldown | Int | The waiting time to talk again at intercom |
-| intercom_speaker_nickname | String | The nickname of the player at intercom |
-| intercom_is_in_use | Bool | Is the intercom being used |
+| intercom_speech_remaining_time | Int | Remaining speech time of the player to talk at intercom_bypass_speaking. |
+| intercom_remaining_cooldown | Int | Waiting time to talk again at intercom |
+| intercom_speaker_nickname | String | Nickname of the player at intercom |
+| intercom_is_in_use | Bool | Intercom is being used |
 | intercom_is_admin_speaking | Bool | Is an admin who speak at intercom |
-| intercom_bypass_speaking | Bool | The player who speak at intercom have bypass |
-| intercom_mute_player_speak | Bool | The player who actually trying to talk is muted |
-
+| intercom_bypass_speaking | Bool | Is player speak at intercom have bypass |
+| intercom_mute_player_speak | Bool | Is player actually trying to talk and being muted |
+| intercom_custom_text | string | The Modified text by admin or plugin |
 
 ## Authors
 
