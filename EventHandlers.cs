@@ -46,10 +46,10 @@ namespace FacilityManagement
                     {
                         if (doorBuild.Health is not null)
                             door.Health = doorBuild.Health.Value;
-                        if (doorBuild.DamageTypeIgnored is not 0)
-                            door.IgnoredDamageTypes = doorBuild.DamageTypeIgnored;
-                        if (doorBuild.RequiredPermission is not 0)
-                            door.RequiredPermissions.RequiredPermissions = doorBuild.RequiredPermission;
+                        if (doorBuild.DamageTypeIgnored is not null)
+                            door.IgnoredDamageTypes = doorBuild.DamageTypeIgnored.Value;
+                        if (doorBuild.RequiredPermission is not null)
+                            door.RequiredPermissions.RequiredPermissions = doorBuild.RequiredPermission.Value;
                         if (doorBuild.RequireAllPermission is not null)
                             door.RequiredPermissions.RequireAll = doorBuild.RequireAllPermission.Value;
                     }
