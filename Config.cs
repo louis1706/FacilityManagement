@@ -51,15 +51,18 @@ namespace FacilityManagement
         [Description("Amount of time before another sacrifice can be made.")]
         public int Scp106LureReload { get; set; } = 0;
 
-        [Description("Teams that can enter the femur breaker.")]
-        public List<Team> Scp106LureTeam { get; set; } = new()
+        [Description("RoleType that can't enter the femur breaker.")]
+        public List<RoleType> Scp106ContainerIgonredRoles { get; set; } = new()
         {
-            Team.MTF,
-            Team.CHI,
-            Team.RSC,
-            Team.CDP,
+            RoleType.Tutorial,
+            RoleType.NtfCaptain,
         };
-
+        [Description("RoleType than do not trigger tesla.")]
+        public List<RoleType> TeslaIgnoredRoles { get; set; } = new()
+        {
+            RoleType.Tutorial,
+            RoleType.NtfCaptain,
+        };
         [Description("Sets the health of breakable windows.")]
         public Dictionary<GlassType, GlassBuild> CustomWindows { get; set; } = new()
         {
@@ -90,7 +93,7 @@ namespace FacilityManagement
                             Health = 120,
                             RequiredPermission = KeycardPermissions.None,
                             RequireAllPermission = null,
-                            DamageTypeIgnored = (DoorDamageType)0,
+                            DamageTypeIgnored = 0,
                 }
             },
         };

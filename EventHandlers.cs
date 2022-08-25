@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 using UnityEngine;
 using Interactables.Interobjects.DoorUtils;
 using PlayerStatsSystem;
+using Exiled.Events.EventArgs.Scp106;
+using Exiled.API.Features.Pickups;
+using Exiled.Events.EventArgs.Player;
 
 namespace FacilityManagement
 {
@@ -65,14 +68,23 @@ namespace FacilityManagement
                 foreach (Generator generator in Generator.List)
                     generator.Base._unlockCooldownTime = plugin.Config.GeneratorDuration;
             }
+            if (plugin.Config.Scp106ContainerIgonredRoles is not null)
+            {
+                Scp106Container.IgnoredRoles = plugin.Config.Scp106ContainerIgonredRoles;
+            }
+            if (plugin.Config.TeslaIgnoredRoles is not null)
+            {
+                Exiled.API.Features.TeslaGate.IgnoredRoles = plugin.Config.Scp106ContainerIgonredRoles;
+            }
+
             if (plugin.Config.Scp106LureAmount < 1)
                 Object.FindObjectOfType<LureSubjectContainer>().SetState(false, true);
         }
         public void HandleWeaponShoot(ShootingEventArgs ev)
         {
-            if (ev.Shooter.CurrentItem is null)
+            if (ev.Player.CurrentItem is null)
                 return;
-            if (plugin.Config.InfiniteAmmo is not null && plugin.Config.InfiniteAmmo.Contains(ev.Shooter.CurrentItem.Type) &&  ev.Shooter.CurrentItem is Firearm firearm)
+            if (plugin.Config.InfiniteAmmo is not null && plugin.Config.InfiniteAmmo.Contains(ev.Player.CurrentItem.Type) &&  ev.Player.CurrentItem is Firearm firearm)
             {
                 firearm.Ammo++;
             }
@@ -101,18 +113,12 @@ namespace FacilityManagement
                 ev.Target.ActiveArtificialHealthProcesses.First().SustainTime = ahpProccessBuild.Sustain;
         }
 
-        public void HandleFemurEnter(EnteringFemurBreakerEventArgs ev)
+        public void HandleFemurEnter(EnteringFemurBreakerEventArgs _)
         {
             // That means the femur breaker is always open
             if (plugin.Config.Scp106LureAmount < 1)
                 return;
 
-            // Allowed team check
-            if (plugin.Config.Scp106LureTeam is not null && !plugin.Config.Scp106LureTeam.Contains(ev.Player.Role.Team))
-            {
-                ev.IsAllowed = false;
-                return;
-            }
             if (Random.Range(0, 100) >= plugin.Config.Scp106ChanceOfSuccess)
                 LuresCount = plugin.Config.Scp106LureAmount;
             if (++LuresCount < plugin.Config.Scp106LureAmount)
@@ -137,7 +143,7 @@ namespace FacilityManagement
             if (!plugin.Config.WarheadCleanup)
                 return;
 
-            foreach (Pickup pickup in Map.Pickups)
+            foreach (Pickup pickup in Pickup.List)
             {
                 if (pickup.Position.y < 500f)
                     pickup.Destroy();
