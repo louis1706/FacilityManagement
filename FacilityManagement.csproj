@@ -100,6 +100,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\DisableTesla.cs" />
     <Compile Include="ConfigBuild.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="EventHandlers.cs" />

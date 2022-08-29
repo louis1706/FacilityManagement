@@ -26,7 +26,10 @@ namespace FacilityManagement
         public float GeneratorDuration { get; set; } = -1;
 
         [Description("Sets the time for Lift to teleport")]
-        public Dictionary<ElevatorType, float> LiftMoveDuration { get; set; } = new();
+        public Dictionary<ElevatorType, float> LiftMoveDuration { get; set; } = new() 
+        {
+            {ElevatorType.Nuke, 8}
+        };
 
         [Description(@"Custom intercom content. If there's no specific content, then the default client content is used.
         # Check GitHub ReadMe for more info (https://github.com/louis1706/FacilityManagement/blob/main/readme.md)")]
@@ -59,7 +62,17 @@ namespace FacilityManagement
             Team.RSC,
             Team.CDP,
         };
-
+        [Description("Sets the config of Tesla.")]
+        public TeslaBuild CustomTesla { get; set; } = new()
+        {
+            ActivationTime = 0, 
+            IdleRange = 25,
+            TriggerRange = 10,
+            IgnoredRoles = new()
+            {
+                RoleType.Scp0492,
+            }
+        };
         [Description("Sets the health of breakable windows.")]
         public Dictionary<GlassType, GlassBuild> CustomWindows { get; set; } = new()
         {
@@ -90,16 +103,16 @@ namespace FacilityManagement
                             Health = 120,
                             RequiredPermission = KeycardPermissions.None,
                             RequireAllPermission = null,
-                            DamageTypeIgnored = (DoorDamageType)0,
+                            DamageTypeIgnored = 0,
                 }
             },
         };
 
-        public Dictionary<RoleType, ConfigBuild> RoleTypeHumeShield { get; set; } = new()
+        public Dictionary<RoleType, AhpProccessBuild> RoleTypeHumeShield { get; set; } = new()
         {
             { 
                 RoleType.Scp049,
-                new ConfigBuild{
+                new AhpProccessBuild{
                     Amount = 60,
                     Regen = 1.5f,
                     Efficacy = 1,
