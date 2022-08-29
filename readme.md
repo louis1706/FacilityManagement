@@ -6,7 +6,7 @@ This plugin make possible many things on your server.
 
 ## Configs
 |     **Name**    | **TypeValue** | **Description** |
-| :-------------: | :---------------: | :--------- |
+| :-------------: | :---------: | :--------- |
 | IsEnabled | bool | Is plugin Enable. |
 | InfiniteAmmo | List<[ItemType](https://exiled-team.github.io/Web/docs/Resources/Intro#itemtype)> | Item who having InfiniteAmmo |
 | EnergyMicroHid | float | Multiplier conssumption of MicroHID (0 = No energy drain \ 2 = Double energy drain) |
@@ -39,14 +39,14 @@ This plugin make possible many things on your server.
 ## GlassBuild
 
 |    PropertyName    | TypeValue | Description |
-| :-------------: | :---------------: | :--------- |
+| :-------------: | :---------: | :--------- |
 | Health | float? | Health of the window (Null disable the change) |
 | DisableScpDamage | bool? | Disable the damage of Scp (Null disable the change) |
 
 ## DoorBuild
 
 |    PropertyName    | TypeValue | Description |
-| :-------------: | :---------------: | :--------- |
+| :-------------: | :---------: | :--------- |
 | Health | float? | Health of the door (Null disable the change) |
 | RequiredPermission | [KeycardPermissions](https://exiled-team.github.io/Web/docs/Resources/Intro#keycardpermissions) | Change the RequiredPermission for interact with the Door (Null disable the change) |
 | RequireAllPermission | bool? | Required all the permission of RequiredPermission (0 or None disable the change) |
@@ -55,7 +55,7 @@ This plugin make possible many things on your server.
 ## AhpProccessBuild
 
 |    PropertyName    | TypeValue | Description |
-| :-------------: | :---------------: | :--------- |
+| :-------------: | :---------: | :--------- |
 | amount | float | Max AHP/HS |
 | regen | float | Ammount of Regen per secound (decay if negative) |
 | efficacy | float | Ammount of damage take by AHP/HS (0 = Useless/ 1 = Perfect) |
@@ -72,7 +72,7 @@ whe have add just some CommandInterpolation for Intercom
 
 ### CommandInterpolation
 |     CommandInterpolation    | ReturnValue | Description |
-| :-------------------: | :-------------------------: | :--------------- |
+| :-------------: | :---------: | :--------- |
 | intercom_speech_remaining_time | int | Remaining speech time of the player to talk at intercom_bypass_speaking. |
 | intercom_remaining_cooldown | int | Waiting time to talk again at intercom |
 | intercom_is_in_use | bool | Intercom is being used |
