@@ -28,15 +28,12 @@
 
         public override void OnEnabled()
         {
-            if (!Config.IsEnabled) return;
             Singleton = this;
             base.OnEnabled();
 
             RegistEvents();
 
             RegistPatch();
-
-            Exiled.API.Features.Log.Info($"[OnEnabled] FacilityManagement({Version}) Enabled Complete.");
         }
         public override void OnReloaded()
         {
@@ -57,8 +54,6 @@
             UnRegistEvents();
 
             UnRegistPatch();
-
-            Exiled.API.Features.Log.Info($"[OnDisable] SanyaRemastered({Version}) Disabled Complete.");
         }
         private void RegistEvents()
         {
