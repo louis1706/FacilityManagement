@@ -6,7 +6,7 @@ using System;
 namespace FacilityManagement.Patches
 {
     [HarmonyPatch(typeof(IntercomTextCommand), nameof(IntercomTextCommand.Execute))]
-    public static class IntercomTextCommandPatches
+    public static class IntercomTextCommandFix
     {
         public static bool Prefix(ref bool __result, ArraySegment<string> arguments, ICommandSender sender, out string response)
         {

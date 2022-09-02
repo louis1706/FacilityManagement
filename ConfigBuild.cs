@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FacilityManagement
 {
-    public class ConfigBuild
+    public class AhpProccessBuild
     {
         public float Amount { get; set; }
         public float Regen { get; set; }
@@ -27,6 +27,15 @@ namespace FacilityManagement
     {
         public float? Health { get; set; }
         public bool? DisableScpDamage { get; set; }
+    }
+
+    public class TeslaBuild
+    {
+        public List<RoleType> IgnoredRoles { get; set; }
+        public float? TriggerRange { get; set; }
+        public float? IdleRange { get; set; }
+        public float? ActivationTime { get; set; }
+        public float? CooldownTime { get; set; }
     }
 
 }

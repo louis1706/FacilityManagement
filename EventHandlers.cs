@@ -14,6 +14,8 @@ using Exiled.Events.EventArgs.Scp106;
 using Exiled.API.Features.Pickups;
 using Exiled.Events.EventArgs.Player;
 
+using Tesla = Exiled.API.Features.TeslaGate;
+
 namespace FacilityManagement
 {
     public class EventHandlers
@@ -22,9 +24,26 @@ namespace FacilityManagement
         public FacilityManagement plugin;
         public int LuresCount;
 
-        public void HandleRoundStart()
+        public void OnRoundStarted()
         {
             LuresCount = 0;
+            if (plugin.Config.CustomTesla is not null)
+            {
+                foreach (Tesla tesla in Tesla.List)
+                {
+                    if (plugin.Config.CustomTesla.CooldownTime is not null)
+                        tesla.CooldownTime = plugin.Config.CustomTesla.CooldownTime.Value;
+                    if (plugin.Config.CustomTesla.IdleRange is not null)
+                        tesla.IdleRange = plugin.Config.CustomTesla.IdleRange.Value;
+                    if (plugin.Config.CustomTesla.TriggerRange is not null)
+                        tesla.TriggerRange = plugin.Config.CustomTesla.TriggerRange.Value;
+                    if (plugin.Config.CustomTesla.ActivationTime is not null)
+                        tesla.ActivationTime = plugin.Config.CustomTesla.ActivationTime.Value;
+                }
+
+                if (plugin.Config.CustomTesla.IgnoredRoles is not null)
+                    Tesla.IgnoredRoles = plugin.Config.CustomTesla.IgnoredRoles;
+            }
             if (plugin.Config.CustomWindows is not null)
             {
                 foreach (Window window in Window.List)
@@ -80,7 +99,7 @@ namespace FacilityManagement
             if (plugin.Config.Scp106LureAmount < 1)
                 Object.FindObjectOfType<LureSubjectContainer>().SetState(false, true);
         }
-        public void HandleWeaponShoot(ShootingEventArgs ev)
+        public void OnShooting(ShootingEventArgs ev)
         {
             if (ev.Player.CurrentItem is null)
                 return;
@@ -89,18 +108,18 @@ namespace FacilityManagement
                 firearm.Ammo++;
             }
         }
-        public void HandleEnergyMicroHid(UsingMicroHIDEnergyEventArgs ev)
+        public void OnUsingMicroHIDEnergy(UsingMicroHIDEnergyEventArgs ev)
         {
             ev.Drain *= plugin.Config.EnergyMicroHid;
         }
-        public void HandleEnergyRadio(UsingRadioBatteryEventArgs ev)
+        public void OnUsingRadioBattery(UsingRadioBatteryEventArgs ev)
         {
             ev.Drain *= plugin.Config.EnergyRadio;
         }
 
         public void OnSpawning(SpawningEventArgs ev)
         {
-            if (plugin.Config.RoleTypeHumeShield is not null && plugin.Config.RoleTypeHumeShield.TryGetValue(ev.Player.Role.Type, out ConfigBuild ahpProccessBuild))
+            if (plugin.Config.RoleTypeHumeShield is not null && plugin.Config.RoleTypeHumeShield.TryGetValue(ev.Player.Role.Type, out AhpProccessBuild ahpProccessBuild))
             {
                 ev.Player.ActiveArtificialHealthProcesses.ToList().RemoveAll(x => true);
                 ev.Player.AddAhp(ahpProccessBuild.Amount, ahpProccessBuild.Amount, -ahpProccessBuild.Regen, ahpProccessBuild.Efficacy, ahpProccessBuild.Sustain, ahpProccessBuild.Regen > 0);
@@ -109,11 +128,10 @@ namespace FacilityManagement
 
         public void OnHurting(HurtingEventArgs ev)
         {
-            if (plugin.Config.RoleTypeHumeShield is not null && plugin.Config.RoleTypeHumeShield.TryGetValue(ev.Target.Role.Type, out ConfigBuild ahpProccessBuild))
+            if (plugin.Config.RoleTypeHumeShield is not null && plugin.Config.RoleTypeHumeShield.TryGetValue(ev.Target.Role.Type, out AhpProccessBuild ahpProccessBuild))
                 ev.Target.ActiveArtificialHealthProcesses.First().SustainTime = ahpProccessBuild.Sustain;
         }
-
-        public void HandleFemurEnter(EnteringFemurBreakerEventArgs _)
+        public void OnEnteringFemurBreaker(EnteringFemurBreakerEventArgs _)
         {
             // That means the femur breaker is always open
             if (plugin.Config.Scp106LureAmount < 1)
@@ -130,7 +148,7 @@ namespace FacilityManagement
             }
         }
 
-        public void HandleContain106(ContainingEventArgs ev)
+        public void OnContaining(ContainingEventArgs ev)
         {
             if (plugin.Config.Scp106LureAmount < 1)
                 return;
@@ -138,15 +156,31 @@ namespace FacilityManagement
         }
        
         
-        public void HandleWarheadDetonation()
+        public void OnDetonated()
         {
             if (!plugin.Config.WarheadCleanup)
                 return;
 
             foreach (Pickup pickup in Pickup.List)
             {
-                if (pickup.Position.y < 500f)
-                    pickup.Destroy();
+                try
+                {
+                    if (pickup.Position.y < 500f)
+                        pickup.Destroy();
+                    string s = $"Pickup On detonated FacilityManagement : Pickup Is Null{pickup is null} ";
+                    if (pickup is not null)
+                    {
+                        s += $"Pickup::Base ? " + pickup.Base is null;
+                        if (pickup.Base is not null)
+                            s += $"Pickup::Base::Rb ? " + pickup.Base.Rb is null;
+                    }
+                    Log.Error(s + "  \n ");
+
+                }
+                catch (System.Exception ex)
+                {
+                    Log.Error(ex);
+                }
             }
 
             foreach (Exiled.API.Features.Ragdoll ragdoll in Map.Ragdolls)

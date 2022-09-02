@@ -7,7 +7,7 @@ using UnityEngine;
 namespace FacilityManagement.Patches
 {
     [HarmonyPatch(typeof(Intercom), nameof(Intercom.Start))]
-    public class NameFormaterPatche
+    public class NameFormaterPatch
     {
         public static void Postfix(Intercom __instance)
         {

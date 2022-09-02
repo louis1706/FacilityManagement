@@ -100,14 +100,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\DisableTesla.cs" />
     <Compile Include="ConfigBuild.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="EventHandlers.cs" />
     <Compile Include="Patches\CommandIntercomTextFix.cs" />
     <Compile Include="Patches\IntercomDisplayTextFix.cs" />
-    <Compile Include="Patches\IntercomPatche.cs" />
+    <Compile Include="Patches\IntercomPatch.cs" />
     <Compile Include="Main.cs" />
-    <Compile Include="Patches\NameFormaterPatche.cs" />
+    <Compile Include="Patches\NameFormaterPatch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
