@@ -1,12 +1,10 @@
 ﻿namespace FacilityManagement
 {
-	using Exiled.API.Enums;
     using Exiled.Events.Handlers;
     using HarmonyLib;
     using MEC;
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
 
     public class FacilityManagement : Exiled.API.Features.Plugin<Config>
     {
@@ -15,8 +13,8 @@
 		public override string Name => "FacilityManagement";
 		public override string Prefix => "FacilityManagement";
 		public override string Author => "Yamato#8987";
-        public override Version Version => new(1,0,0);
-        public override Version RequiredExiledVersion => new(5,2,2);
+        public override Version Version { get; } = new(1,0,0);
+        public override Version RequiredExiledVersion  { get; } = new(5,2,2);
 
         public EventHandlers EventHandlers { get; private set; }
 
@@ -31,15 +29,14 @@
             Singleton = this;
             base.OnEnabled();
 
-            RegistEvents();
+            RegisterEvents();
 
-            RegistPatch();
+            RegisterPatch();
         }
         public override void OnReloaded()
         {
-            if (!Config.IsEnabled) return;
-            RegistEvents();
-            RegistPatch();
+            RegisterEvents();
+            RegisterPatch();
 
             base.OnReloaded();
         }
@@ -51,45 +48,45 @@
                 Timing.KillCoroutines(cor);
             RoundCoroutines.Clear();
 
-            UnRegistEvents();
+            UnRegisterEvents();
 
-            UnRegistPatch();
+            UnRegisterPatch();
         }
-        private void RegistEvents()
+        private void RegisterEvents()
         {
             EventHandlers = new(this);
-            Server.RoundStarted += EventHandlers.HandleRoundStart;
+            Server.RoundStarted += EventHandlers.OnRoundStarted;
             
-            Player.Shooting += EventHandlers.HandleWeaponShoot;
-            Player.UsingMicroHIDEnergy += EventHandlers.HandleEnergyMicroHid;
-            Player.UsingRadioBattery += EventHandlers.HandleEnergyRadio;
+            Player.Shooting += EventHandlers.OnShooting;
+            Player.UsingMicroHIDEnergy += EventHandlers.OnUsingMicroHIDEnergy;
+            Player.UsingRadioBattery += EventHandlers.OnUsingRadioBattery;
             Player.Spawning += EventHandlers.OnSpawning;
             Player.Hurting += EventHandlers.OnHurting;
-            Player.EnteringFemurBreaker += EventHandlers.HandleFemurEnter;
+            Player.EnteringFemurBreaker += EventHandlers.OnEnteringFemurBreaker;
             
-            Scp106.Containing += EventHandlers.HandleContain106;
+            Scp106.Containing += EventHandlers.OnContaining;
 
-            Warhead.Detonated += EventHandlers.HandleWarheadDetonation;
+            Warhead.Detonated += EventHandlers.OnDetonated;
         }
-        private void UnRegistEvents()
+        private void UnRegisterEvents()
         {
-            Server.RoundStarted -= EventHandlers.HandleRoundStart;
+            Server.RoundStarted -= EventHandlers.OnRoundStarted;
 
-            Player.Shooting -= EventHandlers.HandleWeaponShoot;
-            Player.UsingMicroHIDEnergy -= EventHandlers.HandleEnergyMicroHid;
-            Player.UsingRadioBattery -= EventHandlers.HandleEnergyRadio;
+            Player.Shooting -= EventHandlers.OnShooting;
+            Player.UsingMicroHIDEnergy -= EventHandlers.OnUsingMicroHIDEnergy;
+            Player.UsingRadioBattery -= EventHandlers.OnUsingRadioBattery;
             Player.Spawning -= EventHandlers.OnSpawning;
             Player.Hurting -= EventHandlers.OnHurting;
-            Player.EnteringFemurBreaker -= EventHandlers.HandleFemurEnter;
+            Player.EnteringFemurBreaker -= EventHandlers.OnEnteringFemurBreaker;
 
-            Scp106.Containing -= EventHandlers.HandleContain106;
+            Scp106.Containing -= EventHandlers.OnContaining;
 
-            Warhead.Detonated -= EventHandlers.HandleWarheadDetonation;
+            Warhead.Detonated -= EventHandlers.OnDetonated;
 
             EventHandlers = null;
         }
 
-        private void RegistPatch()
+        private void RegisterPatch()
         {
             try
             {
@@ -98,11 +95,11 @@
             }
             catch (Exception ex)
             {
-                Exiled.API.Features.Log.Error($"[RegistPatch] Patching Failed : {ex}");
+                Exiled.API.Features.Log.Error($"[RegisterPatch] Patching Failed : {ex}");
             }
         }
 
-        private void UnRegistPatch()
+        private void UnRegisterPatch()
         {
             Harmony.UnpatchAll(Harmony.Id);
         }

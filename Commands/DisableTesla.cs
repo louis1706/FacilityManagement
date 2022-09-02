@@ -22,11 +22,11 @@ namespace FacilityManagement.Commands
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if(sender.CheckPermission(PlayerPermissions.FacilityManagement, out response))
+            if(!sender.CheckPermission(PlayerPermissions.FacilityManagement, out response))
             {
                 return false;
             }
-            if (float.TryParse(arguments.ElementAtOrDefault(0), out float time))
+            if (!float.TryParse(arguments.ElementAtOrDefault(0), out float time))
             {
                 response = $"Invalid duration time {arguments.ElementAtOrDefault(0)}";
                 return false;
