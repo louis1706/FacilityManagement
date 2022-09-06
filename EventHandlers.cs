@@ -19,7 +19,7 @@ namespace FacilityManagement
         public FacilityManagement plugin;
         public int LuresCount;
 
-        public void HandleRoundStart()
+        public void OnRoundStarted()
         {
             LuresCount = 0;
             if (plugin.Config.CustomTesla is not null)
@@ -85,7 +85,7 @@ namespace FacilityManagement
             if (plugin.Config.Scp106LureAmount < 1)
                 Object.FindObjectOfType<LureSubjectContainer>().SetState(false, true);
         }
-        public void HandleWeaponShoot(ShootingEventArgs ev)
+        public void OnShooting(ShootingEventArgs ev)
         {
             if (ev.Shooter.CurrentItem is null)
                 return;
@@ -94,11 +94,11 @@ namespace FacilityManagement
                 firearm.Ammo++;
             }
         }
-        public void HandleEnergyMicroHid(UsingMicroHIDEnergyEventArgs ev)
+        public void OnUsingMicroHIDEnergy(UsingMicroHIDEnergyEventArgs ev)
         {
             ev.Drain *= plugin.Config.EnergyMicroHid;
         }
-        public void HandleEnergyRadio(UsingRadioBatteryEventArgs ev)
+        public void OnUsingRadioBattery(UsingRadioBatteryEventArgs ev)
         {
             ev.Drain *= plugin.Config.EnergyRadio;
         }
@@ -118,7 +118,7 @@ namespace FacilityManagement
                 ev.Target.ActiveArtificialHealthProcesses.First().SustainTime = ahpProccessBuild.Sustain;
         }
 
-        public void HandleFemurEnter(EnteringFemurBreakerEventArgs ev)
+        public void OnEnteringFemurBreaker(EnteringFemurBreakerEventArgs ev)
         {
             // That means the femur breaker is always open
             if (plugin.Config.Scp106LureAmount < 1)
@@ -141,7 +141,7 @@ namespace FacilityManagement
             }
         }
 
-        public void HandleContain106(ContainingEventArgs ev)
+        public void OnContaining(ContainingEventArgs ev)
         {
             if (plugin.Config.Scp106LureAmount < 1)
                 return;
@@ -149,7 +149,7 @@ namespace FacilityManagement
         }
        
         
-        public void HandleWarheadDetonation()
+        public void OnDetonated()
         {
             if (!plugin.Config.WarheadCleanup)
                 return;

@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace FacilityManagement.Patches
 {
-    public class IntercomUpdateTextPatche
+    public class IntercomUpdateTextPatch
     {
         [HarmonyPatch(typeof(Intercom), nameof(Intercom.IntercomState), MethodType.Setter)]
         public static class CommandIntercomTextSetterFix
