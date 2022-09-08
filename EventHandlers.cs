@@ -145,7 +145,7 @@ namespace FacilityManagement
         {
             if (plugin.Config.Scp106LureAmount < 1)
                 return;
-            ev.IsAllowed = LuresCount > plugin.Config.Scp106LureAmount;
+            ev.IsAllowed = LuresCount >= plugin.Config.Scp106LureAmount;
         }
        
         
