@@ -20,7 +20,7 @@ This plugin make possible many things on your server.
 | Scp106LureReload | int | Amount of time before another sacrifice can be made |
 | Scp106LureTeam | List<[Team](https://exiled-team.github.io/Web/docs/Resources/Intro#roletype-team-side-and-faction)> |  Teams that can enter the femur breaker |
 | CustomTesla | [TeslaBuild](https://github.com/louis1706/FacilityManagement#teslabuild) | |
-| CustomWindows | Dictionary<GlassType, [GlassBuild](https://github.com/louis1706/FacilityManagement#glassbuild)> | Modify all the property of Window like you want (null make no change) |
+| CustomWindows | Dictionary<[GlassType](https://exiled-team.github.io/EXILED/api/Exiled.API.Enums.GlassType.html), [GlassBuild](https://github.com/louis1706/FacilityManagement#glassbuild)> | Modify all the property of Window like you want (null make no change) |
 | CustomDoors | Dictionary<[DoorType](https://exiled-team.github.io/Web/docs/Resources/Intro#doortype), [DoorBuild](https://github.com/louis1706/FacilityManagement#doorbuild)> | Modify all the property of Door like you want (null make no change) |
 | RoleTypeHumeShield | Dictionary<[RoleType](https://exiled-team.github.io/Web/docs/Resources/Intro#roletype-team-side-and-faction), [AhpProccessBuild](https://github.com/louis1706/FacilityManagement#ahpproccessbuild)> | Create a custoom AHP/HS for specified RoleType |
 
