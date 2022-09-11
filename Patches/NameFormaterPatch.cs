@@ -3,13 +3,34 @@ using System;
 using Exiled.API.Features;
 using System.Collections.Generic;
 using UnityEngine;
+using Exiled.Events.EventArgs;
+using LightContainmentZoneDecontamination;
+using NorthwoodLib.Pools;
+using System.Reflection.Emit;
+using static HarmonyLib.AccessTools;
 
 namespace FacilityManagement.Patches
 {
     [HarmonyPatch(typeof(Intercom), nameof(Intercom.Start))]
     public class NameFormaterPatch
     {
-        public static void Postfix(Intercom __instance)
+        public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+        {
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+
+            newInstructions.InsertRange(0, new CodeInstruction[]
+            {
+                new(OpCodes.Nop),
+                new(OpCodes.Call, Method(typeof(NameFormaterPatch),nameof(AddCustomInterpolatedCommand))),
+                new(OpCodes.Nop),
+            });
+
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
+
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
+        }
+        public static void AddCustomInterpolatedCommand()
         {
             try
             {
@@ -43,7 +64,7 @@ namespace FacilityManagement.Patches
             }
             catch (Exception ex)
             {
-                Log.Error($"Intercom::Start Postfix : {ex}\n {ex.StackTrace}");
+                Log.Error($"AddCustomInterpolatedCommand : {ex}\n {ex.StackTrace}");
             }
         }
     }

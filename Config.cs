@@ -42,6 +42,9 @@ namespace FacilityManagement
             {Intercom.State.Muted, "Issou you are muted"},
             {Intercom.State.Custom, "{intercom_custom_text}"},
         };
+        [Description("How mush the CustomText for intercom will be refresh (empty make refresh everytick)")]
+        public float? IntercomRefresh { get; set; } = null;
+
         [Description("If all items and ragdolls in the facility should be removed after detonation.")]
         public bool WarheadCleanup { get; set; } = true;
 
