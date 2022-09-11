@@ -23,60 +23,14 @@ namespace FacilityManagement
         {
             LuresCount = 0;
             if (plugin.Config.CustomTesla is not null)
-            {
-                foreach (Tesla tesla in Tesla.List)
-                {
-                    if (plugin.Config.CustomTesla.CooldownTime is not null)
-                        tesla.CooldownTime = plugin.Config.CustomTesla.CooldownTime.Value;
-                    if (plugin.Config.CustomTesla.IdleRange is not null)
-                        tesla.IdleRange = plugin.Config.CustomTesla.IdleRange.Value;
-                    if (plugin.Config.CustomTesla.TriggerRange is not null)
-                        tesla.TriggerRange = plugin.Config.CustomTesla.TriggerRange.Value;
-                    if (plugin.Config.CustomTesla.ActivationTime is not null)
-                        tesla.ActivationTime = plugin.Config.CustomTesla.ActivationTime.Value;
-                }
-
-                if (plugin.Config.CustomTesla.IgnoredRoles is not null)
-                    Tesla.IgnoredRoles = plugin.Config.CustomTesla.IgnoredRoles;
-            }
+                CustomTesla();
             if (plugin.Config.CustomWindows is not null)
-            {
-                foreach (Window window in Window.List)
-                {
-                    if (plugin.Config.CustomWindows.TryGetValue(window.Type, out GlassBuild glassBuild))
-                    {
-                        if (glassBuild.Health is not null)
-                            window.Health = glassBuild.Health.Value;
-                        if (glassBuild.DisableScpDamage is not null)
-                            window.DisableScpDamage = glassBuild.DisableScpDamage.Value;
-                    }
-                }
-            }
+                CustomWindow();
             if (plugin.Config.CustomDoors is not null)
-            {
-                foreach (Door door in Door.List)
-                {
-                    if (plugin.Config.CustomDoors.TryGetValue(door.Type,out DoorBuild doorBuild))
-                    {
-                        if (doorBuild.Health is not null)
-                            door.Health = doorBuild.Health.Value;
-                        if (doorBuild.DamageTypeIgnored is not 0)
-                            door.IgnoredDamageTypes = doorBuild.DamageTypeIgnored;
-                        if (doorBuild.RequiredPermission is not 0)
-                            door.RequiredPermissions.RequiredPermissions = doorBuild.RequiredPermission;
-                        if (doorBuild.RequireAllPermission is not null)
-                            door.RequiredPermissions.RequireAll = doorBuild.RequireAllPermission.Value;
-                    }
-                }
-            }
+                CustomDoor();
             if (plugin.Config.LiftMoveDuration is not null)
-            {
-                foreach (Exiled.API.Features.Lift lift in Exiled.API.Features.Lift.List)
-                {
-                    if (plugin.Config.LiftMoveDuration.TryGetValue(lift.Type, out float LiftTime))
-                        lift.MovingSpeed = LiftTime;
-                }
-            }
+                CustomLift();
+
             if (plugin.Config.GeneratorDuration > -1)
             {
                 foreach (Generator generator in Generator.List)
@@ -164,6 +118,65 @@ namespace FacilityManagement
             {
                 if (ragdoll.Position.y < 500f)
                     ragdoll.Delete();
+            }
+        }
+
+        public void CustomTesla()
+        {
+            foreach (Tesla tesla in Tesla.List)
+            {
+                if (plugin.Config.CustomTesla.CooldownTime is not null)
+                    tesla.CooldownTime = plugin.Config.CustomTesla.CooldownTime.Value;
+                if (plugin.Config.CustomTesla.IdleRange is not null)
+                    tesla.IdleRange = plugin.Config.CustomTesla.IdleRange.Value;
+                if (plugin.Config.CustomTesla.TriggerRange is not null)
+                    tesla.TriggerRange = plugin.Config.CustomTesla.TriggerRange.Value;
+                if (plugin.Config.CustomTesla.ActivationTime is not null)
+                    tesla.ActivationTime = plugin.Config.CustomTesla.ActivationTime.Value;
+            }
+
+            if (plugin.Config.CustomTesla.IgnoredRoles is not null)
+                Tesla.IgnoredRoles = plugin.Config.CustomTesla.IgnoredRoles;
+        }
+
+        public void CustomWindow()
+        {
+            foreach (Window window in Window.List)
+            {
+                if (plugin.Config.CustomWindows.TryGetValue(window.Type, out GlassBuild glassBuild))
+                {
+                    if (glassBuild.Health is not null)
+                        window.Health = glassBuild.Health.Value;
+                    if (glassBuild.DisableScpDamage is not null)
+                        window.DisableScpDamage = glassBuild.DisableScpDamage.Value;
+                }
+            }
+        }
+
+        public void CustomDoor()
+        {
+            foreach (Door door in Door.List)
+            {
+                if (plugin.Config.CustomDoors.TryGetValue(door.Type, out DoorBuild doorBuild))
+                {
+                    if (doorBuild.Health is not null)
+                        door.Health = doorBuild.Health.Value;
+                    if (doorBuild.DamageTypeIgnored is not 0)
+                        door.IgnoredDamageTypes = doorBuild.DamageTypeIgnored;
+                    if (doorBuild.RequiredPermission is not 0)
+                        door.RequiredPermissions.RequiredPermissions = doorBuild.RequiredPermission;
+                    if (doorBuild.RequireAllPermission is not null)
+                        door.RequiredPermissions.RequireAll = doorBuild.RequireAllPermission.Value;
+                }
+            }
+        }
+
+        public void CustomLift()
+        {
+            foreach (Exiled.API.Features.Lift lift in Exiled.API.Features.Lift.List)
+            {
+                if (plugin.Config.LiftMoveDuration.TryGetValue(lift.Type, out float LiftTime))
+                    lift.MovingSpeed = LiftTime;
             }
         }
     }

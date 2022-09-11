@@ -8,11 +8,11 @@
 
     public class FacilityManagement : Exiled.API.Features.Plugin<Config>
     {
-	public static FacilityManagement Singleton;
+	    public static FacilityManagement Singleton;
 
-	public override string Name => "FacilityManagement";
-	public override string Prefix => "FacilityManagement";
-	public override string Author => "Yamato#8987";
+	    public override string Name => "FacilityManagement";
+	    public override string Prefix => "FacilityManagement";
+	    public override string Author => "Yamato#8987";
         public override Version Version { get; } = new(1,0,0);
         public override Version RequiredExiledVersion  { get; } = new(5,2,2);
 

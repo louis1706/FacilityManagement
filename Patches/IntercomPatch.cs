@@ -12,14 +12,12 @@ namespace FacilityManagement.Patches
 {
     public class IntercomUpdateTextPatch
     {
+        private static float Timer = 0f;
+
+
         [HarmonyPatch(typeof(Intercom), nameof(Intercom.IntercomState), MethodType.Setter)]
         public static class CommandIntercomTextSetterFix
         {
-            public static void Postfix(Intercom __instance, ref Intercom.State value)
-            {
-                __instance.Network_state = SetContent(__instance, value);
-                return;
-            }
             public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
             {
                 Label returnLabel = generator.DefineLabel();
@@ -46,6 +44,15 @@ namespace FacilityManagement.Patches
         }
         internal static Intercom.State SetContent(Intercom intercom, Intercom.State state)
         {
+            if (FacilityManagement.Singleton.Config.IntercomRefresh is not null)
+            {
+                Timer += Time.deltaTime;
+
+                if (Timer <= 1f)
+                    return state;
+
+                Timer = 0f;
+            }
             if (FacilityManagement.Singleton.CustomText is not null)
                 state = Intercom.State.Custom;
             if (FacilityManagement.Singleton.Config.CustomText is null || !FacilityManagement.Singleton.Config.CustomText.TryGetValue(state, out string content))
