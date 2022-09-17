@@ -108,14 +108,15 @@ namespace FacilityManagement
             if (!plugin.Config.WarheadCleanup)
                 return;
 
-            foreach (Pickup pickup in Map.Pickups)
+            for (int i = 0; i < Map.Pickups.Count; i++)
             {
+                Pickup pickup = Map.Pickups.ElementAt(i);
                 if (pickup.Position.y < 500f)
                     pickup.Destroy();
             }
-
-            foreach (Exiled.API.Features.Ragdoll ragdoll in Map.Ragdolls)
+            for (int i = 0; i < Map.Ragdolls.Count; i++)
             {
+                Exiled.API.Features.Ragdoll ragdoll = Map.Ragdolls.ElementAt(i);
                 if (ragdoll.Position.y < 500f)
                     ragdoll.Delete();
             }
