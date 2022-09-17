@@ -30,10 +30,10 @@ namespace FacilityManagement.Patches
                     new(OpCodes.Ldarg_0),
                     new(OpCodes.Ldarg_0),
                     new(OpCodes.Ldarg_1),
-                    new(OpCodes.Ldind_U1),
                     new(OpCodes.Call, Method(typeof(IntercomUpdateTextPatch), nameof(SetContent))),
                     new(OpCodes.Callvirt, PropertySetter(typeof(Intercom), nameof(Intercom.Network_state))), // Set string
-                    new CodeInstruction(OpCodes.Ret),
+                    new(OpCodes.Nop),
+                    new(OpCodes.Ret),
                 });
 
                 for (int z = 0; z < newInstructions.Count; z++)
@@ -42,28 +42,37 @@ namespace FacilityManagement.Patches
                 ListPool<CodeInstruction>.Shared.Return(newInstructions);
             }
         }
+
         internal static Intercom.State SetContent(Intercom intercom, Intercom.State state)
         {
-            if (FacilityManagement.Singleton.Config.IntercomRefresh is not null)
+            try
             {
-                Timer += Time.deltaTime;
+                if (FacilityManagement.Singleton.Config.IntercomRefresh is not null)
+                {
+                    Timer += Time.deltaTime;
 
-                if (Timer <= 1f)
+                    if (Timer <= 1f)
+                        return state;
+
+                    Timer = 0f;
+                }
+                if (FacilityManagement.Singleton.CustomText is not null)
+                    state = Intercom.State.Custom;
+                if (ServerConsole.singleton.NameFormatter.Commands is null || FacilityManagement.Singleton.Config.CustomText is null || !FacilityManagement.Singleton.Config.CustomText.TryGetValue(state, out string content))
                     return state;
-
-                Timer = 0f;
+                if (!ServerConsole.singleton.NameFormatter.TryProcessExpression(content, "FacilityManagement", out string result))
+                {
+                    Log.Error(result);
+                    return state;
+                }
+                intercom.Network_intercomText = result;
+                return Intercom.State.Custom;
             }
-            if (FacilityManagement.Singleton.CustomText is not null)
-                state = Intercom.State.Custom;
-            if (FacilityManagement.Singleton.Config.CustomText is null || !FacilityManagement.Singleton.Config.CustomText.TryGetValue(state, out string content))
-                return state;
-            if (!ServerConsole.singleton.NameFormatter.TryProcessExpression(content, "FacilityManagement", out string result))
+            catch (Exception ex)
             {
-                Log.Error(result);
+                Log.Error($"Yamato Issue {ex}");
                 return state;
             }
-            intercom.Network_intercomText = result;
-            return Intercom.State.Custom;
         }
     }
 }
