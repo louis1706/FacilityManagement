@@ -28,60 +28,14 @@ namespace FacilityManagement
         {
             LuresCount = 0;
             if (plugin.Config.CustomTesla is not null)
-            {
-                foreach (Tesla tesla in Tesla.List)
-                {
-                    if (plugin.Config.CustomTesla.CooldownTime is not null)
-                        tesla.CooldownTime = plugin.Config.CustomTesla.CooldownTime.Value;
-                    if (plugin.Config.CustomTesla.IdleRange is not null)
-                        tesla.IdleRange = plugin.Config.CustomTesla.IdleRange.Value;
-                    if (plugin.Config.CustomTesla.TriggerRange is not null)
-                        tesla.TriggerRange = plugin.Config.CustomTesla.TriggerRange.Value;
-                    if (plugin.Config.CustomTesla.ActivationTime is not null)
-                        tesla.ActivationTime = plugin.Config.CustomTesla.ActivationTime.Value;
-                }
-
-                if (plugin.Config.CustomTesla.IgnoredRoles is not null)
-                    Tesla.IgnoredRoles = plugin.Config.CustomTesla.IgnoredRoles;
-            }
+                CustomTesla();
             if (plugin.Config.CustomWindows is not null)
-            {
-                foreach (Window window in Window.List)
-                {
-                    if (plugin.Config.CustomWindows.TryGetValue(window.Type, out GlassBuild glassBuild))
-                    {
-                        if (glassBuild.Health is not null)
-                            window.Health = glassBuild.Health.Value;
-                        if (glassBuild.DisableScpDamage is not null)
-                            window.DisableScpDamage = glassBuild.DisableScpDamage.Value;
-                    }
-                }
-            }
+                CustomWindow();
             if (plugin.Config.CustomDoors is not null)
-            {
-                foreach (Door door in Door.List)
-                {
-                    if (plugin.Config.CustomDoors.TryGetValue(door.Type,out DoorBuild doorBuild))
-                    {
-                        if (doorBuild.Health is not null)
-                            door.Health = doorBuild.Health.Value;
-                        if (doorBuild.DamageTypeIgnored is not null)
-                            door.IgnoredDamageTypes = doorBuild.DamageTypeIgnored.Value;
-                        if (doorBuild.RequiredPermission is not null)
-                            door.RequiredPermissions.RequiredPermissions = doorBuild.RequiredPermission.Value;
-                        if (doorBuild.RequireAllPermission is not null)
-                            door.RequiredPermissions.RequireAll = doorBuild.RequireAllPermission.Value;
-                    }
-                }
-            }
+                CustomDoor();
             if (plugin.Config.LiftMoveDuration is not null)
-            {
-                foreach (Exiled.API.Features.Lift lift in Exiled.API.Features.Lift.List)
-                {
-                    if (plugin.Config.LiftMoveDuration.TryGetValue(lift.Type, out float LiftTime))
-                        lift.MovingSpeed = LiftTime;
-                }
-            }
+                CustomLift();
+
             if (plugin.Config.GeneratorDuration > -1)
             {
                 foreach (Generator generator in Generator.List)
@@ -152,7 +106,7 @@ namespace FacilityManagement
         {
             if (plugin.Config.Scp106LureAmount < 1)
                 return;
-            ev.IsAllowed = LuresCount > plugin.Config.Scp106LureAmount;
+            ev.IsAllowed = LuresCount >= plugin.Config.Scp106LureAmount;
         }
        
         
@@ -161,32 +115,76 @@ namespace FacilityManagement
             if (!plugin.Config.WarheadCleanup)
                 return;
 
-            foreach (Pickup pickup in Pickup.List)
+            for (int i = 0; i < Map.Pickups.Count; i++)
             {
-                try
-                {
-                    if (pickup.Position.y < 500f)
-                        pickup.Destroy();
-                    string s = $"Pickup On detonated FacilityManagement : Pickup Is Null{pickup is null} ";
-                    if (pickup is not null)
-                    {
-                        s += $"Pickup::Base ? " + pickup.Base is null;
-                        if (pickup.Base is not null)
-                            s += $"Pickup::Base::Rb ? " + pickup.Base.Rb is null;
-                    }
-                    Log.Error(s + "  \n ");
-
-                }
-                catch (System.Exception ex)
-                {
-                    Log.Error(ex);
-                }
+                Pickup pickup = Map.Pickups.ElementAt(i);
+                if (pickup.Position.y < 500f)
+                    pickup.Destroy();
             }
-
-            foreach (Exiled.API.Features.Ragdoll ragdoll in Map.Ragdolls)
+            for (int i = 0; i < Map.Ragdolls.Count; i++)
             {
+                Exiled.API.Features.Ragdoll ragdoll = Map.Ragdolls.ElementAt(i);
                 if (ragdoll.Position.y < 500f)
                     ragdoll.Delete();
+            }
+        }
+
+        public void CustomTesla()
+        {
+            foreach (Tesla tesla in Tesla.List)
+            {
+                if (plugin.Config.CustomTesla.CooldownTime is not null)
+                    tesla.CooldownTime = plugin.Config.CustomTesla.CooldownTime.Value;
+                if (plugin.Config.CustomTesla.IdleRange is not null)
+                    tesla.IdleRange = plugin.Config.CustomTesla.IdleRange.Value;
+                if (plugin.Config.CustomTesla.TriggerRange is not null)
+                    tesla.TriggerRange = plugin.Config.CustomTesla.TriggerRange.Value;
+                if (plugin.Config.CustomTesla.ActivationTime is not null)
+                    tesla.ActivationTime = plugin.Config.CustomTesla.ActivationTime.Value;
+            }
+
+            if (plugin.Config.CustomTesla.IgnoredRoles is not null)
+                Tesla.IgnoredRoles = plugin.Config.CustomTesla.IgnoredRoles;
+        }
+
+        public void CustomWindow()
+        {
+            foreach (Window window in Window.List)
+            {
+                if (plugin.Config.CustomWindows.TryGetValue(window.Type, out GlassBuild glassBuild))
+                {
+                    if (glassBuild.Health is not null)
+                        window.Health = glassBuild.Health.Value;
+                    if (glassBuild.DisableScpDamage is not null)
+                        window.DisableScpDamage = glassBuild.DisableScpDamage.Value;
+                }
+            }
+        }
+
+        public void CustomDoor()
+        {
+            foreach (Door door in Door.List)
+            {
+                if (plugin.Config.CustomDoors.TryGetValue(door.Type, out DoorBuild doorBuild))
+                {
+                    if (doorBuild.Health is not null)
+                        door.Health = doorBuild.Health.Value;
+                    if (doorBuild.DamageTypeIgnored is not null)
+                        door.IgnoredDamageTypes = doorBuild.DamageTypeIgnored;
+                    if (doorBuild.RequiredPermission is not null)
+                        door.RequiredPermissions.RequiredPermissions = doorBuild.RequiredPermission;
+                    if (doorBuild.RequireAllPermission is not null)
+                        door.RequiredPermissions.RequireAll = doorBuild.RequireAllPermission.Value;
+                }
+            }
+        }
+
+        public void CustomLift()
+        {
+            foreach (Exiled.API.Features.Lift lift in Exiled.API.Features.Lift.List)
+            {
+                if (plugin.Config.LiftMoveDuration.TryGetValue(lift.Type, out float LiftTime))
+                    lift.MovingSpeed = LiftTime;
             }
         }
     }

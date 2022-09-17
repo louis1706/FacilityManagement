@@ -1,36 +1,65 @@
 ﻿using CommandSystem;
 using CommandSystem.Commands.RemoteAdmin.MutingAndIntercom;
+using Exiled.API.Features;
 using HarmonyLib;
+using NorthwoodLib.Pools;
 using System;
+using System.Collections.Generic;
+using System.Reflection.Emit;
+
+using static HarmonyLib.AccessTools;
 
 namespace FacilityManagement.Patches
 {
     [HarmonyPatch(typeof(IntercomTextCommand), nameof(IntercomTextCommand.Execute))]
     public static class IntercomTextCommandFix
     {
-        public static bool Prefix(ref bool __result, ArraySegment<string> arguments, ICommandSender sender, out string response)
+        public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            if (!sender.CheckPermission(PlayerPermissions.Broadcasting, out response))
-            {
-                __result = false;
-                return false;
-            }
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            string text = string.Join(" ", arguments);
-            if (string.IsNullOrEmpty(text.Trim()))
-            {
-                ServerLogs.AddLog(ServerLogs.Modules.Administrative, sender.LogName + " cleared the intercom text.", ServerLogs.ServerLogType.RemoteAdminActivity_GameChanging, false);
-                response = "Reset intercom text.";
-                FacilityManagement.Singleton.CustomText = null;
-                __result = true;
-                return false;
-            }
-            ServerLogs.AddLog(ServerLogs.Modules.Administrative, sender.LogName + " set the intercom text to \"" + text + "\".", ServerLogs.ServerLogType.RemoteAdminActivity_GameChanging, false);
-            response = "Set intercom text to: " + text;
-            FacilityManagement.Singleton.CustomText = text;
-            __result = true;
-            return false;
+            // Fix useless check from NW skillissue
+            const int offset = 2;
+            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ret) + offset;
+            
+            newInstructions.RemoveRange(index, 16);
 
+            newInstructions.Insert(index, new(OpCodes.Pop));
+
+            // Facility Management Fix
+
+            index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldloc_0);
+
+            // remove component.CustomContent = null;
+            newInstructions.RemoveRange(index, 4);
+
+            // Add FacilityManagement.Singleton.CustomText = null; 
+            newInstructions.InsertRange(index, new CodeInstruction[]
+            {
+                new(OpCodes.Ldsfld, Field(typeof(FacilityManagement),nameof(FacilityManagement.Singleton))),
+                new(OpCodes.Ldnull),
+                new(OpCodes.Stfld, Field(typeof(FacilityManagement),nameof(FacilityManagement.Singleton.CustomText))),
+            });
+
+
+
+            index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldloc_0);
+
+            // remove component.CustomContent = text;
+            newInstructions.RemoveRange(index, 4);
+
+            // Add FacilityManagement.Singleton.CustomText = text;
+            newInstructions.InsertRange(index, new CodeInstruction[]
+            {
+                new(OpCodes.Ldsfld, Field(typeof(FacilityManagement),nameof(FacilityManagement.Singleton))),
+                new(OpCodes.Ldloc_0),
+                new(OpCodes.Stfld, Field(typeof(FacilityManagement),nameof(FacilityManagement.Singleton.CustomText))),
+            });
+
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
+
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
 }
