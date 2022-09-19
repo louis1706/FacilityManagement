@@ -57,7 +57,7 @@ namespace FacilityManagement
         {
             if (ev.Player.CurrentItem is null)
                 return;
-            if ( plugin.Config.InfiniteAmmo.Contains(ev.Player.CurrentItem.Type) &&  ev.Player.CurrentItem is Firearm firearm)
+            if (plugin.Config.InfiniteAmmo.Contains(ev.Player.CurrentItem.Type) &&  ev.Player.CurrentItem is Firearm firearm)
             {
                 firearm.Ammo++;
             }

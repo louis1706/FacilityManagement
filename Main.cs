@@ -17,7 +17,7 @@
 	    public override string Prefix => "FacilityManagement";
 	    public override string Author => "Yamato#8987";
         public override Version Version { get; } = new(1,0,0);
-        public override Version RequiredExiledVersion  { get; } = new(5,2,2);
+        public override Version RequiredExiledVersion  { get; } = new(6,0,0);
 
         public EventHandlers EventHandlers { get; private set; }
 
@@ -79,18 +79,12 @@
         private void UnRegisterEvents()
         {
             Server.RoundStarted -= EventHandlers.OnRoundStarted;
-            if (Config.InfiniteAmmo is not null)
-                Player.Shooting -= EventHandlers.OnShooting;
-            if (Config.EnergyMicroHid.HasValue)
-                Player.UsingMicroHIDEnergy -= EventHandlers.OnUsingMicroHIDEnergy;
-            if (Config.EnergyRadio.HasValue)
-                Player.UsingRadioBattery -= EventHandlers.OnUsingRadioBattery;
-            if (Config.RoleTypeHumeShield is not null)
-                Player.Spawning -= EventHandlers.OnSpawning;
-            if (Config.RoleTypeHumeShield is not null)
-                Player.Hurting -= EventHandlers.OnHurting;
-            if (Config.WarheadCleanup)
-                Warhead.Detonated -= EventHandlers.OnDetonated;
+            Player.Shooting -= EventHandlers.OnShooting;
+            Player.UsingMicroHIDEnergy -= EventHandlers.OnUsingMicroHIDEnergy;
+            Player.UsingRadioBattery -= EventHandlers.OnUsingRadioBattery;
+            Player.Spawning -= EventHandlers.OnSpawning;
+            Player.Hurting -= EventHandlers.OnHurting;
+            Warhead.Detonated -= EventHandlers.OnDetonated;
 
 
             Player.EnteringFemurBreaker -= EventHandlers.OnEnteringFemurBreaker;

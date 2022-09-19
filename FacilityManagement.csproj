@@ -98,11 +98,11 @@
     <Compile Include="ConfigBuild.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="EventHandlers.cs" />
-    <Compile Include="Patches\CommandIntercomTextFix.cs" />
-    <Compile Include="Patches\IntercomDisplayTextFix.cs" />
-    <Compile Include="Patches\IntercomPatch.cs" />
+    <Compile Include="Patches\Intercom\CommandIntercomTextFix.cs" />
+    <Compile Include="Patches\Intercom\IntercomDisplayTextFix.cs" />
+    <Compile Include="Patches\Intercom\IntercomPatch.cs" />
     <Compile Include="Main.cs" />
-    <Compile Include="Patches\NameFormaterPatch.cs" />
+    <Compile Include="Patches\Intercom\NameFormaterPatch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
