@@ -11,7 +11,6 @@ using static HarmonyLib.AccessTools;
 
 namespace FacilityManagement.Patches
 {
-    [HarmonyPatch(typeof(IntercomTextCommand), nameof(IntercomTextCommand.Execute))]
     public static class IntercomTextCommandFix
     {
         public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)

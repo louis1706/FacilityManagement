@@ -13,9 +13,6 @@ namespace FacilityManagement.Patches
     public class IntercomUpdateTextPatch
     {
         private static float Timer = 0f;
-
-
-        [HarmonyPatch(typeof(Intercom), nameof(Intercom.IntercomState), MethodType.Setter)]
         public static class CommandIntercomTextSetterFix
         {
             public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)

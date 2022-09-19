@@ -1,9 +1,12 @@
 ﻿namespace FacilityManagement
 {
+    using CommandSystem.Commands.RemoteAdmin.MutingAndIntercom;
     using Exiled.Events.Handlers;
+    using global::FacilityManagement.Patches;
     using HarmonyLib;
     using MEC;
     using System;
+    using System.CodeDom.Compiler;
     using System.Collections.Generic;
 
     public class FacilityManagement : Exiled.API.Features.Plugin<Config>
@@ -56,32 +59,42 @@
         {
             EventHandlers = new(this);
             Server.RoundStarted += EventHandlers.OnRoundStarted;
-            
-            Player.Shooting += EventHandlers.OnShooting;
-            Player.UsingMicroHIDEnergy += EventHandlers.OnUsingMicroHIDEnergy;
-            Player.UsingRadioBattery += EventHandlers.OnUsingRadioBattery;
-            Player.Spawning += EventHandlers.OnSpawning;
-            Player.Hurting += EventHandlers.OnHurting;
-            Player.EnteringFemurBreaker += EventHandlers.OnEnteringFemurBreaker;
-            
-            Scp106.Containing += EventHandlers.OnContaining;
 
-            Warhead.Detonated += EventHandlers.OnDetonated;
+            if (Config.InfiniteAmmo is not null)
+                Player.Shooting += EventHandlers.OnShooting;
+            if (Config.EnergyMicroHid.HasValue)
+                Player.UsingMicroHIDEnergy += EventHandlers.OnUsingMicroHIDEnergy;
+            if (Config.EnergyRadio.HasValue)
+                Player.UsingRadioBattery += EventHandlers.OnUsingRadioBattery;
+            if (Config.RoleTypeHumeShield is not null)
+                Player.Spawning += EventHandlers.OnSpawning;
+            if (Config.RoleTypeHumeShield is not null)
+                Player.Hurting += EventHandlers.OnHurting;
+            if (Config.WarheadCleanup)
+                Warhead.Detonated += EventHandlers.OnDetonated;
+
+            Player.EnteringFemurBreaker += EventHandlers.OnEnteringFemurBreaker;
+            Scp106.Containing += EventHandlers.OnContaining;
         }
         private void UnRegisterEvents()
         {
             Server.RoundStarted -= EventHandlers.OnRoundStarted;
+            if (Config.InfiniteAmmo is not null)
+                Player.Shooting -= EventHandlers.OnShooting;
+            if (Config.EnergyMicroHid.HasValue)
+                Player.UsingMicroHIDEnergy -= EventHandlers.OnUsingMicroHIDEnergy;
+            if (Config.EnergyRadio.HasValue)
+                Player.UsingRadioBattery -= EventHandlers.OnUsingRadioBattery;
+            if (Config.RoleTypeHumeShield is not null)
+                Player.Spawning -= EventHandlers.OnSpawning;
+            if (Config.RoleTypeHumeShield is not null)
+                Player.Hurting -= EventHandlers.OnHurting;
+            if (Config.WarheadCleanup)
+                Warhead.Detonated -= EventHandlers.OnDetonated;
 
-            Player.Shooting -= EventHandlers.OnShooting;
-            Player.UsingMicroHIDEnergy -= EventHandlers.OnUsingMicroHIDEnergy;
-            Player.UsingRadioBattery -= EventHandlers.OnUsingRadioBattery;
-            Player.Spawning -= EventHandlers.OnSpawning;
-            Player.Hurting -= EventHandlers.OnHurting;
+
             Player.EnteringFemurBreaker -= EventHandlers.OnEnteringFemurBreaker;
-
             Scp106.Containing -= EventHandlers.OnContaining;
-
-            Warhead.Detonated -= EventHandlers.OnDetonated;
 
             EventHandlers = null;
         }
@@ -91,7 +104,17 @@
             try
             {
                 Harmony = new(Author + "." + Name + ++patchCounter);
-                Harmony.PatchAll();
+                if (Config.CustomText is not null)
+                {
+                    Harmony.Patch(typeof(IntercomTextCommand).GetMethod(nameof(IntercomTextCommand.Execute)), transpiler: new HarmonyMethod(typeof(IntercomTextCommandFix).GetMethod(nameof(IntercomTextCommandFix.Transpiler))));
+                    
+                    Harmony.Patch(typeof(Exiled.API.Features.Intercom).GetProperty(nameof(Exiled.API.Features.Intercom.DisplayText)).SetMethod, transpiler: new HarmonyMethod(typeof(CommandIntercomTextSetterFix).GetMethod(nameof(CommandIntercomTextSetterFix.Transpiler))));
+                    Harmony.Patch(typeof(Exiled.API.Features.Intercom).GetProperty(nameof(Exiled.API.Features.Intercom.DisplayText)).GetMethod, transpiler: new HarmonyMethod(typeof(CommandIntercomTextGetterFix).GetMethod(nameof(CommandIntercomTextGetterFix.Transpiler))));
+
+                    Harmony.Patch(typeof(Intercom).GetProperty(nameof(Intercom.IntercomState)).GetMethod, transpiler: new HarmonyMethod(typeof(CommandIntercomTextSetterFix).GetMethod(nameof(CommandIntercomTextSetterFix.Transpiler))));
+
+                    Harmony.Patch(typeof(Intercom).GetMethod(nameof(Intercom.Start)), transpiler: new HarmonyMethod(typeof(NameFormaterPatch).GetMethod(nameof(NameFormaterPatch.Transpiler))));
+                }
             }
             catch (Exception ex)
             {

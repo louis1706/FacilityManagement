@@ -18,12 +18,12 @@ namespace FacilityManagement
         };
 
         [Description("Make infinite ammo for weapon.")]
-        public float EnergyMicroHid { get; set; } = 1f;
+        public float? EnergyMicroHid { get; set; } = 1f;
         [Description("Make infinite ammo for weapon.")]
-        public float EnergyRadio { get; set; } = 1f;
+        public float? EnergyRadio { get; set; } = 1f;
 
         [Description("Time for generator to be Activated after being enable (-1 disable the config)")]
-        public float GeneratorDuration { get; set; } = -1;
+        public float? GeneratorDuration { get; set; } = -1;
 
         [Description("Sets the time for Lift to teleport")]
         public Dictionary<ElevatorType, float> LiftMoveDuration { get; set; } = new() 

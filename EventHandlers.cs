@@ -36,10 +36,10 @@ namespace FacilityManagement
             if (plugin.Config.LiftMoveDuration is not null)
                 CustomLift();
 
-            if (plugin.Config.GeneratorDuration > -1)
+            if (plugin.Config.GeneratorDuration.HasValue)
             {
                 foreach (Generator generator in Generator.List)
-                    generator.Base._unlockCooldownTime = plugin.Config.GeneratorDuration;
+                    generator.Base._unlockCooldownTime = plugin.Config.GeneratorDuration.Value;
             }
             if (plugin.Config.Scp106ContainerIgonredRoles is not null)
             {
@@ -47,7 +47,7 @@ namespace FacilityManagement
             }
             if (plugin.Config.TeslaIgnoredRoles is not null)
             {
-                Exiled.API.Features.TeslaGate.IgnoredRoles = plugin.Config.Scp106ContainerIgonredRoles;
+                Tesla.IgnoredRoles = plugin.Config.Scp106ContainerIgonredRoles;
             }
 
             if (plugin.Config.Scp106LureAmount < 1)
@@ -57,23 +57,23 @@ namespace FacilityManagement
         {
             if (ev.Player.CurrentItem is null)
                 return;
-            if (plugin.Config.InfiniteAmmo is not null && plugin.Config.InfiniteAmmo.Contains(ev.Player.CurrentItem.Type) &&  ev.Player.CurrentItem is Firearm firearm)
+            if ( plugin.Config.InfiniteAmmo.Contains(ev.Player.CurrentItem.Type) &&  ev.Player.CurrentItem is Firearm firearm)
             {
                 firearm.Ammo++;
             }
         }
         public void OnUsingMicroHIDEnergy(UsingMicroHIDEnergyEventArgs ev)
         {
-            ev.Drain *= plugin.Config.EnergyMicroHid;
+            ev.Drain *= plugin.Config.EnergyMicroHid.Value;
         }
         public void OnUsingRadioBattery(UsingRadioBatteryEventArgs ev)
         {
-            ev.Drain *= plugin.Config.EnergyRadio;
+            ev.Drain *= plugin.Config.EnergyRadio.Value;
         }
 
         public void OnSpawning(SpawningEventArgs ev)
         {
-            if (plugin.Config.RoleTypeHumeShield is not null && plugin.Config.RoleTypeHumeShield.TryGetValue(ev.Player.Role.Type, out AhpProccessBuild ahpProccessBuild))
+            if (plugin.Config.RoleTypeHumeShield.TryGetValue(ev.Player.Role.Type, out AhpProccessBuild ahpProccessBuild))
             {
                 ev.Player.ActiveArtificialHealthProcesses.ToList().RemoveAll(x => true);
                 ev.Player.AddAhp(ahpProccessBuild.Amount, ahpProccessBuild.Amount, -ahpProccessBuild.Regen, ahpProccessBuild.Efficacy, ahpProccessBuild.Sustain, ahpProccessBuild.Regen > 0);
@@ -82,7 +82,7 @@ namespace FacilityManagement
 
         public void OnHurting(HurtingEventArgs ev)
         {
-            if (plugin.Config.RoleTypeHumeShield is not null && plugin.Config.RoleTypeHumeShield.TryGetValue(ev.Target.Role.Type, out AhpProccessBuild ahpProccessBuild))
+            if (plugin.Config.RoleTypeHumeShield.TryGetValue(ev.Target.Role.Type, out AhpProccessBuild ahpProccessBuild))
                 ev.Target.ActiveArtificialHealthProcesses.First().SustainTime = ahpProccessBuild.Sustain;
         }
         public void OnEnteringFemurBreaker(EnteringFemurBreakerEventArgs _)
@@ -112,12 +112,9 @@ namespace FacilityManagement
         
         public void OnDetonated()
         {
-            if (!plugin.Config.WarheadCleanup)
-                return;
-
-            for (int i = 0; i < Map.Pickups.Count; i++)
+            for (int i = 0; i < Pickup.List.Count(); i++)
             {
-                Pickup pickup = Map.Pickups.ElementAt(i);
+                Pickup pickup = Pickup.List.ElementAt(i);
                 if (pickup.Position.y < 500f)
                     pickup.Destroy();
             }
@@ -133,13 +130,13 @@ namespace FacilityManagement
         {
             foreach (Tesla tesla in Tesla.List)
             {
-                if (plugin.Config.CustomTesla.CooldownTime is not null)
+                if (plugin.Config.CustomTesla.CooldownTime.HasValue)
                     tesla.CooldownTime = plugin.Config.CustomTesla.CooldownTime.Value;
-                if (plugin.Config.CustomTesla.IdleRange is not null)
+                if (plugin.Config.CustomTesla.IdleRange.HasValue)
                     tesla.IdleRange = plugin.Config.CustomTesla.IdleRange.Value;
-                if (plugin.Config.CustomTesla.TriggerRange is not null)
+                if (plugin.Config.CustomTesla.TriggerRange.HasValue)
                     tesla.TriggerRange = plugin.Config.CustomTesla.TriggerRange.Value;
-                if (plugin.Config.CustomTesla.ActivationTime is not null)
+                if (plugin.Config.CustomTesla.ActivationTime.HasValue)
                     tesla.ActivationTime = plugin.Config.CustomTesla.ActivationTime.Value;
             }
 
@@ -153,9 +150,9 @@ namespace FacilityManagement
             {
                 if (plugin.Config.CustomWindows.TryGetValue(window.Type, out GlassBuild glassBuild))
                 {
-                    if (glassBuild.Health is not null)
+                    if (glassBuild.Health.HasValue)
                         window.Health = glassBuild.Health.Value;
-                    if (glassBuild.DisableScpDamage is not null)
+                    if (glassBuild.DisableScpDamage.HasValue)
                         window.DisableScpDamage = glassBuild.DisableScpDamage.Value;
                 }
             }
@@ -167,13 +164,13 @@ namespace FacilityManagement
             {
                 if (plugin.Config.CustomDoors.TryGetValue(door.Type, out DoorBuild doorBuild))
                 {
-                    if (doorBuild.Health is not null)
+                    if (doorBuild.Health.HasValue)
                         door.Health = doorBuild.Health.Value;
-                    if (doorBuild.DamageTypeIgnored is not null)
-                        door.IgnoredDamageTypes = doorBuild.DamageTypeIgnored;
-                    if (doorBuild.RequiredPermission is not null)
-                        door.RequiredPermissions.RequiredPermissions = doorBuild.RequiredPermission;
-                    if (doorBuild.RequireAllPermission is not null)
+                    if (doorBuild.DamageTypeIgnored.HasValue)
+                        door.IgnoredDamageTypes = doorBuild.DamageTypeIgnored.Value;
+                    if (doorBuild.RequiredPermission.HasValue)
+                        door.RequiredPermissions.RequiredPermissions = doorBuild.RequiredPermission.Value;
+                    if (doorBuild.RequireAllPermission.HasValue)
                         door.RequiredPermissions.RequireAll = doorBuild.RequireAllPermission.Value;
                 }
             }
