@@ -30,7 +30,6 @@ namespace FacilityManagement.Patches
                     new(OpCodes.Ldarg_0),
                     new(OpCodes.Ldarg_0),
                     new(OpCodes.Ldarg_1),
-                    new(OpCodes.Ldind_U1),
                     new(OpCodes.Call, Method(typeof(IntercomUpdateTextPatch), nameof(SetContent))),
                     new(OpCodes.Callvirt, PropertySetter(typeof(Intercom), nameof(Intercom.Network_state))), // Set string
                     new CodeInstruction(OpCodes.Ret),
