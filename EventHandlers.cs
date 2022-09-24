@@ -11,6 +11,9 @@ using UnityEngine;
 using Interactables.Interobjects.DoorUtils;
 using PlayerStatsSystem;
 using Tesla = Exiled.API.Features.TeslaGate;
+using Interactables.Interobjects;
+using Exiled.API.Enums;
+
 namespace FacilityManagement
 {
     public class EventHandlers
@@ -57,11 +60,11 @@ namespace FacilityManagement
             ev.Drain *= plugin.Config.EnergyRadio;
         }
 
-        public void OnSpawning(SpawningEventArgs ev)
+        public void OnSpawned(SpawnedEventArgs ev)
         {
             if (plugin.Config.RoleTypeHumeShield is not null && plugin.Config.RoleTypeHumeShield.TryGetValue(ev.Player.Role.Type, out AhpProccessBuild ahpProccessBuild))
             {
-                ev.Player.ActiveArtificialHealthProcesses.ToList().RemoveAll(x => true);
+                ((AhpStat)ev.Player.ReferenceHub.playerStats.StatModules[1])._activeProcesses.Clear();
                 ev.Player.AddAhp(ahpProccessBuild.Amount, ahpProccessBuild.Amount, -ahpProccessBuild.Regen, ahpProccessBuild.Efficacy, ahpProccessBuild.Sustain, ahpProccessBuild.Regen > 0);
             }
         }
@@ -158,20 +161,31 @@ namespace FacilityManagement
         {
             foreach (Door door in Door.List)
             {
-                if (plugin.Config.CustomDoors.TryGetValue(door.Type, out DoorBuild doorBuild))
+                if (door.Base is CheckpointDoor checkpoint)
                 {
-                    if (doorBuild.Health is not null)
-                        door.Health = doorBuild.Health.Value;
-                    if (doorBuild.DamageTypeIgnored is not 0)
-                        door.IgnoredDamageTypes = doorBuild.DamageTypeIgnored;
-                    if (doorBuild.RequiredPermission is not 0)
-                        door.RequiredPermissions.RequiredPermissions = doorBuild.RequiredPermission;
-                    if (doorBuild.RequireAllPermission is not null)
-                        door.RequiredPermissions.RequireAll = doorBuild.RequireAllPermission.Value;
+                    foreach (DoorVariant checpointdoor in checkpoint._subDoors) 
+                    {
+                        CustomDoorSet(Door.Get(checpointdoor), door.Type);
+                    }
+                    continue;
                 }
+                CustomDoorSet(door, door.Type);
             }
         }
-
+        public void CustomDoorSet(Door door, DoorType type)
+        {
+            if (plugin.Config.CustomDoors.TryGetValue(type, out DoorBuild doorBuild))
+            {
+                if (doorBuild.Health is not null)
+                    door.Health = doorBuild.Health.Value;
+                if (doorBuild.DamageTypeIgnored is not 0)
+                    door.IgnoredDamageTypes = doorBuild.DamageTypeIgnored;
+                if (doorBuild.RequiredPermission is not 0)
+                    door.RequiredPermissions.RequiredPermissions = doorBuild.RequiredPermission;
+                if (doorBuild.RequireAllPermission is not null)
+                    door.RequiredPermissions.RequireAll = doorBuild.RequireAllPermission.Value;
+            }
+        }
         public void CustomLift()
         {
             foreach (Exiled.API.Features.Lift lift in Exiled.API.Features.Lift.List)

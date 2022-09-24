@@ -60,7 +60,7 @@
             Player.Shooting += EventHandlers.OnShooting;
             Player.UsingMicroHIDEnergy += EventHandlers.OnUsingMicroHIDEnergy;
             Player.UsingRadioBattery += EventHandlers.OnUsingRadioBattery;
-            Player.Spawning += EventHandlers.OnSpawning;
+            Player.Spawned += EventHandlers.OnSpawned;
             Player.Hurting += EventHandlers.OnHurting;
             Player.EnteringFemurBreaker += EventHandlers.OnEnteringFemurBreaker;
             
@@ -75,7 +75,7 @@
             Player.Shooting -= EventHandlers.OnShooting;
             Player.UsingMicroHIDEnergy -= EventHandlers.OnUsingMicroHIDEnergy;
             Player.UsingRadioBattery -= EventHandlers.OnUsingRadioBattery;
-            Player.Spawning -= EventHandlers.OnSpawning;
+            Player.Spawned -= EventHandlers.OnSpawned;
             Player.Hurting -= EventHandlers.OnHurting;
             Player.EnteringFemurBreaker -= EventHandlers.OnEnteringFemurBreaker;
 
