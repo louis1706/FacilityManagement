@@ -47,24 +47,3 @@ jobs:
     - name: Build
       working-directory: ${{env.GITHUB_WORKSPACE}}
       run: msbuild ${{env.SOLUTION_FILE_PATH}} /m /p:ReferencePath=${{ env.REFERENCES_PATH }}
-      
-    - name: Create Release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: commit_${{ github.sha }}
-        release_name: Commit ${{ github.sha }}
-        draft: false
-        prerelease: false
-    - name: Release Build
-      id: release-win
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: bin\Debug\FacilityManagement.dll
-        asset_name: FacilityManagement.dll
-        asset_content_type: application/octet-stream
