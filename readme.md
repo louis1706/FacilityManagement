@@ -31,10 +31,10 @@ This plugin make possible many things on your server.
 |    PropertyName    | TypeValue | Description |
 | :-------------: | :---------: | :--------- |
 | IgnoredRoles | List<[RoleType](https://exiled-team.github.io/Web/docs/Resources/Intro#roletype-team-side-and-faction)> | Tesla going to ignored player with this Role (Null disable the change) |
-| TriggerRange? | float? | Distance for tesla to be trigger (Null disable the change) |
-| IdleRange? | float? | Distance for tesla to start idling (Null disable the change) |
-| ActivationTime? | float? | Time for tesla to start (Null disable the change) |
-| CooldownTime? | float? | Time between each Shock (Null disable the change) |
+| TriggerRange | float? | Distance for tesla to be trigger (Null disable the change) |
+| IdleRange | float? | Distance for tesla to start idling (Null disable the change) |
+| ActivationTime | float? | Time for tesla to start (Null disable the change) |
+| CooldownTime | float? | Time between each Shock (Null disable the change) |
 
 ## GlassBuild
 
