@@ -1,6 +1,8 @@
 ﻿using Exiled.API.Enums;
 using Exiled.API.Interfaces;
 using Interactables.Interobjects.DoorUtils;
+using PlayerRoles;
+using PlayerRoles.Voice;
 using System.Collections.Generic;
 using System.ComponentModel;
 using KeycardPermissions = Interactables.Interobjects.DoorUtils.KeycardPermissions;
@@ -10,6 +12,7 @@ namespace FacilityManagement
     public class Config : IConfig
     {
         public bool IsEnabled { get; set; } = false;
+        public bool Debug { get; set; } = false;
 
         [Description("Make infinite ammo for weapon.")]
         public List<ItemType> InfiniteAmmo { get; set; } = new()
@@ -33,38 +36,22 @@ namespace FacilityManagement
 
         [Description(@"Custom intercom content. If there's no specific content, then the default client content is used.
         # Check GitHub ReadMe for more info (https://github.com/louis1706/FacilityManagement/blob/main/readme.md)")]
-        public Dictionary<Intercom.State, string> CustomText { get; set; } = new()
+        public Dictionary<IntercomDisplay.IcomText, string> CustomText { get; set; } = new()
         {
-            {Intercom.State.Ready, "Ready"},
-            {Intercom.State.Transmitting, "{intercom_speaker_nickname} speaking {intercom_speech_remaining_time}"},
-            {Intercom.State.Restarting, "Restarting please wait for {intercom_remaining_cooldown}"},
-            {Intercom.State.AdminSpeaking, "the Admin {intercom_speaker_nickname} is actually speaking"},
-            {Intercom.State.Muted, "Issou you are muted"},
-            {Intercom.State.Custom, "{intercom_custom_text}"},
+            {IntercomDisplay.IcomText.Ready, "Ready"},
+            {IntercomDisplay.IcomText.Transmitting, "{intercom_speaker_nickname} speaking {intercom_speech_remaining_time}"},
+            {IntercomDisplay.IcomText.TrasmittingBypass, "{intercom_speaker_nickname} speaking {intercom_speech_remaining_time}"},
+            {IntercomDisplay.IcomText.Restarting, "Restarting please wait for {intercom_remaining_cooldown}"},
+            {IntercomDisplay.IcomText.AdminUsing, "the Admin {intercom_speaker_nickname} is actually speaking"},
+            {IntercomDisplay.IcomText.Muted, "Issou you are muted"},
+            {IntercomDisplay.IcomText.Wait, "Wait"},
+            {IntercomDisplay.IcomText.Unknown, "Unknown"},
         };
         [Description("How mush the CustomText for intercom will be refresh (empty make refresh everytick)")]
         public float? IntercomRefresh { get; set; } = null;
 
         [Description("If all items and ragdolls in the facility should be removed after detonation.")]
         public bool WarheadCleanup { get; set; } = true;
-
-        [Description("How many sacrifices it takes to lure 106. Values below 1 set the recontainer to always active.")]
-        public int Scp106LureAmount { get; set; } = 1;
-
-        [Description("Probability of succes for sacrifice work before enough player was enter in the recontainer")]
-        public float Scp106ChanceOfSuccess { get; set; } = 100;
-
-        [Description("Amount of time before another sacrifice can be made.")]
-        public int Scp106LureReload { get; set; } = 0;
-
-        [Description("Teams that can enter the femur breaker.")]
-        public List<Team> Scp106LureTeam { get; set; } = new()
-        {
-            Team.MTF,
-            Team.CHI,
-            Team.RSC,
-            Team.CDP,
-        };
         [Description("Sets the config of Tesla.")]
         public TeslaBuild CustomTesla { get; set; } = new()
         {
@@ -73,7 +60,7 @@ namespace FacilityManagement
             TriggerRange = 10,
             IgnoredRoles = new()
             {
-                RoleType.Scp0492,
+                RoleTypeId.Scp0492,
             }
         };
         [Description("Sets the health of breakable windows.")]
@@ -92,7 +79,16 @@ namespace FacilityManagement
         public Dictionary<DoorType, DoorBuild> CustomDoors { get; set; } = new()
         {
             { 
-                DoorType.CheckpointEntrance,
+                DoorType.CheckpointEzHczA,
+                new DoorBuild{
+                            Health = 30,
+                            RequiredPermission = KeycardPermissions.ContainmentLevelThree | KeycardPermissions.Checkpoints | KeycardPermissions.ScpOverride,
+                            RequireAllPermission = false,
+                            DamageTypeIgnored = DoorDamageType.Grenade,
+                }
+            },
+            {
+                DoorType.CheckpointEzHczB,
                 new DoorBuild{
                             Health = 30,
                             RequiredPermission = KeycardPermissions.ContainmentLevelThree | KeycardPermissions.Checkpoints | KeycardPermissions.ScpOverride,
@@ -111,10 +107,10 @@ namespace FacilityManagement
             },
         };
 
-        public Dictionary<RoleType, AhpProccessBuild> RoleTypeHumeShield { get; set; } = new()
+        public Dictionary<RoleTypeId, AhpProccessBuild> RoleTypeHumeShield { get; set; } = new()
         {
-            { 
-                RoleType.Scp049,
+            {
+                RoleTypeId.Scp049,
                 new AhpProccessBuild{
                     Amount = 60,
                     Regen = 1.5f,

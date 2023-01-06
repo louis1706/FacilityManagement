@@ -6,7 +6,12 @@ using NorthwoodLib.Pools;
 using System.Collections.Generic;
 using System.Reflection.Emit;
 using static HarmonyLib.AccessTools;
-using Mono.Cecil.Cil;
+
+using PlayerRoles.Voice;
+using VoiceChat;
+using Intercom = PlayerRoles.Voice.Intercom;
+using Mirror;
+using YamlDotNet.Core.Tokens;
 
 namespace FacilityManagement.Patches
 {
@@ -15,7 +20,7 @@ namespace FacilityManagement.Patches
         private static float Timer = 0f;
 
 
-        [HarmonyPatch(typeof(Intercom), nameof(Intercom.IntercomState), MethodType.Setter)]
+        [HarmonyPatch(typeof(IntercomDisplay), nameof(IntercomDisplay.GetTranslation))]
         public static class CommandIntercomTextSetterFix
         {
             public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
@@ -43,35 +48,36 @@ namespace FacilityManagement.Patches
             }
         }
 
-        internal static Intercom.State SetContent(Intercom intercom, Intercom.State state)
+        internal static void SetContent(IntercomDisplay intercom, IntercomDisplay.IcomText value)
         {
             try
             {
+                Intercom singleton = Intercom._singleton;
+
                 if (FacilityManagement.Singleton.Config.IntercomRefresh is not null)
                 {
                     Timer += Time.deltaTime;
 
                     if (Timer <= 1f)
-                        return state;
+                        return;
 
                     Timer = 0f;
                 }
                 if (FacilityManagement.Singleton.CustomText is not null)
-                    state = Intercom.State.Custom;
-                if (ServerConsole.singleton.NameFormatter.Commands is null || FacilityManagement.Singleton.Config.CustomText is null || !FacilityManagement.Singleton.Config.CustomText.TryGetValue(state, out string content))
-                    return state;
+                    value = IntercomDisplay.IcomText.Unknown;
+
+                if (ServerConsole.singleton.NameFormatter.Commands is null || FacilityManagement.Singleton.Config.CustomText is null || !FacilityManagement.Singleton.Config.CustomText.TryGetValue(value, out string content))
+                    return;
                 if (!ServerConsole.singleton.NameFormatter.TryProcessExpression(content, "FacilityManagement", out string result))
                 {
                     Log.Error(result);
-                    return state;
                 }
-                intercom.Network_intercomText = result;
-                return Intercom.State.Custom;
+                intercom.Network_overrideText = result;
+                singleton.Network_state = (byte)value;
             }
             catch (Exception ex)
             {
                 Log.Error($"Yamato Issue {ex}");
-                return state;
             }
         }
     }

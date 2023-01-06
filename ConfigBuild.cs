@@ -1,4 +1,5 @@
 ﻿using Interactables.Interobjects.DoorUtils;
+using PlayerRoles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,7 +32,7 @@ namespace FacilityManagement
 
     public class TeslaBuild
     {
-        public List<RoleType> IgnoredRoles { get; set; }
+        public List<RoleTypeId> IgnoredRoles { get; set; }
         public float? TriggerRange { get; set; }
         public float? IdleRange { get; set; }
         public float? ActivationTime { get; set; }

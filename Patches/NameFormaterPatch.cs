@@ -3,15 +3,15 @@ using System;
 using Exiled.API.Features;
 using System.Collections.Generic;
 using UnityEngine;
-using Exiled.Events.EventArgs;
-using LightContainmentZoneDecontamination;
 using NorthwoodLib.Pools;
 using System.Reflection.Emit;
 using static HarmonyLib.AccessTools;
+using PlayerRoles.Voice;
+using Intercom = Exiled.API.Features.Intercom;
 
 namespace FacilityManagement.Patches
 {
-    [HarmonyPatch(typeof(Intercom), nameof(Intercom.Start))]
+    [HarmonyPatch(typeof(IntercomDisplay), nameof(IntercomDisplay.Awake))]
     public class NameFormaterPatch
     {
         public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
@@ -47,16 +47,18 @@ namespace FacilityManagement.Patches
                 interpolatedCommandFormatter.Commands.Add("round_duration_seconds", (List<string> args) => Mathf.CeilToInt(RoundSummary.roundTime % 60).ToString("00"));
 
                 // Int
-                interpolatedCommandFormatter.Commands.Add("intercom_speech_remaining_time", (List<string> args) => Mathf.CeilToInt(Exiled.API.Features.Intercom.SpeechRemainingTime).ToString());
-                interpolatedCommandFormatter.Commands.Add("intercom_remaining_cooldown", (List<string> args) => Mathf.CeilToInt(Intercom.host.remainingCooldown).ToString());
+                interpolatedCommandFormatter.Commands.Add("intercom_speech_remaining_time", (List<string> args) => Mathf.CeilToInt(Intercom.SpeechRemainingTime).ToString());
+                interpolatedCommandFormatter.Commands.Add("intercom_remaining_cooldown", (List<string> args) => Mathf.CeilToInt((float)Intercom.RemainingCooldown).ToString());
                 // String
-                interpolatedCommandFormatter.Commands.Add("intercom_speaker_nickname", (List<string> args) => $"{Player.Get(Intercom.host?.speaker)?.Nickname}");
+                interpolatedCommandFormatter.Commands.Add("intercom_speaker_nickname", (List<string> args) => $"{Intercom.Speaker?.Nickname}");
                 interpolatedCommandFormatter.Commands.Add("intercom_custom_text", (List<string> args) => FacilityManagement.Singleton.CustomText);
                 // Bool
-                interpolatedCommandFormatter.Commands.Add("intercom_is_in_use", (List<string> args) => (Intercom.host?.speaker is not null).ToString());
-                interpolatedCommandFormatter.Commands.Add("intercom_is_admin_speaking", (List<string> args) => Intercom.AdminSpeaking.ToString());
-                interpolatedCommandFormatter.Commands.Add("intercom_bypass_speaking", (List<string> args) => Intercom.host.bypassSpeaking.ToString());
-                interpolatedCommandFormatter.Commands.Add("intercom_mute_player_speak", (List<string> args) => Intercom.host.Muted.ToString());
+                interpolatedCommandFormatter.Commands.Add("intercom_is_in_use", (List<string> args) => (Intercom.Speaker is not null).ToString());
+                
+                // remove from the game
+                //interpolatedCommandFormatter.Commands.Add("intercom_is_admin_speaking", (List<string> args) => Intercom.Spe.ToString());
+                //interpolatedCommandFormatter.Commands.Add("intercom_bypass_speaking", (List<string> args) => Intercom.By.ToString());
+                //interpolatedCommandFormatter.Commands.Add("intercom_mute_player_speak", (List<string> args) => Intercom.host.Muted.ToString());
 
                 // CustomText replace
                 ServerConsole.singleton.NameFormatter = interpolatedCommandFormatter;

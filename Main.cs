@@ -14,7 +14,7 @@
 	    public override string Prefix => "FacilityManagement";
 	    public override string Author => "Yamato#8987";
         public override Version Version { get; } = new(1,0,0);
-        public override Version RequiredExiledVersion  { get; } = new(5,2,2);
+        public override Version RequiredExiledVersion  { get; } = AutoUpdateExiledVersion.AutoUpdateExiledVersion.RequiredExiledVersion;
 
         public EventHandlers EventHandlers { get; private set; }
 
@@ -62,10 +62,7 @@
             Player.UsingRadioBattery += EventHandlers.OnUsingRadioBattery;
             Player.Spawned += EventHandlers.OnSpawned;
             Player.Hurting += EventHandlers.OnHurting;
-            Player.EnteringFemurBreaker += EventHandlers.OnEnteringFemurBreaker;
             
-            Scp106.Containing += EventHandlers.OnContaining;
-
             Warhead.Detonated += EventHandlers.OnDetonated;
         }
         private void UnRegisterEvents()
@@ -77,9 +74,6 @@
             Player.UsingRadioBattery -= EventHandlers.OnUsingRadioBattery;
             Player.Spawned -= EventHandlers.OnSpawned;
             Player.Hurting -= EventHandlers.OnHurting;
-            Player.EnteringFemurBreaker -= EventHandlers.OnEnteringFemurBreaker;
-
-            Scp106.Containing -= EventHandlers.OnContaining;
 
             Warhead.Detonated -= EventHandlers.OnDetonated;
 

@@ -13,6 +13,8 @@ using PlayerStatsSystem;
 using Tesla = Exiled.API.Features.TeslaGate;
 using Interactables.Interobjects;
 using Exiled.API.Enums;
+using Exiled.Events.EventArgs.Player;
+using Exiled.API.Features.Pickups;
 
 namespace FacilityManagement
 {
@@ -31,35 +33,24 @@ namespace FacilityManagement
                 CustomWindow();
             if (plugin.Config.CustomDoors is not null)
                 CustomDoor();
-            if (plugin.Config.LiftMoveDuration is not null)
-                CustomLift();
 
             if (plugin.Config.GeneratorDuration > -1)
             {
                 foreach (Generator generator in Generator.List)
                     generator.Base._unlockCooldownTime = plugin.Config.GeneratorDuration;
             }
-            if (plugin.Config.Scp106LureAmount < 1)
-                Object.FindObjectOfType<LureSubjectContainer>().SetState(false, true);
         }
         public void OnShooting(ShootingEventArgs ev)
         {
-            if (ev.Shooter.CurrentItem is null)
+            if (ev.Player.CurrentItem is null)
                 return;
-            if (plugin.Config.InfiniteAmmo is not null && plugin.Config.InfiniteAmmo.Contains(ev.Shooter.CurrentItem.Type) &&  ev.Shooter.CurrentItem is Firearm firearm)
+            if (plugin.Config.InfiniteAmmo is not null && plugin.Config.InfiniteAmmo.Contains(ev.Player.CurrentItem.Type) &&  ev.Player.CurrentItem is Firearm firearm)
             {
                 firearm.Ammo++;
             }
         }
-        public void OnUsingMicroHIDEnergy(UsingMicroHIDEnergyEventArgs ev)
-        {
-            ev.Drain *= plugin.Config.EnergyMicroHid;
-        }
-        public void OnUsingRadioBattery(UsingRadioBatteryEventArgs ev)
-        {
-            ev.Drain *= plugin.Config.EnergyRadio;
-        }
-
+        public void OnUsingMicroHIDEnergy(UsingMicroHIDEnergyEventArgs ev) => ev.Drain *= plugin.Config.EnergyMicroHid;
+        public void OnUsingRadioBattery(UsingRadioBatteryEventArgs ev) => ev.Drain *= plugin.Config.EnergyRadio;
         public void OnSpawned(SpawnedEventArgs ev)
         {
             if (plugin.Config.RoleTypeHumeShield is not null && plugin.Config.RoleTypeHumeShield.TryGetValue(ev.Player.Role.Type, out AhpProccessBuild ahpProccessBuild))
@@ -71,57 +62,24 @@ namespace FacilityManagement
 
         public void OnHurting(HurtingEventArgs ev)
         {
-            if (plugin.Config.RoleTypeHumeShield is not null && plugin.Config.RoleTypeHumeShield.TryGetValue(ev.Target.Role.Type, out AhpProccessBuild ahpProccessBuild))
-                ev.Target.ActiveArtificialHealthProcesses.First().SustainTime = ahpProccessBuild.Sustain;
-        }
-
-        public void OnEnteringFemurBreaker(EnteringFemurBreakerEventArgs ev)
-        {
-            // That means the femur breaker is always open
-            if (plugin.Config.Scp106LureAmount < 1)
-                return;
-
-            // Allowed team check
-            if (plugin.Config.Scp106LureTeam is not null && !plugin.Config.Scp106LureTeam.Contains(ev.Player.Role.Team))
-            {
-                ev.IsAllowed = false;
-                return;
-            }
-            if (Random.Range(0, 100) >= plugin.Config.Scp106ChanceOfSuccess)
-                LuresCount = plugin.Config.Scp106LureAmount;
-            if (++LuresCount < plugin.Config.Scp106LureAmount)
-            {
-                FacilityManagement.Singleton.RoundCoroutines.Add(Timing.CallDelayed(Mathf.Max(plugin.Config.Scp106LureReload, 0), () =>
-                {
-                    Object.FindObjectOfType<LureSubjectContainer>().NetworkallowContain = false;
-                }));
-            }
-        }
-
-        public void OnContaining(ContainingEventArgs ev)
-        {
-            if (plugin.Config.Scp106LureAmount < 1)
-                return;
-            ev.IsAllowed = LuresCount >= plugin.Config.Scp106LureAmount;
-        }
-       
+            if (plugin.Config.RoleTypeHumeShield is not null && plugin.Config.RoleTypeHumeShield.TryGetValue(ev.Player.Role.Type, out AhpProccessBuild ahpProccessBuild))
+                ev.Player.ActiveArtificialHealthProcesses.First().SustainTime = ahpProccessBuild.Sustain;
+        }       
         
         public void OnDetonated()
         {
             if (!plugin.Config.WarheadCleanup)
                 return;
 
-            for (int i = 0; i < Map.Pickups.Count; i++)
+            foreach (Pickup pickup in Pickup.List.ToList())
             {
-                Pickup pickup = Map.Pickups.ElementAt(i);
                 if (pickup.Position.y < 500f)
                     pickup.Destroy();
             }
-            for (int i = 0; i < Map.Ragdolls.Count; i++)
+            foreach (Ragdoll ragdoll in Ragdoll.List.ToList())
             {
-                Exiled.API.Features.Ragdoll ragdoll = Map.Ragdolls.ElementAt(i);
                 if (ragdoll.Position.y < 500f)
-                    ragdoll.Delete();
+                    ragdoll.Destroy();
             }
         }
 
@@ -184,14 +142,6 @@ namespace FacilityManagement
                     door.RequiredPermissions.RequiredPermissions = doorBuild.RequiredPermission;
                 if (doorBuild.RequireAllPermission is not null)
                     door.RequiredPermissions.RequireAll = doorBuild.RequireAllPermission.Value;
-            }
-        }
-        public void CustomLift()
-        {
-            foreach (Exiled.API.Features.Lift lift in Exiled.API.Features.Lift.List)
-            {
-                if (plugin.Config.LiftMoveDuration.TryGetValue(lift.Type, out float LiftTime))
-                    lift.MovingSpeed = LiftTime;
             }
         }
     }
