@@ -38,14 +38,6 @@ namespace FacilityManagement.Patches
                     return;
                 Utils.CommandInterpolation.InterpolatedCommandFormatter interpolatedCommandFormatter = ServerConsole.singleton.NameFormatter;
 
-                // Fix remove
-                interpolatedCommandFormatter.Commands.Remove("round_duration_minutes");
-                interpolatedCommandFormatter.Commands.Remove("round_duration_seconds");
-
-                // Fix add
-                interpolatedCommandFormatter.Commands.Add("round_duration_minutes", (List<string> args) => Mathf.CeilToInt(RoundSummary.roundTime / 60).ToString("00"));
-                interpolatedCommandFormatter.Commands.Add("round_duration_seconds", (List<string> args) => Mathf.CeilToInt(RoundSummary.roundTime % 60).ToString("00"));
-
                 // Int
                 interpolatedCommandFormatter.Commands.Add("intercom_speech_remaining_time", (List<string> args) => Mathf.CeilToInt(Intercom.SpeechRemainingTime).ToString());
                 interpolatedCommandFormatter.Commands.Add("intercom_remaining_cooldown", (List<string> args) => Mathf.CeilToInt((float)Intercom.RemainingCooldown).ToString());
