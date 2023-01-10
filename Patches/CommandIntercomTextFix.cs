@@ -21,11 +21,11 @@ namespace FacilityManagement.Patches
 
             // Facility Management Fix
             int index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldsfld);
-            newInstructions.RemoveRange(index, 3);
-            // Add FacilityManagement.Singleton.CustomText = null; 
+            newInstructions[index].operand = Field(typeof(FacilityManagement), nameof(FacilityManagement.Singleton));
+
+            newInstructions.RemoveRange(++index, 2);
             newInstructions.InsertRange(index, new CodeInstruction[]
             {
-                new(OpCodes.Ldsfld, Field(typeof(FacilityManagement),nameof(FacilityManagement.Singleton))),
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Stfld, Field(typeof(FacilityManagement),nameof(FacilityManagement.Singleton.CustomText))),
             });

@@ -31,19 +31,19 @@ namespace FacilityManagement.Patches
 
                 newInstructions.AddRange(new CodeInstruction[]
                 {
-                    new(OpCodes.Nop),
-                    new(OpCodes.Ldarg_0),
-                    new(OpCodes.Ldarg_0),
-                    new(OpCodes.Ldarg_1),
+                    new(OpCodes.Ldarg_0), // this
+                    new(OpCodes.Ldarg_1), // IntercomDisplay.IcomText
                     new(OpCodes.Call, Method(typeof(IntercomUpdateTextPatch), nameof(SetContent))),
-                    new(OpCodes.Callvirt, PropertySetter(typeof(Intercom), nameof(Intercom.Network_state))), // Set string
-                    new(OpCodes.Nop),
+                    new(OpCodes.Ldstr, "UwU"),
                     new(OpCodes.Ret),
                 });
 
-                for (int z = 0; z < newInstructions.Count; z++)
-                    yield return newInstructions[z];
 
+                for (int z = 0; z < newInstructions.Count; z++)
+                {
+                    Log.Info($"newInstruction {newInstructions[z].opcode} , {newInstructions[z].operand}");
+                    yield return newInstructions[z];
+                }
                 ListPool<CodeInstruction>.Shared.Return(newInstructions);
             }
         }
@@ -52,8 +52,6 @@ namespace FacilityManagement.Patches
         {
             try
             {
-                Intercom singleton = Intercom._singleton;
-
                 if (FacilityManagement.Singleton.Config.IntercomRefresh is not null)
                 {
                     Timer += Time.deltaTime;
@@ -73,7 +71,6 @@ namespace FacilityManagement.Patches
                     Log.Error(result);
                 }
                 intercom.Network_overrideText = result;
-                singleton.Network_state = (byte)value;
             }
             catch (Exception ex)
             {
