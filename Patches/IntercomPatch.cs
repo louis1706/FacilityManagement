@@ -40,10 +40,7 @@ namespace FacilityManagement.Patches
 
 
                 for (int z = 0; z < newInstructions.Count; z++)
-                {
-                    Log.Info($"newInstruction {newInstructions[z].opcode} , {newInstructions[z].operand}");
                     yield return newInstructions[z];
-                }
                 ListPool<CodeInstruction>.Shared.Return(newInstructions);
             }
         }
