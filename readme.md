@@ -15,15 +15,11 @@ This plugin make possible many things on your server.
 | LiftMoveDuration | Dictionary<[ElevatorType](https://exiled-team.github.io/Web/docs/Resources/Intro#elevatortype), float> | Change the times of Elevator to teleport |
 | CustomText | Dictionary<[Intercom.State](https://exiled-team.github.io/Web/docs/Resources/Intro#intercomstates), string> | Change the intercomText with specified there specified State  |
 | WarheadCleanup | bool | Remove all Pickup and Ragdoll in the facility (lower than y 500) |
-| Scp106LureAmount | int | How many sacrifices it takes to lure 106. Values below 1 set the recontainer to always active |
-| Scp106ChanceOfSuccess | float | Probability of succes for sacrifice work before enough player was enter in the recontainer |
-| Scp106LureReload | int | Amount of time before another sacrifice can be made |
-| Scp106LureTeam | List<[Team](https://exiled-team.github.io/Web/docs/Resources/Intro#roletype-team-side-and-faction)> |  Teams that can enter the femur breaker |
 | CustomTesla | [TeslaBuild](https://github.com/louis1706/FacilityManagement#teslabuild) | |
 | CustomWindows | Dictionary<[GlassType](https://exiled-team.github.io/EXILED/api/Exiled.API.Enums.GlassType.html), [GlassBuild](https://github.com/louis1706/FacilityManagement#glassbuild)> | Modify all the property of Window like you want (null make no change) |
 | CustomDoors | Dictionary<[DoorType](https://exiled-team.github.io/Web/docs/Resources/Intro#doortype), [DoorBuild](https://github.com/louis1706/FacilityManagement#doorbuild)> | Modify all the property of Door like you want (null make no change) |
 | RoleTypeHumeShield | Dictionary<[RoleType](https://exiled-team.github.io/Web/docs/Resources/Intro#roletype-team-side-and-faction), [AhpProccessBuild](https://github.com/louis1706/FacilityManagement#ahpproccessbuild)> | Create a custoom AHP/HS for specified RoleType |
-
+// LiftMoveDuration And RoleTypeHumeShield actually not working
 
 
 ## TeslaBuild
@@ -52,7 +48,7 @@ This plugin make possible many things on your server.
 | RequireAllPermission | bool? | Required all the permission of RequiredPermission (0 or None disable the change) |
 | DamageTypeIgnored | DoorDamageType | Modified the DamageType ignored by the Door  (0 disable the change) |
 
-## AhpProccessBuild
+## AhpProccessBuild // Actually don't work cause of NW or Exiled issue
 
 |    PropertyName    | TypeValue | Description |
 | :-------------: | :---------: | :--------- |
@@ -84,5 +80,6 @@ whe have add just some CommandInterpolation for Intercom
 
 ## Authors
 
+for any help please contact me
 - [@Yamato](https://github.com/louis1706) // Yamato#8987
 
