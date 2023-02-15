@@ -19,9 +19,9 @@ namespace FacilityManagement
     public class DoorBuild
     {
         public float? Health { get; set; }
-        public KeycardPermissions RequiredPermission { get; set; }
+        public KeycardPermissions? RequiredPermission { get; set; }
         public bool? RequireAllPermission { get; set; }
-        public DoorDamageType DamageTypeIgnored { get; set; }
+        public DoorDamageType? DamageTypeIgnored { get; set; }
     }
 
     public class GlassBuild

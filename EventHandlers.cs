@@ -15,6 +15,7 @@ using Interactables.Interobjects;
 using Exiled.API.Enums;
 using Exiled.Events.EventArgs.Player;
 using Exiled.API.Features.Pickups;
+using Exiled.API.Features.Pools;
 
 namespace FacilityManagement
 {
@@ -24,7 +25,7 @@ namespace FacilityManagement
         public FacilityManagement plugin;
         public int LuresCount;
 
-        public void OnRoundStarted()
+        public void OnWaitingForPlayers()
         {
             LuresCount = 0;
             if (plugin.Config.CustomTesla is not null)
@@ -85,6 +86,19 @@ namespace FacilityManagement
 
         public void CustomTesla()
         {
+            if (FacilityManagement.Singleton.Config.Debug)
+            {
+                string Debug = "[CustomTesla]";
+                {
+                    Tesla tesla = Tesla.List.First();
+                    Debug += $"CooldownTime: {tesla.CooldownTime} => {plugin.Config.CustomTesla.CooldownTime}\n";
+                    Debug += $"IdleRange: {tesla.IdleRange} => {plugin.Config.CustomTesla.IdleRange}\n\n";
+                    Debug += $"TriggerRange: {tesla.TriggerRange} => {plugin.Config.CustomTesla.TriggerRange}\n\n";
+                    Debug += $"ActivationTime: {tesla.ActivationTime} => {plugin.Config.CustomTesla.ActivationTime}\n\n";
+                    Debug += $"ActivationTime: {Tesla.IgnoredRoles.Select(x => $"{x},")} => {plugin.Config.CustomTesla.IgnoredRoles.Select(x => $"{x},")}\n\n";
+                }
+                Log.Debug(Debug);
+            }
             foreach (Tesla tesla in Tesla.List)
             {
                 if (plugin.Config.CustomTesla.CooldownTime is not null)
@@ -103,6 +117,26 @@ namespace FacilityManagement
 
         public void CustomWindow()
         {
+            if (FacilityManagement.Singleton.Config.Debug)
+            {
+                string Debug = "[CustomWindow]";
+                foreach (Window window in Window.List)
+                {
+                    if (plugin.Config.CustomWindows.TryGetValue(window.Type, out GlassBuild glassBuild))
+                    {
+                        Debug += $"Type: {window.Type}\n";
+                        Debug += $"Health: {window.Health} => {glassBuild.Health}\n";
+                        Debug += $"DisableScpDamage: {window.DisableScpDamage} => {glassBuild.DisableScpDamage}\n\n";
+
+                        if (glassBuild.Health is not null)
+                            window.Health = glassBuild.Health.Value;
+                        if (glassBuild.DisableScpDamage is not null)
+                            window.DisableScpDamage = glassBuild.DisableScpDamage.Value;
+                    }
+                }
+                Log.Debug(Debug);
+                return;
+            }
             foreach (Window window in Window.List)
             {
                 if (plugin.Config.CustomWindows.TryGetValue(window.Type, out GlassBuild glassBuild))
@@ -121,8 +155,9 @@ namespace FacilityManagement
             {
                 if (door.Base is CheckpointDoor checkpoint)
                 {
-                    foreach (DoorVariant checpointdoor in checkpoint._subDoors) 
+                    foreach (DoorVariant checpointdoor in checkpoint._subDoors)
                     {
+                        Log.Info(Door.Get(checpointdoor));
                         CustomDoorSet(Door.Get(checpointdoor), door.Type);
                     }
                     continue;
@@ -134,12 +169,23 @@ namespace FacilityManagement
         {
             if (plugin.Config.CustomDoors.TryGetValue(type, out DoorBuild doorBuild))
             {
+                if (FacilityManagement.Singleton.Config.Debug)
+                {
+                    string Debug = $"[CustomDoor] : {type}";
+                    Debug += $"CooldownTime: {door.Health} => {doorBuild.Health.Value}\n";
+                    Debug += $"DamageTypeIgnored: {door.IgnoredDamageTypes} => {doorBuild.DamageTypeIgnored}\n\n";
+                    Debug += $"RequiredPermission: {door.RequiredPermissions.RequiredPermissions} => {doorBuild.RequiredPermission}\n\n";
+                    Debug += $"RequireAllPermission: {door.RequiredPermissions.RequireAll} => {doorBuild.RequireAllPermission}\n\n";
+                    Log.Debug(Debug);
+                    return;
+                }
+
                 if (doorBuild.Health is not null)
                     door.Health = doorBuild.Health.Value;
-                if (doorBuild.DamageTypeIgnored is not 0)
-                    door.IgnoredDamageTypes = doorBuild.DamageTypeIgnored;
-                if (doorBuild.RequiredPermission is not 0)
-                    door.RequiredPermissions.RequiredPermissions = doorBuild.RequiredPermission;
+                if (doorBuild.DamageTypeIgnored is not null)
+                    door.IgnoredDamageTypes = doorBuild.DamageTypeIgnored.Value;
+                if (doorBuild.RequiredPermission is not null)
+                    door.RequiredPermissions.RequiredPermissions = doorBuild.RequiredPermission.Value;
                 if (doorBuild.RequireAllPermission is not null)
                     door.RequiredPermissions.RequireAll = doorBuild.RequireAllPermission.Value;
             }

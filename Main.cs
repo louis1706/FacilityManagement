@@ -27,11 +27,11 @@
         public override void OnEnabled()
         {
             Singleton = this;
-            base.OnEnabled();
-
+            
             RegisterEvents();
-
             RegisterPatch();
+
+            base.OnEnabled();
         }
         public override void OnReloaded()
         {
@@ -55,7 +55,7 @@
         private void RegisterEvents()
         {
             EventHandlers = new(this);
-            Server.RoundStarted += EventHandlers.OnRoundStarted;
+            Server.WaitingForPlayers += EventHandlers.OnWaitingForPlayers;
             
             Player.Shooting += EventHandlers.OnShooting;
             Player.UsingMicroHIDEnergy += EventHandlers.OnUsingMicroHIDEnergy;
@@ -67,7 +67,7 @@
         }
         private void UnRegisterEvents()
         {
-            Server.RoundStarted -= EventHandlers.OnRoundStarted;
+            Server.WaitingForPlayers -= EventHandlers.OnWaitingForPlayers;
 
             Player.Shooting -= EventHandlers.OnShooting;
             Player.UsingMicroHIDEnergy -= EventHandlers.OnUsingMicroHIDEnergy;

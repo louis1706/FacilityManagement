@@ -47,6 +47,7 @@ namespace FacilityManagement.Patches
 
         internal static void SetContent(IntercomDisplay intercom, IntercomDisplay.IcomText value)
         {
+            Log.Info("CommandIntercomTextSetterFix::SetContent");
             try
             {
                 if (FacilityManagement.Singleton.Config.IntercomRefresh is not null)
