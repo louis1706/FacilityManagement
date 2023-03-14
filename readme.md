@@ -1,5 +1,3 @@
-
-
 # FacilityManagement
 
 This plugin make possible many things on your server.
@@ -12,16 +10,14 @@ This plugin make possible many things on your server.
 | EnergyMicroHid | float | Multiplier conssumption of MicroHID (0 = No energy drain \ 2 = Double energy drain) |
 | EnergyRadio | float | Multiplier conssumption of EnergyRadio (Same than above) |
 | GeneratorDuration | float | Time for generator to be Activated after being enable (-1 disable the config) |
-| LiftMoveDuration | Dictionary<[ElevatorType](https://exiled-team.github.io/Web/docs/Resources/Intro#elevatortype), float> | Change the times of Elevator to teleport |
+| StandardAmmoLimits | Dictionary<AmmoType, ushort> | Sets the Standard ammo limits for the player |
+| StandardCategoryLimits | Dictionary<ItemCategory, sbyte> | Sets standard category limits |
 | CustomText | Dictionary<[Intercom.State](https://exiled-team.github.io/Web/docs/Resources/Intro#intercomstates), string> | Change the intercomText with specified there specified State  |
 | WarheadCleanup | bool | Remove all Pickup and Ragdoll in the facility (lower than y 500) |
 | CustomTesla | [TeslaBuild](https://github.com/louis1706/FacilityManagement#teslabuild) | |
 | CustomWindows | Dictionary<[GlassType](https://exiled-team.github.io/EXILED/api/Exiled.API.Enums.GlassType.html), [GlassBuild](https://github.com/louis1706/FacilityManagement#glassbuild)> | Modify all the property of Window like you want (null make no change) |
 | CustomDoors | Dictionary<[DoorType](https://exiled-team.github.io/Web/docs/Resources/Intro#doortype), [DoorBuild](https://github.com/louis1706/FacilityManagement#doorbuild)> | Modify all the property of Door like you want (null make no change) |
 | RoleTypeHumeShield | Dictionary<[RoleType](https://exiled-team.github.io/Web/docs/Resources/Intro#roletype-team-side-and-faction), [AhpProccessBuild](https://github.com/louis1706/FacilityManagement#ahpproccessbuild)> | Create a custoom AHP/HS for specified RoleType |
-
-// LiftMoveDuration And RoleTypeHumeShield actually not working
-
 
 ## TeslaBuild
 
@@ -83,4 +79,3 @@ whe have add just some CommandInterpolation for Intercom
 
 for any help please contact me
 - [@Yamato](https://github.com/louis1706) // Yamato#8987
-
