@@ -56,14 +56,18 @@
         {
             EventHandlers = new(this);
             Server.WaitingForPlayers += EventHandlers.OnWaitingForPlayers;
-            
-            Player.Shooting += EventHandlers.OnShooting;
-            Player.UsingMicroHIDEnergy += EventHandlers.OnUsingMicroHIDEnergy;
-            Player.UsingRadioBattery += EventHandlers.OnUsingRadioBattery;
-            Player.Spawned += EventHandlers.OnSpawned;
-            Player.Hurting += EventHandlers.OnHurting;
-            
-            Warhead.Detonated += EventHandlers.OnDetonated;
+            if (Config.InfiniteAmmo is not null)
+                Player.Shooting += EventHandlers.OnShooting;
+            if (Config.EnergyMicroHid is 1)
+                Player.UsingMicroHIDEnergy += EventHandlers.OnUsingMicroHIDEnergy;
+            if (Config.EnergyRadio is 1)
+                Player.UsingRadioBattery += EventHandlers.OnUsingRadioBattery;
+            if (Config.RoleTypeHumeShield is not null)
+                Player.Spawned += EventHandlers.OnSpawned;
+            if (Config.RoleTypeHumeShield is not null)
+                Player.Hurting += EventHandlers.OnHurting;
+            if (!Config.WarheadCleanup)
+                Warhead.Detonated += EventHandlers.OnDetonated;
         }
         private void UnRegisterEvents()
         {

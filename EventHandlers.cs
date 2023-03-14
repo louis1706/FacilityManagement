@@ -16,6 +16,8 @@ using Exiled.API.Enums;
 using Exiled.Events.EventArgs.Player;
 using Exiled.API.Features.Pickups;
 using Exiled.API.Features.Pools;
+using InventorySystem.Configs;
+using Exiled.API.Extensions;
 
 namespace FacilityManagement
 {
@@ -34,18 +36,29 @@ namespace FacilityManagement
                 CustomWindow();
             if (plugin.Config.CustomDoors is not null)
                 CustomDoor();
-
+            if (plugin.Config.StandardAmmoLimits is not null)
+            {
+                InventoryLimits.StandardAmmoLimits.Clear();
+                foreach (KeyValuePair<AmmoType, ushort> AmmoLimit in plugin.Config.StandardAmmoLimits)
+                    InventoryLimits.StandardAmmoLimits.Add(AmmoLimit.Key.GetItemType(), AmmoLimit.Value);
+            }
+            if (plugin.Config.StandardCategoryLimits is not null)
+            {
+                InventoryLimits.StandardCategoryLimits.Clear();
+                foreach (KeyValuePair<ItemCategory, sbyte> AmmoLimit in plugin.Config.StandardCategoryLimits)
+                    InventoryLimits.StandardCategoryLimits.Add(AmmoLimit.Key, AmmoLimit.Value);
+            }
             if (plugin.Config.GeneratorDuration > -1)
             {
                 foreach (Generator generator in Generator.List)
-                    generator.Base._unlockCooldownTime = plugin.Config.GeneratorDuration;
+                    generator.UnlockCooldown = plugin.Config.GeneratorDuration;
             }
         }
         public void OnShooting(ShootingEventArgs ev)
         {
             if (ev.Player.CurrentItem is null)
                 return;
-            if (plugin.Config.InfiniteAmmo is not null && plugin.Config.InfiniteAmmo.Contains(ev.Player.CurrentItem.Type) &&  ev.Player.CurrentItem is Firearm firearm)
+            if (plugin.Config.InfiniteAmmo.Contains(ev.Player.CurrentItem.Type) &&  ev.Player.CurrentItem is Firearm firearm)
             {
                 firearm.Ammo++;
             }
@@ -54,7 +67,7 @@ namespace FacilityManagement
         public void OnUsingRadioBattery(UsingRadioBatteryEventArgs ev) => ev.Drain *= plugin.Config.EnergyRadio;
         public void OnSpawned(SpawnedEventArgs ev)
         {
-            if (plugin.Config.RoleTypeHumeShield is not null && plugin.Config.RoleTypeHumeShield.TryGetValue(ev.Player.Role.Type, out AhpProccessBuild ahpProccessBuild))
+            if (plugin.Config.RoleTypeHumeShield.TryGetValue(ev.Player.Role.Type, out AhpProccessBuild ahpProccessBuild))
             {
                 ev.Player.ReferenceHub.playerStats.GetModule<AhpStat>()._activeProcesses.Clear();
                 ev.Player.AddAhp(ahpProccessBuild.Amount, ahpProccessBuild.Amount, -ahpProccessBuild.Regen, ahpProccessBuild.Efficacy, ahpProccessBuild.Sustain, ahpProccessBuild.Regen > 0);
@@ -63,15 +76,12 @@ namespace FacilityManagement
 
         public void OnHurting(HurtingEventArgs ev)
         {
-            if (plugin.Config.RoleTypeHumeShield is not null && plugin.Config.RoleTypeHumeShield.TryGetValue(ev.Player.Role.Type, out AhpProccessBuild ahpProccessBuild))
+            if (plugin.Config.RoleTypeHumeShield.TryGetValue(ev.Player.Role.Type, out AhpProccessBuild ahpProccessBuild))
                 ev.Player.ActiveArtificialHealthProcesses.First().SustainTime = ahpProccessBuild.Sustain;
         }       
         
         public void OnDetonated()
         {
-            if (!plugin.Config.WarheadCleanup)
-                return;
-
             foreach (Pickup pickup in Pickup.List.ToList())
             {
                 if (pickup.Position.y < 500f)

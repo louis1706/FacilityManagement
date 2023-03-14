@@ -28,10 +28,26 @@ namespace FacilityManagement
         [Description("Time for generator to be Activated after being enable (-1 disable the config)")]
         public float GeneratorDuration { get; set; } = -1;
 
-        [Description("Sets the time for Lift to teleport")]
-        public Dictionary<ElevatorType, float> LiftMoveDuration { get; set; } = new() 
+        [Description("Sets the Standard ammo limits for the player")]
+        public Dictionary<AmmoType, ushort> StandardAmmoLimits { get; set; } = new()
         {
-            {ElevatorType.Nuke, 8}
+            {AmmoType.Nato9, 30},
+            {AmmoType.Nato556, 40},
+            {AmmoType.Nato762, 40},
+            {AmmoType.Ammo44Cal, 18},
+            {AmmoType.Ammo12Gauge, 14},
+        };
+        [Description("Sets standard category limits")]
+        public Dictionary<ItemCategory, sbyte> StandardCategoryLimits { get; set; } = new()
+        {
+            {ItemCategory.Armor, -1},
+            {ItemCategory.Grenade, 2},
+            {ItemCategory.Keycard, 3},
+            {ItemCategory.Medical, 3},
+            {ItemCategory.MicroHID, -1},
+            {ItemCategory.Radio, -1},
+            {ItemCategory.SCPItem, 3},
+            {ItemCategory.Firearm, 1},
         };
 
         [Description(@"Custom intercom content. If there's no specific content, then the default client content is used.

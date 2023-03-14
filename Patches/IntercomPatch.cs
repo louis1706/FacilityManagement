@@ -19,7 +19,20 @@ namespace FacilityManagement.Patches
     {
         private static float Timer = 0f;
 
+        [HarmonyPatch(typeof(IntercomDisplay), nameof(IntercomDisplay.Update))]
+        public static class RemoveBaseGameOverrideText
+        {
+            public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+            {
+                List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
+                newInstructions.RemoveRange(0, newInstructions.FindIndex(x => x.opcode == OpCodes.Ret) + 1);
+
+                for (int z = 0; z < newInstructions.Count; z++)
+                    yield return newInstructions[z];
+                ListPool<CodeInstruction>.Shared.Return(newInstructions);
+            }
+        }
         [HarmonyPatch(typeof(IntercomDisplay), nameof(IntercomDisplay.GetTranslation))]
         public static class CommandIntercomTextSetterFix
         {
@@ -28,7 +41,6 @@ namespace FacilityManagement.Patches
                 Label returnLabel = generator.DefineLabel();
 
                 List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent();
-
                 newInstructions.AddRange(new CodeInstruction[]
                 {
                     new(OpCodes.Ldarg_0), // this
@@ -47,7 +59,6 @@ namespace FacilityManagement.Patches
 
         internal static void SetContent(IntercomDisplay intercom, IntercomDisplay.IcomText value)
         {
-            Log.Info("CommandIntercomTextSetterFix::SetContent");
             try
             {
                 if (FacilityManagement.Singleton.Config.IntercomRefresh is not null)
@@ -59,7 +70,7 @@ namespace FacilityManagement.Patches
 
                     Timer = 0f;
                 }
-                if (FacilityManagement.Singleton.CustomText is not null)
+                if (!string.IsNullOrEmpty(FacilityManagement.Singleton.CustomText))
                     value = IntercomDisplay.IcomText.Unknown;
 
                 if (ServerConsole.singleton.NameFormatter.Commands is null || FacilityManagement.Singleton.Config.CustomText is null || !FacilityManagement.Singleton.Config.CustomText.TryGetValue(value, out string content))
