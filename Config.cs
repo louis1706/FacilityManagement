@@ -1,5 +1,6 @@
 ﻿using Exiled.API.Enums;
 using Exiled.API.Interfaces;
+using Exiled.Events.Handlers;
 using Interactables.Interobjects.DoorUtils;
 using PlayerRoles;
 using PlayerRoles.Voice;
@@ -71,13 +72,10 @@ namespace FacilityManagement
         [Description("Sets the config of Tesla.")]
         public TeslaBuild CustomTesla { get; set; } = new()
         {
-            ActivationTime = 0, 
-            IdleRange = 25,
-            TriggerRange = 10,
+            ActivationTime = 0.75f, 
+            IdleRange = 6.55f,
+            TriggerRange = 5.1f,
             IgnoredRoles = new()
-            {
-                RoleTypeId.Scp0492,
-            }
         };
         [Description("Sets the health of breakable windows.")]
         public Dictionary<GlassType, GlassBuild> CustomWindows { get; set; } = new()
@@ -85,37 +83,37 @@ namespace FacilityManagement
             {
                 GlassType.Scp079Trigger, 
                 new GlassBuild{
-                        Health = 100,
-                        DisableScpDamage = false,
+                        Health = 5,
+                        DisableScpDamage = true,
                 } 
             },
         };
 
-        [Description("Sets the ignored damage of breakable Door (0 will make it Destructible for everything and 17 undestructible).")]
+        [Description("Sets the ignored damage of breakable Door (0 will make it Destructible for everything and -1 undestructible).")]
         public Dictionary<DoorType, DoorBuild> CustomDoors { get; set; } = new()
         {
             { 
                 DoorType.CheckpointEzHczA,
                 new DoorBuild{
                             Health = 30,
-                            RequiredPermission = KeycardPermissions.ContainmentLevelThree | KeycardPermissions.Checkpoints | KeycardPermissions.ScpOverride,
+                            RequiredPermission = KeycardPermissions.Checkpoints | KeycardPermissions.ScpOverride,
                             RequireAllPermission = false,
-                            DamageTypeIgnored = DoorDamageType.Grenade,
+                            DamageTypeIgnored = DoorDamageType.Grenade | DoorDamageType.Weapon | DoorDamageType.Scp096,
                 }
             },
             {
                 DoorType.CheckpointEzHczB,
                 new DoorBuild{
                             Health = 30,
-                            RequiredPermission = KeycardPermissions.ContainmentLevelThree | KeycardPermissions.Checkpoints | KeycardPermissions.ScpOverride,
+                            RequiredPermission = KeycardPermissions.Checkpoints | KeycardPermissions.ScpOverride,
                             RequireAllPermission = false,
-                            DamageTypeIgnored = DoorDamageType.Grenade,
+                            DamageTypeIgnored = DoorDamageType.Grenade | DoorDamageType.Weapon | DoorDamageType.Scp096,
                 }
             },
             { 
                 DoorType.GR18Inner,
                 new DoorBuild{
-                            Health = 120,
+                            Health = 150,
                             RequiredPermission = KeycardPermissions.None,
                             RequireAllPermission = null,
                             DamageTypeIgnored = 0,
@@ -126,7 +124,7 @@ namespace FacilityManagement
         public Dictionary<RoleTypeId, AhpProccessBuild> RoleTypeHumeShield { get; set; } = new()
         {
             {
-                RoleTypeId.Scp049,
+                RoleTypeId.Tutorial,
                 new AhpProccessBuild{
                     Amount = 60,
                     Regen = 1.5f,

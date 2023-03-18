@@ -105,7 +105,7 @@ namespace FacilityManagement
                     Debug += $"IdleRange: {tesla.IdleRange} => {plugin.Config.CustomTesla.IdleRange}\n\n";
                     Debug += $"TriggerRange: {tesla.TriggerRange} => {plugin.Config.CustomTesla.TriggerRange}\n\n";
                     Debug += $"ActivationTime: {tesla.ActivationTime} => {plugin.Config.CustomTesla.ActivationTime}\n\n";
-                    Debug += $"ActivationTime: {Tesla.IgnoredRoles.Select(x => $"{x},")} => {plugin.Config.CustomTesla.IgnoredRoles.Select(x => $"{x},")}\n\n";
+                    Debug += $"IgnoredRoles: {string.Join(",", Tesla.IgnoredRoles)} => {string.Join(",", plugin.Config.CustomTesla.IgnoredRoles)}\n\n";
                 }
                 Log.Debug(Debug);
             }
@@ -181,10 +181,10 @@ namespace FacilityManagement
             {
                 if (FacilityManagement.Singleton.Config.Debug)
                 {
-                    string Debug = $"[CustomDoor] : {type}";
-                    Debug += $"CooldownTime: {door.Health} => {doorBuild.Health.Value}\n";
-                    Debug += $"DamageTypeIgnored: {door.IgnoredDamageTypes} => {doorBuild.DamageTypeIgnored}\n\n";
-                    Debug += $"RequiredPermission: {door.RequiredPermissions.RequiredPermissions} => {doorBuild.RequiredPermission}\n\n";
+                    string Debug = $"[CustomDoor] : {type}\n";
+                    Debug += $"Health: {door.Health} => {doorBuild.Health.Value}\n";
+                    Debug += $"IgnoredDamageTypes: {door.IgnoredDamageTypes} => {doorBuild.DamageTypeIgnored}\n\n";
+                    Debug += $"RequiredPermissions: {door.RequiredPermissions.RequiredPermissions} => {doorBuild.RequiredPermission}\n\n";
                     Debug += $"RequireAllPermission: {door.RequiredPermissions.RequireAll} => {doorBuild.RequireAllPermission}\n\n";
                     Log.Debug(Debug);
                     return;
