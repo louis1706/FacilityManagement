@@ -10,6 +10,7 @@ This plugin make possible many things on your server.
 | EnergyMicroHid | float | Multiplier conssumption of MicroHID (0 = No energy drain \ 2 = Double energy drain) |
 | EnergyRadio | float | Multiplier conssumption of EnergyRadio (Same than above) |
 | GeneratorDuration | float | Time for generator to be Activated after being enable (-1 disable the config) |
+| LiftMoveDuration | Dictionary<[ElevatorType](https://exiled-team.github.io/Web/docs/Resources/Intro#elevatortype), float> | Change the times of elevator Animation |
 | StandardAmmoLimits | Dictionary<AmmoType, ushort> | Sets the Standard ammo limits for the player |
 | StandardCategoryLimits | Dictionary<ItemCategory, sbyte> | Sets standard category limits |
 | CustomText | Dictionary<[Intercom.State](https://exiled-team.github.io/Web/docs/Resources/Intro#intercomstates), string> | Change the intercomText with specified there specified State  |

@@ -48,6 +48,12 @@ namespace FacilityManagement
                 foreach (KeyValuePair<ItemCategory, sbyte> AmmoLimit in plugin.Config.StandardCategoryLimits)
                     InventoryLimits.StandardCategoryLimits.Add(AmmoLimit.Key, AmmoLimit.Value);
             }
+            if (plugin.Config.LiftMoveDuration is not null)
+            {
+                foreach (var elevator in Lift.List)
+                    if (plugin.Config.LiftMoveDuration.TryGetValue(elevator.Type, out float value))
+                        elevator.AnimationTime = value;
+            }
             if (plugin.Config.GeneratorDuration > -1)
             {
                 foreach (Generator generator in Generator.List)

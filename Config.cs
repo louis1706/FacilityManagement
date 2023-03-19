@@ -29,6 +29,9 @@ namespace FacilityManagement
         [Description("Time for generator to be Activated after being enable (-1 disable the config)")]
         public float GeneratorDuration { get; set; } = -1;
 
+        [Description("Sets the time for Lift to teleport")]
+        public Dictionary<ElevatorType, float> LiftMoveDuration { get; set; } = new();
+
         [Description("Sets the Standard ammo limits for the player")]
         public Dictionary<AmmoType, ushort> StandardAmmoLimits { get; set; } = new()
         {
