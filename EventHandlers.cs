@@ -82,9 +82,9 @@ namespace FacilityManagement
 
         public void OnHurting(HurtingEventArgs ev)
         {
-            if (plugin.Config.RoleTypeHumeShield.TryGetValue(ev.Player.Role.Type, out AhpProccessBuild ahpProccessBuild))
+            if (plugin.Config.RoleTypeHumeShield.TryGetValue(ev.Player.Role.Type, out AhpProccessBuild ahpProccessBuild) && ahpProccessBuild.Regen > 0)
                 ev.Player.ActiveArtificialHealthProcesses.First().SustainTime = ahpProccessBuild.Sustain;
-        }       
+        }
         
         public void OnDetonated()
         {
