@@ -18,6 +18,7 @@ using Exiled.API.Features.Pickups;
 using Exiled.API.Features.Pools;
 using InventorySystem.Configs;
 using Exiled.API.Extensions;
+using Exiled.Events.EventArgs.Item;
 
 namespace FacilityManagement
 {
@@ -25,11 +26,9 @@ namespace FacilityManagement
     {
         public EventHandlers(FacilityManagement plugin) => this.plugin = plugin;
         public FacilityManagement plugin;
-        public int LuresCount;
 
         public void OnWaitingForPlayers()
         {
-            LuresCount = 0;
             if (plugin.Config.CustomTesla is not null)
                 CustomTesla();
             if (plugin.Config.CustomWindows is not null)
@@ -60,13 +59,11 @@ namespace FacilityManagement
                     generator.UnlockCooldown = plugin.Config.GeneratorDuration;
             }
         }
-        public void OnShooting(ShootingEventArgs ev)
+        public void OnChangingAmmo(ChangingAmmoEventArgs ev)
         {
-            if (ev.Player.CurrentItem is null)
-                return;
-            if (plugin.Config.InfiniteAmmo.Contains(ev.Player.CurrentItem.Type) &&  ev.Player.CurrentItem is Firearm firearm)
+            if (plugin.Config.InfiniteAmmo.Contains(ev.Firearm.Type))
             {
-                firearm.Ammo++;
+                ev.IsAllowed = false;
             }
         }
         public void OnUsingMicroHIDEnergy(UsingMicroHIDEnergyEventArgs ev) => ev.Drain *= plugin.Config.EnergyMicroHid;
@@ -104,7 +101,7 @@ namespace FacilityManagement
         {
             if (FacilityManagement.Singleton.Config.Debug)
             {
-                string Debug = "[CustomTesla]";
+                string Debug = "[CustomTesla]\n";
                 {
                     Tesla tesla = Tesla.List.First();
                     Debug += $"CooldownTime: {tesla.CooldownTime} => {plugin.Config.CustomTesla.CooldownTime}\n";
@@ -115,6 +112,7 @@ namespace FacilityManagement
                 }
                 Log.Debug(Debug);
             }
+
             foreach (Tesla tesla in Tesla.List)
             {
                 if (plugin.Config.CustomTesla.CooldownTime is not null)
@@ -135,7 +133,7 @@ namespace FacilityManagement
         {
             if (FacilityManagement.Singleton.Config.Debug)
             {
-                string Debug = "[CustomWindow]";
+                string Debug = "[CustomWindow]\n";
                 foreach (Window window in Window.List)
                 {
                     if (plugin.Config.CustomWindows.TryGetValue(window.Type, out GlassBuild glassBuild))
