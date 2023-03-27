@@ -37,7 +37,7 @@ namespace FacilityManagement.Patches
                 interpolatedCommandFormatter.Commands.Add("intercom_speech_remaining_time", (List<string> args) => Mathf.CeilToInt(Intercom.SpeechRemainingTime).ToString());
                 interpolatedCommandFormatter.Commands.Add("intercom_remaining_cooldown", (List<string> args) => Mathf.CeilToInt((float)Intercom.RemainingCooldown).ToString());
                 // String
-                interpolatedCommandFormatter.Commands.Add("intercom_speaker_nickname", (List<string> args) => $"{Intercom.Speaker.DisplayNickname}");
+                interpolatedCommandFormatter.Commands.Add("intercom_speaker_nickname", (List<string> args) => $"{Intercom.Speaker?.DisplayNickname}");
                 interpolatedCommandFormatter.Commands.Add("intercom_custom_text", (List<string> args) => FacilityManagement.Singleton.CustomText);
                 // Bool
                 interpolatedCommandFormatter.Commands.Add("intercom_is_in_use", (List<string> args) => (Intercom.Speaker is not null).ToString());
