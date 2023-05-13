@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Reflection.Emit;
 using static HarmonyLib.AccessTools;
 
-namespace FacilityManagement.Patches
+namespace FacilityManagement.Patches.IntercomText
 {
 #pragma warning disable IDE0060 // Supprimer le paramètre inutilisé
 

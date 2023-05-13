@@ -105,11 +105,13 @@
     <Compile Include="ConfigBuild.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="EventHandlers.cs" />
-    <Compile Include="Patches\CommandIntercomTextFix.cs" />
-    <Compile Include="Patches\IntercomDisplayTextFix.cs" />
-    <Compile Include="Patches\IntercomPatch.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="Patches\AnimationCurve\GrenadePlayerDamageOverDistance.cs" />
+    <Compile Include="Patches\IntercomText\CommandIntercomTextFix.cs" />
+    <Compile Include="Patches\IntercomText\IntercomDisplayTextFix.cs" />
+    <Compile Include="Patches\IntercomText\IntercomPatch.cs" />
     <Compile Include="Main.cs" />
-    <Compile Include="Patches\NameFormaterPatch.cs" />
+    <Compile Include="Patches\IntercomText\NameFormaterPatch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AutoUpdateExiledVersion.cs">
       <AutoGen>True</AutoGen>

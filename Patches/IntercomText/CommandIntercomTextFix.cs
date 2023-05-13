@@ -10,7 +10,7 @@ using System.Reflection.Emit;
 
 using static HarmonyLib.AccessTools;
 
-namespace FacilityManagement.Patches
+namespace FacilityManagement.Patches.IntercomText
 {
     [HarmonyPatch(typeof(IntercomDisplay), nameof(IntercomDisplay.TrySetDisplay))]
     public static class IntercomTextCommandFix

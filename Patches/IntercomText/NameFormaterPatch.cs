@@ -6,12 +6,12 @@ using UnityEngine;
 using NorthwoodLib.Pools;
 using System.Reflection.Emit;
 using static HarmonyLib.AccessTools;
-using PlayerRoles.Voice;
 using Intercom = Exiled.API.Features.Intercom;
+using BaseIntercom = PlayerRoles.Voice.Intercom;
 
-namespace FacilityManagement.Patches
+namespace FacilityManagement.Patches.IntercomText
 {
-    [HarmonyPatch(typeof(IntercomDisplay), nameof(IntercomDisplay.Awake))]
+    [HarmonyPatch(typeof(BaseIntercom), nameof(BaseIntercom.Awake))]
     public class NameFormaterPatch
     {
         public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)

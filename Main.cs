@@ -33,13 +33,6 @@
 
             base.OnEnabled();
         }
-        public override void OnReloaded()
-        {
-            RegisterEvents();
-            RegisterPatch();
-
-            base.OnReloaded();
-        }
         public override void OnDisabled()
         {
             base.OnDisabled();
@@ -57,10 +50,10 @@
             EventHandlers = new(this);
             Server.WaitingForPlayers += EventHandlers.OnWaitingForPlayers;
             if (Config.InfiniteAmmo is not null)
-                Player.Shooting += EventHandlers.OnShooting;
-            if (Config.EnergyMicroHid is 1)
+                Item.ChangingAmmo += EventHandlers.OnChangingAmmo;
+            if (Config.EnergyMicroHid is not 1)
                 Player.UsingMicroHIDEnergy += EventHandlers.OnUsingMicroHIDEnergy;
-            if (Config.EnergyRadio is 1)
+            if (Config.EnergyRadio is not 1)
                 Player.UsingRadioBattery += EventHandlers.OnUsingRadioBattery;
             if (Config.RoleTypeHumeShield is not null)
                 Player.Spawned += EventHandlers.OnSpawned;
@@ -73,7 +66,7 @@
         {
             Server.WaitingForPlayers -= EventHandlers.OnWaitingForPlayers;
 
-            Player.Shooting -= EventHandlers.OnShooting;
+            Item.ChangingAmmo -= EventHandlers.OnChangingAmmo;
             Player.UsingMicroHIDEnergy -= EventHandlers.OnUsingMicroHIDEnergy;
             Player.UsingRadioBattery -= EventHandlers.OnUsingRadioBattery;
             Player.Spawned -= EventHandlers.OnSpawned;
