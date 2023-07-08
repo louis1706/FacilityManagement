@@ -30,7 +30,7 @@ namespace FacilityManagement.Patches.IntercomText
                 {
                     IntercomDisplay.IcomText value = Intercom.State switch
                     {
-                        IntercomState.Ready => VoiceChatMuteIndicator.ReceivedFlags > VcMuteFlags.None ? IntercomDisplay.IcomText.Muted : IntercomDisplay.IcomText.Ready,
+                        IntercomState.Ready => IntercomDisplay.IcomText.Ready,
                         IntercomState.Starting => IntercomDisplay.IcomText.Wait,
                         IntercomState.InUse => Intercom.Speaker?.IsBypassModeEnabled ?? false ? IntercomDisplay.IcomText.TrasmittingBypass : IntercomDisplay.IcomText.Transmitting,
                         IntercomState.Cooldown => IntercomDisplay.IcomText.Restarting,
@@ -48,7 +48,7 @@ namespace FacilityManagement.Patches.IntercomText
                     if (!string.IsNullOrEmpty(FacilityManagement.Singleton.CustomText))
                         value = IntercomDisplay.IcomText.Unknown;
 
-                    if (ServerConsole.singleton.NameFormatter.Commands is null || FacilityManagement.Singleton.Config.CustomText is null || !FacilityManagement.Singleton.Config.CustomText.TryGetValue(value, out string content))
+                    if (ServerConsole.singleton.NameFormatter.Commands is null || FacilityManagement.Singleton.Config.CustomText is null || !FacilityManagement.Singleton.Config.CustomText.TryGetValue(value, out string content) || string.IsNullOrEmpty(content))
                         return;
                     if (!ServerConsole.singleton.NameFormatter.TryProcessExpression(content, "FacilityManagement", out string result))
                     {
