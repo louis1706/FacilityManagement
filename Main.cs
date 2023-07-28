@@ -84,7 +84,7 @@
                 Harmony = new(Author + "." + Name + ++patchCounter);
                 Harmony.PatchAll();
             }
-            catch (Exception ex)
+            catch (HarmonyException ex)
             {
                 Exiled.API.Features.Log.Error($"[RegisterPatch] Patching Failed : {ex}");
             }
