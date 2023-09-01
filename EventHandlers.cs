@@ -21,6 +21,8 @@ using Exiled.API.Extensions;
 using Exiled.Events.EventArgs.Item;
 using Exiled.API.Features.Doors;
 using BreakableDoor = Exiled.API.Features.Doors.BreakableDoor;
+using Exiled.API.Interfaces;
+using IDamageableDoor = Exiled.API.Interfaces.IDamageableDoor;
 
 namespace FacilityManagement
 {
@@ -186,6 +188,7 @@ namespace FacilityManagement
             if (plugin.Config.CustomDoors.TryGetValue(type, out DoorBuild doorBuild))
             {
                 BreakableDoor breakabledoor = door.As<BreakableDoor>();
+
                 if (FacilityManagement.Singleton.Config.Debug)
                 {
                     string Debug = $"[CustomDoor] : {type}\n";
