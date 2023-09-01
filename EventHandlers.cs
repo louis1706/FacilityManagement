@@ -19,6 +19,8 @@ using Exiled.API.Features.Pools;
 using InventorySystem.Configs;
 using Exiled.API.Extensions;
 using Exiled.Events.EventArgs.Item;
+using Exiled.API.Features.Doors;
+using BreakableDoor = Exiled.API.Features.Doors.BreakableDoor;
 
 namespace FacilityManagement
 {
@@ -167,12 +169,12 @@ namespace FacilityManagement
         {
             foreach (Door door in Door.List)
             {
-                if (door.Base is CheckpointDoor checkpoint)
+                if (door is Exiled.API.Features.Doors.CheckpointDoor checkpoint)
                 {
-                    foreach (DoorVariant checpointdoor in checkpoint._subDoors)
+                    foreach (Door checpointdoor in checkpoint.Subdoors)
                     {
-                        Log.Info(Door.Get(checpointdoor));
-                        CustomDoorSet(Door.Get(checpointdoor), door.Type);
+                        Log.Info(checpointdoor);
+                        CustomDoorSet(checpointdoor, door.Type);
                     }
                     continue;
                 }
@@ -183,21 +185,22 @@ namespace FacilityManagement
         {
             if (plugin.Config.CustomDoors.TryGetValue(type, out DoorBuild doorBuild))
             {
+                BreakableDoor breakabledoor = door.As<BreakableDoor>();
                 if (FacilityManagement.Singleton.Config.Debug)
                 {
                     string Debug = $"[CustomDoor] : {type}\n";
-                    Debug += $"Health: {door.Health} => {doorBuild.Health.Value}\n";
-                    Debug += $"IgnoredDamageTypes: {door.IgnoredDamageTypes} => {doorBuild.DamageTypeIgnored}\n\n";
+                    Debug += $"Health: {(breakabledoor is null ? "Nan" : breakabledoor.Health)} => {doorBuild.Health.Value}\n";
+                    Debug += $"IgnoredDamageTypes: {(breakabledoor is null ? "Nan" : breakabledoor.IgnoredDamage)} => {doorBuild.DamageTypeIgnored}\n\n";
                     Debug += $"RequiredPermissions: {door.RequiredPermissions.RequiredPermissions} => {doorBuild.RequiredPermission}\n\n";
                     Debug += $"RequireAllPermission: {door.RequiredPermissions.RequireAll} => {doorBuild.RequireAllPermission}\n\n";
                     Log.Debug(Debug);
                     return;
                 }
 
-                if (doorBuild.Health is not null)
-                    door.Health = doorBuild.Health.Value;
-                if (doorBuild.DamageTypeIgnored is not null)
-                    door.IgnoredDamageTypes = doorBuild.DamageTypeIgnored.Value;
+                if (doorBuild.Health is not null && breakabledoor is not null)
+                    breakabledoor.Health = doorBuild.Health.Value;
+                if (doorBuild.DamageTypeIgnored is not null && breakabledoor is not null)
+                    breakabledoor.IgnoredDamage = doorBuild.DamageTypeIgnored.Value;
                 if (doorBuild.RequiredPermission is not null)
                     door.RequiredPermissions.RequiredPermissions = doorBuild.RequiredPermission.Value;
                 if (doorBuild.RequireAllPermission is not null)

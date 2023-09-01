@@ -50,7 +50,7 @@ namespace FacilityManagement.Patches
                 }
                 else
                 {
-                    if (args.At(startindex).Length > 0 && char.IsDigit(args.At(startindex)[0]))
+                    if (args.At(startindex).Length > 0)
                     {
                         string[] array = args.At(startindex).Split('.');
                         for (int i = 0; i < array.Length; i++)
