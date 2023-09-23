@@ -197,7 +197,6 @@ namespace FacilityManagement
                     Debug += $"RequiredPermissions: {door.RequiredPermissions.RequiredPermissions} => {doorBuild.RequiredPermission}\n\n";
                     Debug += $"RequireAllPermission: {door.RequiredPermissions.RequireAll} => {doorBuild.RequireAllPermission}\n\n";
                     Log.Debug(Debug);
-                    return;
                 }
 
                 if (doorBuild.Health is not null && breakabledoor is not null)
