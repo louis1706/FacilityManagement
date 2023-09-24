@@ -23,6 +23,7 @@ using Exiled.API.Features.Doors;
 using BreakableDoor = Exiled.API.Features.Doors.BreakableDoor;
 using Exiled.API.Interfaces;
 using IDamageableDoor = Exiled.API.Interfaces.IDamageableDoor;
+using Scp914;
 
 namespace FacilityManagement
 {
@@ -35,6 +36,8 @@ namespace FacilityManagement
         {
             if (plugin.Config.CustomTesla is not null)
                 CustomTesla();
+            if (plugin.Config.CustomScp914 is not null)
+                Custom914();
             if (plugin.Config.CustomWindows is not null)
                 CustomWindow();
             if (plugin.Config.CustomDoors is not null)
@@ -133,6 +136,35 @@ namespace FacilityManagement
                 Tesla.IgnoredRoles = plugin.Config.CustomTesla.IgnoredRoles;
         }
 
+        public void Custom914()
+        {
+            Scp914Controller scp914 = Exiled.API.Features.Scp914.Scp914Controller;
+
+            if (FacilityManagement.Singleton.Config.Debug)
+            {
+                string Debug = "[Custom914]\n";
+                {
+                    Debug += $"KnobChangeCooldown: {scp914._knobChangeCooldown} => {plugin.Config.CustomScp914.KnobChangeCooldown}\n";
+                    Debug += $"DoorOpenTime: {scp914._doorOpenTime} => {plugin.Config.CustomScp914.DoorOpenTime}\n";
+                    Debug += $"ItemUpgradeTime: {scp914._itemUpgradeTime} => {plugin.Config.CustomScp914.ItemUpgradeTime}\n";
+                    Debug += $"DoorCloseTime: {scp914._doorCloseTime} => {plugin.Config.CustomScp914.DoorCloseTime}\n";
+                    Debug += $"TotalSequenceTime: {scp914._totalSequenceTime} => {plugin.Config.CustomScp914.ActivationCooldown}\n";
+                }
+                Log.Debug(Debug);
+            }
+
+            if (plugin.Config.CustomScp914.KnobChangeCooldown is not null)
+                scp914._knobChangeCooldown = plugin.Config.CustomScp914.KnobChangeCooldown.Value;
+            if (plugin.Config.CustomScp914.DoorOpenTime is not null)
+                scp914._doorOpenTime = plugin.Config.CustomScp914.DoorOpenTime.Value;
+            if (plugin.Config.CustomScp914.ItemUpgradeTime is not null)
+                scp914._itemUpgradeTime = plugin.Config.CustomScp914.ItemUpgradeTime.Value;
+            if (plugin.Config.CustomScp914.DoorCloseTime is not null)
+                scp914._doorCloseTime = plugin.Config.CustomScp914.DoorCloseTime.Value;
+            if (plugin.Config.CustomScp914.ActivationCooldown is not null)
+                scp914._totalSequenceTime = plugin.Config.CustomScp914.ActivationCooldown.Value;
+
+        }
         public void CustomWindow()
         {
             if (FacilityManagement.Singleton.Config.Debug)

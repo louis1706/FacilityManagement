@@ -1,10 +1,12 @@
 ﻿using Interactables.Interobjects.DoorUtils;
 using PlayerRoles;
+using Scp914;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace FacilityManagement
 {
@@ -39,4 +41,12 @@ namespace FacilityManagement
         public float? CooldownTime { get; set; }
     }
 
+    public class Scp914Build
+    {
+        public float? KnobChangeCooldown { get; set; }
+        public float? DoorCloseTime { get; set; }
+        public float? ItemUpgradeTime { get; set; }
+        public float? DoorOpenTime { get; set; }
+        public float? ActivationCooldown { get; set; }
+    }
 }

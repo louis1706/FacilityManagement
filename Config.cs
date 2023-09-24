@@ -80,6 +80,18 @@ namespace FacilityManagement
             TriggerRange = 5.1f,
             IgnoredRoles = new()
         };
+
+        [Description("Sets the config of Scp914.")]
+        public Scp914Build CustomScp914 { get; set; } = new()
+        {
+            KnobChangeCooldown = 0.15f,
+            DoorCloseTime = 0.8f,
+            ItemUpgradeTime = 10,
+            DoorOpenTime = 13.5f,
+            ActivationCooldown = 16,
+        };
+
+
         [Description("Sets the health of breakable windows.")]
         public Dictionary<GlassType, GlassBuild> CustomWindows { get; set; } = new()
         {
