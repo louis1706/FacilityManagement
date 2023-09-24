@@ -57,7 +57,7 @@ This plugin make possible many things on your server.
 | RequireAllPermission | bool? | Required all the permission of RequiredPermission (0 or None disable the change) |
 | DamageTypeIgnored | DoorDamageType | Modified the DamageType ignored by the Door  (0 disable the change) |
 
-## AhpProccessBuild // Actually don't work cause of NW or Exiled issue
+## AhpProccessBuild
 
 |    PropertyName    | TypeValue | Description |
 | :-------------: | :---------: | :--------- |
