@@ -16,6 +16,7 @@ This plugin make possible many things on your server.
 | CustomText | Dictionary<[Intercom.State](https://exiled-team.github.io/Web/docs/Resources/Intro#intercomstates), string> | Change the intercomText with specified there specified State  |
 | WarheadCleanup | bool | Remove all Pickup and Ragdoll in the facility (lower than y 500) |
 | CustomTesla | [TeslaBuild](https://github.com/louis1706/FacilityManagement#teslabuild) | |
+| CustomScp914 | [Scp914Build](https://github.com/louis1706/FacilityManagement#scp914build) | |
 | CustomWindows | Dictionary<[GlassType](https://exiled-team.github.io/EXILED/api/Exiled.API.Enums.GlassType.html), [GlassBuild](https://github.com/louis1706/FacilityManagement#glassbuild)> | Modify all the property of Window like you want (null make no change) |
 | CustomDoors | Dictionary<[DoorType](https://exiled-team.github.io/Web/docs/Resources/Intro#doortype), [DoorBuild](https://github.com/louis1706/FacilityManagement#doorbuild)> | Modify all the property of Door like you want (null make no change) |
 | RoleTypeHumeShield | Dictionary<[RoleType](https://exiled-team.github.io/Web/docs/Resources/Intro#roletype-team-side-and-faction), [AhpProccessBuild](https://github.com/louis1706/FacilityManagement#ahpproccessbuild)> | Create a custoom AHP/HS for specified RoleType |
@@ -29,6 +30,16 @@ This plugin make possible many things on your server.
 | IdleRange | float? | Distance for tesla to start idling (Null disable the change) |
 | ActivationTime | float? | Time for tesla to start (Null disable the change) |
 | CooldownTime | float? | Time between each Shock (Null disable the change) |
+
+## Scp914Build
+
+|    PropertyName    | TypeValue | Description |
+| :-------------: | :---------: | :--------- |
+| KnobChangeCooldown | float? | Cooldown between each interaction for when people modify the knob (Null disable the change) |
+| DoorCloseTime | float? | Delay after the interaction than the Door will Close (Null disable the change) |
+| ItemUpgradeTime | float? | Delay after the interaction than the content of Scp914 will be upgraded (Null disable the change) (Null disable the change) |
+| DoorOpenTime | float? | Delay after the interaction than the Door will Open (Null disable the change) |
+| TotalSequenceTime | float? | Cooldown for Scp914 to be reussable again (Null disable the change) |
 
 ## GlassBuild
 
