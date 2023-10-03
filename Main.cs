@@ -59,7 +59,7 @@
                 Player.Spawned += EventHandlers.OnSpawned;
             if (Config.RoleTypeHumeShield is not null)
                 Player.Hurting += EventHandlers.OnHurting;
-            if (!Config.WarheadCleanup)
+            if (Config.WarheadCleanup)
                 Warhead.Detonated += EventHandlers.OnDetonated;
         }
         private void UnRegisterEvents()
