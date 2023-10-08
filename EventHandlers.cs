@@ -42,6 +42,9 @@ namespace FacilityManagement
                 CustomWindow();
             if (plugin.Config.CustomDoors is not null)
                 CustomDoor();
+            if (plugin.Config.CustomGenerator is not null)
+                CustomGenerator();
+
             if (plugin.Config.StandardAmmoLimits is not null)
             {
                 InventoryLimits.StandardAmmoLimits.Clear();
@@ -59,11 +62,6 @@ namespace FacilityManagement
                 foreach (var elevator in Lift.List)
                     if (plugin.Config.LiftMoveDuration.TryGetValue(elevator.Type, out float value))
                         elevator.AnimationTime = value;
-            }
-            if (plugin.Config.GeneratorDuration > -1)
-            {
-                foreach (Generator generator in Generator.List)
-                    generator.UnlockCooldown = plugin.Config.GeneratorDuration;
             }
         }
         public void OnChangingAmmo(ChangingAmmoEventArgs ev)
@@ -139,30 +137,30 @@ namespace FacilityManagement
         public void Custom914()
         {
             Scp914Controller scp914 = Exiled.API.Features.Scp914.Scp914Controller;
-
+            Scp914Build scp914Build = plugin.Config.CustomScp914;
             if (FacilityManagement.Singleton.Config.Debug)
             {
                 string Debug = "[Custom914]\n";
                 {
-                    Debug += $"KnobChangeCooldown: {scp914._knobChangeCooldown} => {plugin.Config.CustomScp914.KnobChangeCooldown}\n";
-                    Debug += $"DoorOpenTime: {scp914._doorOpenTime} => {plugin.Config.CustomScp914.DoorOpenTime}\n";
-                    Debug += $"ItemUpgradeTime: {scp914._itemUpgradeTime} => {plugin.Config.CustomScp914.ItemUpgradeTime}\n";
-                    Debug += $"DoorCloseTime: {scp914._doorCloseTime} => {plugin.Config.CustomScp914.DoorCloseTime}\n";
-                    Debug += $"TotalSequenceTime: {scp914._totalSequenceTime} => {plugin.Config.CustomScp914.ActivationCooldown}\n";
+                    Debug += $"KnobChangeCooldown: {scp914._knobChangeCooldown} => {scp914Build.KnobChangeCooldown}\n";
+                    Debug += $"DoorOpenTime: {scp914._doorOpenTime} => {scp914Build.DoorOpenTime}\n";
+                    Debug += $"ItemUpgradeTime: {scp914._itemUpgradeTime} => {scp914Build.ItemUpgradeTime}\n";
+                    Debug += $"DoorCloseTime: {scp914._doorCloseTime} => {scp914Build.DoorCloseTime}\n";
+                    Debug += $"TotalSequenceTime: {scp914._totalSequenceTime} => {scp914Build.ActivationCooldown}\n";
                 }
                 Log.Debug(Debug);
             }
 
-            if (plugin.Config.CustomScp914.KnobChangeCooldown is not null)
-                scp914._knobChangeCooldown = plugin.Config.CustomScp914.KnobChangeCooldown.Value;
-            if (plugin.Config.CustomScp914.DoorOpenTime is not null)
-                scp914._doorOpenTime = plugin.Config.CustomScp914.DoorOpenTime.Value;
-            if (plugin.Config.CustomScp914.ItemUpgradeTime is not null)
-                scp914._itemUpgradeTime = plugin.Config.CustomScp914.ItemUpgradeTime.Value;
-            if (plugin.Config.CustomScp914.DoorCloseTime is not null)
-                scp914._doorCloseTime = plugin.Config.CustomScp914.DoorCloseTime.Value;
-            if (plugin.Config.CustomScp914.ActivationCooldown is not null)
-                scp914._totalSequenceTime = plugin.Config.CustomScp914.ActivationCooldown.Value;
+            if (scp914Build.KnobChangeCooldown is not null)
+                scp914._knobChangeCooldown = scp914Build.KnobChangeCooldown.Value;
+            if (scp914Build.DoorOpenTime is not null)
+                scp914._doorOpenTime = scp914Build.DoorOpenTime.Value;
+            if (scp914Build.ItemUpgradeTime is not null)
+                scp914._itemUpgradeTime = scp914Build.ItemUpgradeTime.Value;
+            if (scp914Build.DoorCloseTime is not null)
+                scp914._doorCloseTime = scp914Build.DoorCloseTime.Value;
+            if (scp914Build.ActivationCooldown is not null)
+                scp914._totalSequenceTime = scp914Build.ActivationCooldown.Value;
 
         }
         public void CustomWindow()
@@ -198,20 +196,43 @@ namespace FacilityManagement
                 }
             }
         }
+        public void CustomGenerator()
+        {
+            GeneratorBuild generator914Build = plugin.Config.CustomGenerator;
+
+            if (FacilityManagement.Singleton.Config.Debug)
+            {
+                Generator generator = Generator.List.First();
+                string Debug = "[CustomGenerator]\n";
+                Debug += $"UnlockCooldown: {generator.UnlockCooldown} => {generator914Build.UnlockCooldown}\n";
+                Debug += $"LeverDelay: {generator.LeverDelay} => {generator914Build.LeverDelay}\n";
+                Debug += $"TogglePanelCooldown: {generator.TogglePanelCooldown} => {generator914Build.DoorPanelCooldown}\n";
+                Debug += $"InteractionCooldown: {generator.InteractionCooldown} => {generator914Build.InteractionCooldown}\n";
+                Debug += $"DeactivationTime: {generator.DeactivationTime} => {generator914Build.DeactivationTime}\n";
+                Debug += $"KeycardPermissions: {generator.KeycardPermissions} => {generator914Build.RequiredPermission}\n";
+                Log.Debug(Debug);
+            }
+            foreach (Generator generator in Generator.List)
+            {
+                if (generator914Build.UnlockCooldown is not null)
+                    generator.UnlockCooldown = generator914Build.UnlockCooldown.Value;
+                if (generator914Build.RequiredPermission is not null)
+                    generator.KeycardPermissions = generator914Build.RequiredPermission.Value;
+                if (generator914Build.LeverDelay is not null)
+                    generator.LeverDelay = generator914Build.LeverDelay.Value;
+                if (generator914Build.DoorPanelCooldown is not null)
+                    generator.TogglePanelCooldown = generator914Build.DoorPanelCooldown.Value;
+                if (generator914Build.InteractionCooldown is not null)
+                    generator.InteractionCooldown = generator914Build.InteractionCooldown.Value;
+                if (generator914Build.DeactivationTime is not null)
+                    generator.DeactivationTime = generator914Build.DeactivationTime.Value;
+            }
+        }
 
         public void CustomDoor()
         {
             foreach (Door door in Door.List)
             {
-                if (door is Exiled.API.Features.Doors.CheckpointDoor checkpoint)
-                {
-                    foreach (Door checpointdoor in checkpoint.Subdoors)
-                    {
-                        Log.Info(checpointdoor);
-                        CustomDoorSet(checpointdoor, door.Type);
-                    }
-                    continue;
-                }
                 CustomDoorSet(door, door.Type);
             }
         }

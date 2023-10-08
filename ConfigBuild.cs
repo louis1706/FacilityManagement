@@ -46,6 +46,17 @@ namespace FacilityManagement
         public float? DoorOpenTime { get; set; }
         public float? ActivationCooldown { get; set; }
     }
+
+    public class GeneratorBuild
+    {
+        public float? UnlockCooldown { get; set; }
+        public float? LeverDelay { get; set; }
+        public float? DoorPanelCooldown { get; set; }
+        public float? InteractionCooldown { get; set; }
+        public float? DeactivationTime { get; set; }
+        public Exiled.API.Enums.KeycardPermissions? RequiredPermission { get; set; }
+    }
+
     /* Wait Futur Exiled
     public class AnnimationCurveBuild
     {
@@ -131,6 +142,5 @@ namespace FacilityManagement
     public class Scp939Build
     {
         public AnnimationCurveBuild StaminaRegeneration { get; set; }
-    }
-    */
+    }*/
 }

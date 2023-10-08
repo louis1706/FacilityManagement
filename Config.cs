@@ -26,8 +26,16 @@ namespace FacilityManagement
         [Description("Make infinite ammo for weapon.")]
         public float EnergyRadio { get; set; } = 1f;
 
-        [Description("Time for generator to be Activated after being enable (-1 disable the config)")]
-        public float GeneratorDuration { get; set; } = -1;
+        [Description("Sets the config of Generator")]
+        public GeneratorBuild CustomGenerator { get; set; } = new()
+        {
+            UnlockCooldown = 0.1f,
+            LeverDelay = 0.5f,
+            DoorPanelCooldown = 0.9f,
+            InteractionCooldown = 0,
+            DeactivationTime = 125,
+            RequiredPermission = Exiled.API.Enums.KeycardPermissions.ArmoryLevelOne,
+        };
 
         [Description("Sets the time for Lift to teleport")]
         public Dictionary<ElevatorType, float> LiftMoveDuration { get; set; } = new();
