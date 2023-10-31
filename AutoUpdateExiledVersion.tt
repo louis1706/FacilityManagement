@@ -1,6 +1,6 @@
 ﻿<#@ template debug="false" hostspecific="false" language="C#" #>
 <#@ assembly name="System" #>
-<#@ assembly name="C:\Users\louismonneyronpc\AppData\Roaming\EXILED\Exiled.Loader.dll" #>
+<#@ assembly name="FacilityManagement\bin\Release\Exiled.Loader.dll" #>
 <#@ output extension=".cs" #>
 using System;
 
