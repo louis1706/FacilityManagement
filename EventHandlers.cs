@@ -24,6 +24,8 @@ using BreakableDoor = Exiled.API.Features.Doors.BreakableDoor;
 using Exiled.API.Interfaces;
 using IDamageableDoor = Exiled.API.Interfaces.IDamageableDoor;
 using Scp914;
+using System;
+using System.Reflection;
 
 namespace FacilityManagement
 {
@@ -226,6 +228,36 @@ namespace FacilityManagement
                     generator.InteractionCooldown = generator914Build.InteractionCooldown.Value;
                 if (generator914Build.DeactivationTime is not null)
                     generator.DeactivationTime = generator914Build.DeactivationTime.Value;
+            }
+        }
+        public void CustomItem(Item newItem)
+        {
+            if (newItem is null || !plugin.Config.CustomItem.TryGetValue(newItem.Type, out ItemBuild itemBuild))
+                return;
+            foreach (KeyValuePair<string, string> e in itemBuild.Custom)
+            {
+                if (plugin.Config.Debug)
+                    Log.Debug($"ItemType {newItem.Type} Key '{e.Key}' or Value '{e.Value}'");
+                try
+                {
+                    PropertyInfo propertyInfo = newItem.GetType().GetProperty(e.Key);
+
+                    if (propertyInfo != null)
+                    {
+
+                        object value = ItemBuild.Parse(e.Value, propertyInfo.PropertyType, out bool success);
+                        if (success)
+                            propertyInfo.SetValue(newItem, value);
+                        else
+                            Log.Error("invalid cast");
+                    }
+                    else
+                        Log.Error("Propperty not found: " + e.Key);
+                }
+                catch (Exception ex)
+                {
+                    Log.Error($"CustomItem {newItem.Type} invalid Key '{e.Key}' or Value '{e.Value}'\n{ex}");
+                }
             }
         }
 

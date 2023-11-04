@@ -2,6 +2,7 @@
 {
     using Exiled.Events.Handlers;
     using HarmonyLib;
+    using InventorySystem;
     using MEC;
     using System;
     using System.Collections.Generic;

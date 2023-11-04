@@ -1,4 +1,5 @@
 ﻿using Exiled.API.Enums;
+using Exiled.API.Features.Items;
 using Exiled.API.Interfaces;
 using Exiled.Events.Handlers;
 using Interactables.Interobjects.DoorUtils;
@@ -6,6 +7,7 @@ using PlayerRoles;
 using PlayerRoles.Voice;
 using System.Collections.Generic;
 using System.ComponentModel;
+using UnityEngine;
 using KeycardPermissions = Interactables.Interobjects.DoorUtils.KeycardPermissions;
 
 namespace FacilityManagement
@@ -144,6 +146,7 @@ namespace FacilityManagement
             },
         };
 
+        [Description("Give to x RoleType Some AHP (old name for SCP of Humeshield that are now separated so this only give AHP now).")]
         public Dictionary<RoleTypeId, AhpProccessBuild> RoleTypeHumeShield { get; set; } = new()
         {
             {
@@ -156,6 +159,45 @@ namespace FacilityManagement
                 }
             },
         };
-
+        [Description("Ability to modify the default value of the choosen ItemType.")]
+        public Dictionary<ItemType, ItemBuild> CustomItem { get; set; } = new()
+        {
+            {
+                ItemType.KeycardJanitor, new ItemBuild
+                {
+                    Custom = new Dictionary<string, string>()
+                    {
+                        { nameof(Exiled.API.Features.Items.Keycard.Permissions), (KeycardPermissions.ContainmentLevelOne | KeycardPermissions.ArmoryLevelOne).ToString() },
+                    }
+                } 
+            },
+            {
+                ItemType.KeycardResearchCoordinator, new ItemBuild
+                {
+                    Custom = new Dictionary<string, string>()
+                    {
+                        { nameof(Exiled.API.Features.Items.Keycard.Permissions), KeycardPermissions.ContainmentLevelTwo.ToString() },
+                    }
+                }
+            },
+            {
+                ItemType.Coin, new ItemBuild
+                {
+                    Custom = new Dictionary<string, string>()
+                    {
+                        { nameof(Exiled.API.Features.Items.Item.Scale), new Vector3(1, 2, 1).ToString() },
+                    }
+                }
+            },
+            {
+                ItemType.GrenadeHE, new ItemBuild
+                {
+                    Custom = new Dictionary<string, string>()
+                    {
+                        { nameof(Exiled.API.Features.Items.ExplosiveGrenade.FuseTime), 1.ToString() },
+                    }
+                }
+            },
+        };
     }
 }
