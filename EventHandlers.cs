@@ -26,6 +26,8 @@ using IDamageableDoor = Exiled.API.Interfaces.IDamageableDoor;
 using Scp914;
 using System;
 using System.Reflection;
+using PlayerRoles.PlayableScps.Subroutines;
+using PlayerRoles.Subroutines;
 
 namespace FacilityManagement
 {
@@ -77,11 +79,13 @@ namespace FacilityManagement
         public void OnUsingRadioBattery(UsingRadioBatteryEventArgs ev) => ev.Drain *= plugin.Config.EnergyRadio;
         public void OnSpawned(SpawnedEventArgs ev)
         {
-            if (plugin.Config.RoleTypeHumeShield.TryGetValue(ev.Player.Role.Type, out AhpProccessBuild ahpProccessBuild))
+            if (plugin.Config.RoleTypeHumeShield is not null && plugin.Config.RoleTypeHumeShield.TryGetValue(ev.Player.Role.Type, out AhpProccessBuild ahpProccessBuild))
             {
                 ev.Player.ReferenceHub.playerStats.GetModule<AhpStat>()._activeProcesses.Clear();
                 ev.Player.AddAhp(ahpProccessBuild.Amount, ahpProccessBuild.Amount, -ahpProccessBuild.Regen, ahpProccessBuild.Efficacy, ahpProccessBuild.Sustain, ahpProccessBuild.Regen > 0);
             }
+            if (plugin.Config.CustomRole is not null)
+                CustomRole(ev.Player);
         }
 
         public void OnHurting(HurtingEventArgs ev)
@@ -260,7 +264,40 @@ namespace FacilityManagement
                 }
             }
         }
+        public void CustomRole(Player player)
+        {
+            if (player is null || !plugin.Config.CustomRole.TryGetValue(player.Role.Type, out RoleBuild roleBuild))
+                return;
+            foreach (KeyValuePair<string, string> e in roleBuild.Custom)
+            {
+                if (plugin.Config.Debug)
+                    Log.Debug($"RoleType {player.Role.Type} Key '{e.Key}' or Value '{e.Value}'");
+                try
+                {
+                    PropertyInfo propertyInfo = player.Role.GetType().GetProperty(e.Key);
 
+                    if (propertyInfo != null)
+                    {
+                        if (typeof(StandardSubroutine<>).IsAssignableFrom(propertyInfo.PropertyType))
+                        {
+                            Log.Error($"This will be supported in an imaginary futur {e.Key}");
+                            return;
+                        }
+                        object value = ItemBuild.Parse(e.Value, propertyInfo.PropertyType, out bool success);
+                        if (success)
+                            propertyInfo.SetValue(player.Role, value);
+                        else
+                            Log.Error("invalid cast");
+                    }
+                    else
+                        Log.Error("Propperty not found: " + e.Key);
+                }
+                catch (Exception ex)
+                {
+                    Log.Error($"CustomRole {player.Role.Type} invalid Key '{e.Key}' or Value '{e.Value}'\n{ex}");
+                }
+            }
+        }
         public void CustomDoor()
         {
             foreach (Door door in Door.List)

@@ -56,8 +56,7 @@
                 Player.UsingMicroHIDEnergy += EventHandlers.OnUsingMicroHIDEnergy;
             if (Config.EnergyRadio is not 1)
                 Player.UsingRadioBattery += EventHandlers.OnUsingRadioBattery;
-            if (Config.RoleTypeHumeShield is not null)
-                Player.Spawned += EventHandlers.OnSpawned;
+            Player.Spawned += EventHandlers.OnSpawned;
             if (Config.RoleTypeHumeShield is not null)
                 Player.Hurting += EventHandlers.OnHurting;
             if (Config.WarheadCleanup)

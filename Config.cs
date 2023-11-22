@@ -199,5 +199,19 @@ namespace FacilityManagement
                 }
             },
         };
+
+        [Description("Ability to modify the default value of the choosen ItemType.")]
+        public Dictionary<RoleTypeId, RoleBuild> CustomRole { get; set; } = new()
+        {
+            {
+                RoleTypeId.Scp3114, new RoleBuild
+                {
+                    Custom = new Dictionary<string, string>()
+                    {
+                        { nameof(Exiled.API.Features.Roles.Scp3114Role.DisguiseDuration), 600.ToString() },
+                    }
+                }
+            },
+        };
     }
 }
