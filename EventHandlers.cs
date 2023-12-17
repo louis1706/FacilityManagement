@@ -1,33 +1,22 @@
 ﻿using Exiled.API.Features.Items;
 using Exiled.API.Features;
-using Exiled.Events.EventArgs;
-using MEC;
-using Mirror;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
-using Interactables.Interobjects.DoorUtils;
 using PlayerStatsSystem;
-using Tesla = Exiled.API.Features.TeslaGate;
-using Interactables.Interobjects;
 using Exiled.API.Enums;
 using Exiled.Events.EventArgs.Player;
 using Exiled.API.Features.Pickups;
-using Exiled.API.Features.Pools;
 using InventorySystem.Configs;
 using Exiled.API.Extensions;
 using Exiled.Events.EventArgs.Item;
 using Exiled.API.Features.Doors;
-using BreakableDoor = Exiled.API.Features.Doors.BreakableDoor;
-using Exiled.API.Interfaces;
-using IDamageableDoor = Exiled.API.Interfaces.IDamageableDoor;
 using Scp914;
 using System;
 using System.Reflection;
-using PlayerRoles.PlayableScps.Subroutines;
 using PlayerRoles.Subroutines;
+
+using BreakableDoor = Exiled.API.Features.Doors.BreakableDoor;
+using Tesla = Exiled.API.Features.TeslaGate;
 
 namespace FacilityManagement
 {
