@@ -270,7 +270,7 @@ namespace FacilityManagement
                         if (typeof(StandardSubroutine<>).IsAssignableFrom(propertyInfo.PropertyType))
                         {
                             Log.Error($"This will be supported in an imaginary futur {e.Key}");
-                            return;
+                            continue;
                         }
                         object value = ItemBuild.Parse(e.Value, propertyInfo.PropertyType, out bool success);
                         if (success)
