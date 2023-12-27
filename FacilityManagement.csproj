@@ -54,10 +54,10 @@
       <HintPath>$(EXILED_REFERENCES)\UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
-      <HintPath>..\..\Dev\EXILED_REFERENCES\UnityEngine.CoreModule.dll</HintPath>
+      <HintPath>$(EXILED_REFERENCES)\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.PhysicsModule">
-      <HintPath>..\..\Dev\EXILED_REFERENCES\UnityEngine.PhysicsModule.dll</HintPath>
+      <HintPath>$(EXILED_REFERENCES)\UnityEngine.PhysicsModule.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -90,7 +90,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="EXILED">
-      <Version>8.4.3</Version>
+      <Version>8.5.0-beta.1</Version>
     </PackageReference>
     <PackageReference Include="Lib.Harmony">
       <Version>2.2.2</Version>

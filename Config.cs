@@ -195,12 +195,13 @@ namespace FacilityManagement
                     Custom = new Dictionary<string, string>()
                     {
                         { nameof(Exiled.API.Features.Items.ExplosiveGrenade.FuseTime), 1.ToString() },
+                        { nameof(Exiled.API.Features.Items.ExplosiveGrenade.Scale), 1.ToString() },
                     }
                 }
             },
         };
 
-        [Description("Ability to modify the default value of the choosen ItemType.")]
+        [Description("Ability to modify the default value of the choosen RoleTypeId.")]
         public Dictionary<RoleTypeId, RoleBuild> CustomRole { get; set; } = new()
         {
             {
@@ -209,6 +210,8 @@ namespace FacilityManagement
                     Custom = new Dictionary<string, string>()
                     {
                         { nameof(Exiled.API.Features.Roles.Scp3114Role.DisguiseDuration), 600.ToString() },
+                        { nameof(Exiled.API.Features.Roles.FpcRole.IsUsingStamina), false.ToString() },
+                        { nameof(Exiled.API.Features.Roles.FpcRole.IsInvisible), true.ToString() },
                     }
                 }
             },

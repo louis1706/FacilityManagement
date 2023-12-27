@@ -1,20 +1,21 @@
-﻿using Exiled.API.Features.Items;
-using Exiled.API.Features;
-using System.Collections.Generic;
-using System.Linq;
-using PlayerStatsSystem;
-using Exiled.API.Enums;
-using Exiled.Events.EventArgs.Player;
-using Exiled.API.Features.Pickups;
-using InventorySystem.Configs;
+﻿using Exiled.API.Enums;
 using Exiled.API.Extensions;
-using Exiled.Events.EventArgs.Item;
+using Exiled.API.Features;
 using Exiled.API.Features.Doors;
+using Exiled.API.Features.Items;
+using Exiled.API.Features.Pickups;
+using Exiled.Events.EventArgs.Item;
+using Exiled.Events.EventArgs.Player;
+using InventorySystem;
+using InventorySystem.Configs;
+using InventorySystem.Items;
+using PlayerRoles.Subroutines;
+using PlayerStatsSystem;
 using Scp914;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
-using PlayerRoles.Subroutines;
-
 using BreakableDoor = Exiled.API.Features.Doors.BreakableDoor;
 using Tesla = Exiled.API.Features.TeslaGate;
 
@@ -82,7 +83,7 @@ namespace FacilityManagement
             if (plugin.Config.RoleTypeHumeShield.TryGetValue(ev.Player.Role.Type, out AhpProccessBuild ahpProccessBuild) && ahpProccessBuild.Regen > 0)
                 ev.Player.ActiveArtificialHealthProcesses.First().SustainTime = ahpProccessBuild.Sustain;
         }
-        
+
         public void OnDetonated()
         {
             foreach (Pickup pickup in Pickup.List.ToList())
@@ -108,7 +109,7 @@ namespace FacilityManagement
                     Debug += $"IdleRange: {tesla.IdleRange} => {plugin.Config.CustomTesla.IdleRange}\n\n";
                     Debug += $"TriggerRange: {tesla.TriggerRange} => {plugin.Config.CustomTesla.TriggerRange}\n\n";
                     Debug += $"ActivationTime: {tesla.ActivationTime} => {plugin.Config.CustomTesla.ActivationTime}\n\n";
-                    Debug += $"IgnoredRoles: {string.Join(",", Tesla.IgnoredRoles)} => {string.Join(",", plugin.Config.CustomTesla.IgnoredRoles)}\n\n";
+                    Debug += $"IgnoredRoles: {string.Join(",", Tesla.IgnoredRoles)} => {(plugin.Config.CustomTesla.IgnoredRoles is null ? "Null" : string.Join(",", plugin.Config.CustomTesla.IgnoredRoles))}\n\n";
                 }
                 Log.Debug(Debug);
             }
@@ -253,6 +254,7 @@ namespace FacilityManagement
                 }
             }
         }
+
         public void CustomRole(Player player)
         {
             if (player is null || !plugin.Config.CustomRole.TryGetValue(player.Role.Type, out RoleBuild roleBuild))
