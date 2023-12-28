@@ -65,6 +65,40 @@ namespace FacilityManagement
         public static object Parse(string value, Type targetType, out bool success)
         {
             success = true;
+
+            // Handle enums
+            if (targetType.IsEnum)
+            {
+                return Enum.Parse(targetType, value);
+            }
+
+            // Handle Vector3 (assuming the format is "(x,y)" "(x,y,z)""(x,y,z,w)")
+            if (targetType == typeof(Vector2) || targetType == typeof(Vector3) || targetType == typeof(Vector4))
+            {
+                success = true;
+
+                value = value.Replace('(', ' ').Replace(')', ' ').Replace(" ", string.Empty);
+                string[] components = value.Split(',');
+                float x = 0, y = 0, z = 0, w = 0;
+
+                if (components.Length == 2 && float.TryParse(components[0], out x) && float.TryParse(components[1], out y))
+                {
+                    return new Vector2(x, y);
+                }
+                if (components.Length == 3 && float.TryParse(components[0], out x) && float.TryParse(components[1], out y) && float.TryParse(components[2], out z))
+                {
+                    return new Vector3(x, y, z);
+                }
+                if (components.Length == 2 && float.TryParse(components[0], out x) && float.TryParse(components[1], out y) && float.TryParse(components[2], out z) && float.TryParse(components[2], out w))
+                {
+                    return new Vector4(x, y, z, w);
+                }
+                success = false;
+
+                Log.Info($"Invalid Vector {x},{y},{z},{w}");
+                return default;
+            }
+
             // Handle nullable value types (e.g., int?, float?, double?)
             if (Nullable.GetUnderlyingType(targetType) != null || targetType.IsValueType)
             {
@@ -86,27 +120,10 @@ namespace FacilityManagement
                 }
             }
 
-            // Handle enums
-            if (targetType.IsEnum)
-            {
-                return Enum.Parse(targetType, value);
-            }
-
-            // Handle Vector3 (assuming the format is "(x,y,z)")
-            if (targetType == typeof(Vector3))
-            {
-                value = value.Replace('(', ' ').Replace(')', ' ');
-                string[] components = value.Split(',');
-                if (components.Length == 3 && float.TryParse(components[0], out float x) && float.TryParse(components[1], out float y) && float.TryParse(components[2], out float z))
-                {
-                    return new Vector3(x, y, z);
-                }
-            }
-
             // WTF are you really implemented a AnimationCurve config are you fine bro ???
             if (targetType == typeof(AnimationCurve))
             {
-                return null;
+                return default;
             }
 
             Log.Error("End");
