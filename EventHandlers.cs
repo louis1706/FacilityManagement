@@ -246,7 +246,7 @@ namespace FacilityManagement
                             Log.Error("invalid cast");
                     }
                     else
-                        Log.Error("Propperty not found: " + e.Key);
+                        Log.Error("Property not found: " + e.Key);
                 }
                 catch (Exception ex)
                 {
@@ -281,7 +281,7 @@ namespace FacilityManagement
                             Log.Error("invalid cast");
                     }
                     else
-                        Log.Error("Propperty not found: " + e.Key);
+                        Log.Error("Property not found: " + e.Key);
                 }
                 catch (Exception ex)
                 {
@@ -306,9 +306,9 @@ namespace FacilityManagement
                 {
                     string Debug = $"[CustomDoor] : {type}\n";
                     Debug += $"Health: {(breakabledoor is null ? "Nan" : breakabledoor.Health)} => {doorBuild.Health.Value}\n";
-                    Debug += $"IgnoredDamageTypes: {(breakabledoor is null ? "Nan" : breakabledoor.IgnoredDamage)} => {doorBuild.DamageTypeIgnored}\n\n";
-                    Debug += $"RequiredPermissions: {door.RequiredPermissions.RequiredPermissions} => {doorBuild.RequiredPermission}\n\n";
-                    Debug += $"RequireAllPermission: {door.RequiredPermissions.RequireAll} => {doorBuild.RequireAllPermission}\n\n";
+                    Debug += $"IgnoredDamageTypes: {(breakabledoor is null ? "Nan" : breakabledoor.IgnoredDamage)} => {doorBuild.DamageTypeIgnored}\n";
+                    Debug += $"RequiredPermissions: {door.RequiredPermissions.RequiredPermissions} => {doorBuild.RequiredPermission}\n";
+                    Debug += $"RequireAllPermission: {door.RequiredPermissions.RequireAll} => {doorBuild.RequireAllPermission}\n";
                     Log.Debug(Debug);
                 }
 
