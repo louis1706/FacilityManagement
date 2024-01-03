@@ -230,8 +230,6 @@ namespace FacilityManagement
                 return;
             foreach (KeyValuePair<string, string> e in itemBuild.Custom)
             {
-                if (plugin.Config.Debug)
-                    Log.Debug($"ItemType {newItem.Type} Key '{e.Key}' or Value '{e.Value}'");
                 try
                 {
                     PropertyInfo propertyInfo = newItem.GetType().GetProperty(e.Key);
@@ -241,7 +239,11 @@ namespace FacilityManagement
 
                         object value = ItemBuild.Parse(e.Value, propertyInfo.PropertyType, out bool success);
                         if (success)
+                        {
+                            Log.Debug($"ItemType {newItem.Type} Key '{e.Key}'({propertyInfo.PropertyType}) Old {propertyInfo.GetValue(newItem)} => New '{e.Value}'");
+
                             propertyInfo.SetValue(newItem, value);
+                        }
                         else
                             Log.Error("invalid cast");
                     }
