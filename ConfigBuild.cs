@@ -79,7 +79,7 @@ namespace FacilityManagement
 
                 value = value.Replace('(', ' ').Replace(')', ' ').Replace(" ", string.Empty);
                 string[] components = value.Split(',');
-                float x = 0, y = 0, z = 0, w = 0;
+                float x, y, z, w;
 
                 if (components.Length == 2 && float.TryParse(components[0], out x) && float.TryParse(components[1], out y))
                 {
