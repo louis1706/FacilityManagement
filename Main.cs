@@ -3,6 +3,7 @@
     using Exiled.Events.Handlers;
     using HarmonyLib;
     using InventorySystem;
+    using InventorySystem.Items;
     using MEC;
     using System;
     using System.Collections.Generic;
@@ -61,6 +62,8 @@
                 Player.Hurting += EventHandlers.OnHurting;
             if (Config.WarheadCleanup)
                 Warhead.Detonated += EventHandlers.OnDetonated;
+            if (Config.CustomItem is not null)
+                Player.ItemAdded += EventHandlers.CustomItem;
         }
         private void UnRegisterEvents()
         {
@@ -73,6 +76,7 @@
             Player.Hurting -= EventHandlers.OnHurting;
 
             Warhead.Detonated -= EventHandlers.OnDetonated;
+            Player.ItemAdded -= EventHandlers.CustomItem;
 
             EventHandlers = null;
         }

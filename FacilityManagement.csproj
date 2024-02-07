@@ -70,7 +70,6 @@
     <Compile Include="Patches\IntercomText\IntercomPatch.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Patches\IntercomText\NameFormaterPatch.cs" />
-    <Compile Include="Patches\NewItemConfig.cs" />
     <Compile Include="Patches\RAUtilsAddon.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

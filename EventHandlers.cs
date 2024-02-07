@@ -4,6 +4,7 @@ using Exiled.API.Features;
 using Exiled.API.Features.Doors;
 using Exiled.API.Features.Items;
 using Exiled.API.Features.Pickups;
+using Exiled.Events.EventArgs.Interfaces;
 using Exiled.Events.EventArgs.Item;
 using Exiled.Events.EventArgs.Player;
 using InventorySystem;
@@ -224,8 +225,9 @@ namespace FacilityManagement
                     generator.DeactivationTime = generator914Build.DeactivationTime.Value;
             }
         }
-        public void CustomItem(Item newItem)
+        public void CustomItem(IItemEvent ev)
         {
+            Item newItem = ev.Item;
             if (newItem is null || !plugin.Config.CustomItem.TryGetValue(newItem.Type, out ItemBuild itemBuild))
                 return;
             foreach (KeyValuePair<string, string> e in itemBuild.Custom)
@@ -240,8 +242,6 @@ namespace FacilityManagement
                         object value = ItemBuild.Parse(e.Value, propertyInfo.PropertyType, out bool success);
                         if (success)
                         {
-                            Log.Debug($"ItemType {newItem.Type} Key '{e.Key}'({propertyInfo.PropertyType}) Old {propertyInfo.GetValue(newItem)} => New '{e.Value}'");
-
                             propertyInfo.SetValue(newItem, value);
                         }
                         else
