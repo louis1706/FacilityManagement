@@ -95,7 +95,7 @@ namespace FacilityManagement
                 }
                 success = false;
 
-                Log.Info($"Invalid Vector {x},{y},{z},{w}");
+                Log.Info($"Invalid Vector {value}");
                 return default;
             }
 
