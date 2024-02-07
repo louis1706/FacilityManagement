@@ -15,7 +15,7 @@
 	    public override string Prefix => "FacilityManagement";
 	    public override string Author => "Yamato#8987";
         public override Version Version { get; } = new(1,0,0);
-        public override Version RequiredExiledVersion  { get; } = AutoUpdateExiledVersion.AutoUpdateExiledVersion.RequiredExiledVersion;
+        public override Version RequiredExiledVersion  { get; } = new(8,8,0);
 
         public EventHandlers EventHandlers { get; private set; }
 
@@ -28,7 +28,7 @@
         public override void OnEnabled()
         {
             Singleton = this;
-            
+
             RegisterEvents();
             RegisterPatch();
 

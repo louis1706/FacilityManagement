@@ -1,30 +1,20 @@
 ﻿using HarmonyLib;
-using System.Collections.Generic;
-using Utils;
-using System.Reflection;
 using InventorySystem.Items;
-using System.Reflection.Emit;
-using Exiled.API.Features.Pools;
-
-using static HarmonyLib.AccessTools;
 
 using Inventory = InventorySystem.Inventory;
-using Exiled.API.Features;
-using Exiled.API.Features.Pickups;
-using InventorySystem.Items.Pickups;
 using Exiled.API.Features.Items;
-using InventorySystem;
+using Exiled.API.Features;
 using System;
 
 namespace FacilityManagement.Patches
 {
-    [HarmonyPatch(typeof(Inventory), nameof(Inventory.CreateItemInstance))]
+    [HarmonyPatch(typeof(Item), MethodType.Constructor, new Type[] { typeof(ItemBase), })]
     public static class NewItemConfig
     {
-        private static void Postfix(ItemIdentifier identifier, bool updateViewmodel, ref ItemBase __result)
+        private static void Postfix(Item __instance, ItemBase itemBase)
         {
-            Item item = Item.Get(__result);
-            FacilityManagement.Singleton.EventHandlers.CustomItem(item);
+            Log.Warn("YAmato");
+            FacilityManagement.Singleton.EventHandlers.CustomItem(__instance);
         }
     }
 }
