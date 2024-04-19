@@ -39,19 +39,6 @@ namespace FacilityManagement
                 CustomDoor();
             if (plugin.Config.CustomGenerator is not null)
                 CustomGenerator();
-
-            if (plugin.Config.StandardAmmoLimits is not null)
-            {
-                InventoryLimits.StandardAmmoLimits.Clear();
-                foreach (KeyValuePair<AmmoType, ushort> AmmoLimit in plugin.Config.StandardAmmoLimits)
-                    InventoryLimits.StandardAmmoLimits.Add(AmmoLimit.Key.GetItemType(), AmmoLimit.Value);
-            }
-            if (plugin.Config.StandardCategoryLimits is not null)
-            {
-                InventoryLimits.StandardCategoryLimits.Clear();
-                foreach (KeyValuePair<ItemCategory, sbyte> AmmoLimit in plugin.Config.StandardCategoryLimits)
-                    InventoryLimits.StandardCategoryLimits.Add(AmmoLimit.Key, AmmoLimit.Value);
-            }
             if (plugin.Config.LiftMoveDuration is not null)
             {
                 foreach (var elevator in Lift.List)

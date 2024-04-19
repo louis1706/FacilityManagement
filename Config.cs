@@ -42,28 +42,6 @@ namespace FacilityManagement
         [Description("Sets the time for Lift to teleport")]
         public Dictionary<ElevatorType, float> LiftMoveDuration { get; set; } = new();
 
-        [Description("Sets the Standard ammo limits for the player")]
-        public Dictionary<AmmoType, ushort> StandardAmmoLimits { get; set; } = new()
-        {
-            {AmmoType.Nato9, 30},
-            {AmmoType.Nato556, 40},
-            {AmmoType.Nato762, 40},
-            {AmmoType.Ammo44Cal, 18},
-            {AmmoType.Ammo12Gauge, 14},
-        };
-        [Description("Sets standard category limits")]
-        public Dictionary<ItemCategory, sbyte> StandardCategoryLimits { get; set; } = new()
-        {
-            {ItemCategory.Armor, -1},
-            {ItemCategory.Grenade, 2},
-            {ItemCategory.Keycard, 3},
-            {ItemCategory.Medical, 3},
-            {ItemCategory.MicroHID, -1},
-            {ItemCategory.Radio, -1},
-            {ItemCategory.SCPItem, 3},
-            {ItemCategory.Firearm, 1},
-        };
-
         [Description(@"Custom intercom content. If there's no specific content, then the default client content is used.
         # Check GitHub ReadMe for more info (https://github.com/louis1706/FacilityManagement/blob/main/readme.md)")]
         public Dictionary<IntercomDisplay.IcomText, string> CustomText { get; set; } = new()
@@ -85,7 +63,7 @@ namespace FacilityManagement
         [Description("Sets the config of Tesla.")]
         public TeslaBuild CustomTesla { get; set; } = new()
         {
-            ActivationTime = 0.75f, 
+            ActivationTime = 0.75f,
             IdleRange = 6.55f,
             TriggerRange = 5.1f,
             IgnoredRoles = new()
@@ -106,18 +84,18 @@ namespace FacilityManagement
         public Dictionary<GlassType, GlassBuild> CustomWindows { get; set; } = new()
         {
             {
-                GlassType.Scp079Trigger, 
+                GlassType.Scp079Trigger,
                 new GlassBuild{
                         Health = 5,
                         DisableScpDamage = true,
-                } 
+                }
             },
         };
 
         [Description("Sets the ignored damage of breakable Door (0 will make it Destructible for everything and -1 undestructible).")]
         public Dictionary<DoorType, DoorBuild> CustomDoors { get; set; } = new()
         {
-            { 
+            {
                 DoorType.CheckpointEzHczA,
                 new DoorBuild{
                             Health = 30,
@@ -135,7 +113,7 @@ namespace FacilityManagement
                             DamageTypeIgnored = DoorDamageType.Grenade | DoorDamageType.Weapon | DoorDamageType.Scp096,
                 }
             },
-            { 
+            {
                 DoorType.GR18Inner,
                 new DoorBuild{
                             Health = 150,
@@ -169,7 +147,7 @@ namespace FacilityManagement
                     {
                         { nameof(Exiled.API.Features.Items.Keycard.Permissions), (KeycardPermissions.ContainmentLevelOne | KeycardPermissions.ArmoryLevelOne).ToString() },
                     }
-                } 
+                }
             },
             {
                 ItemType.KeycardResearchCoordinator, new ItemBuild
@@ -195,7 +173,7 @@ namespace FacilityManagement
                     Custom = new Dictionary<string, string>()
                     {
                         { nameof(Exiled.API.Features.Items.ExplosiveGrenade.FuseTime), 1.ToString() },
-                        { nameof(Exiled.API.Features.Items.ExplosiveGrenade.Scale), 1.ToString() },
+                        { nameof(Exiled.API.Features.Items.ExplosiveGrenade.Scale), (Vector3.one * 2).ToString() },
                     }
                 }
             },
@@ -212,7 +190,7 @@ namespace FacilityManagement
                         { nameof(Exiled.API.Features.Roles.Scp3114Role.DisguiseDuration), 600.ToString() },
                         { nameof(Exiled.API.Features.Roles.FpcRole.IsUsingStamina), false.ToString() },
                         { nameof(Exiled.API.Features.Roles.FpcRole.IsInvisible), true.ToString() },
-                    }
+                    },
                 }
             },
         };
