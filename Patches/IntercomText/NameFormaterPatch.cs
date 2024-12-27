@@ -11,7 +11,7 @@ using BaseIntercom = PlayerRoles.Voice.Intercom;
 
 namespace FacilityManagement.Patches.IntercomText
 {
-    [HarmonyPatch(typeof(BaseIntercom), nameof(BaseIntercom.Awake))]
+    [HarmonyPatch(typeof(BaseIntercom), nameof(BaseIntercom.Start))]
     public class NameFormaterPatch
     {
         public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
