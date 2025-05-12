@@ -29,9 +29,9 @@ namespace FacilityManagement.Patches.IntercomText
         {
             try
             {
-                if (ServerConsole.singleton.NameFormatter.Commands.ContainsKey("intercom_speech_remaining_time"))
+                if (ServerConsole.Singleton.NameFormatter.Commands.ContainsKey("intercom_speech_remaining_time"))
                     return;
-                Utils.CommandInterpolation.InterpolatedCommandFormatter interpolatedCommandFormatter = ServerConsole.singleton.NameFormatter;
+                Utils.CommandInterpolation.InterpolatedCommandFormatter interpolatedCommandFormatter = ServerConsole.Singleton.NameFormatter;
 
                 // Int
                 interpolatedCommandFormatter.Commands.Add("intercom_speech_remaining_time", (List<string> args) => Mathf.CeilToInt(Intercom.SpeechRemainingTime).ToString());
@@ -43,7 +43,7 @@ namespace FacilityManagement.Patches.IntercomText
                 interpolatedCommandFormatter.Commands.Add("intercom_is_in_use", (List<string> args) => (Intercom.Speaker is not null).ToString());
                 
                 // CustomText replace
-                ServerConsole.singleton.NameFormatter = interpolatedCommandFormatter;
+                ServerConsole.Singleton.NameFormatter = interpolatedCommandFormatter;
 
             }
             catch (Exception ex)

@@ -8,7 +8,6 @@ using PlayerRoles.Voice;
 using System.Collections.Generic;
 using System.ComponentModel;
 using UnityEngine;
-using KeycardPermissions = Interactables.Interobjects.DoorUtils.KeycardPermissions;
 
 namespace FacilityManagement
 {

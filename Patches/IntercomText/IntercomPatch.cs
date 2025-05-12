@@ -48,9 +48,9 @@ namespace FacilityManagement.Patches.IntercomText
                     if (!string.IsNullOrEmpty(FacilityManagement.Singleton.CustomText))
                         value = IntercomDisplay.IcomText.Unknown;
 
-                    if (ServerConsole.singleton.NameFormatter.Commands is null || FacilityManagement.Singleton.Config.CustomText is null || !FacilityManagement.Singleton.Config.CustomText.TryGetValue(value, out string content) || string.IsNullOrEmpty(content))
+                    if (ServerConsole.Singleton.NameFormatter.Commands is null || FacilityManagement.Singleton.Config.CustomText is null || !FacilityManagement.Singleton.Config.CustomText.TryGetValue(value, out string content) || string.IsNullOrEmpty(content))
                         return;
-                    if (!ServerConsole.singleton.NameFormatter.TryProcessExpression(content, "FacilityManagement", out string result))
+                    if (!ServerConsole.Singleton.NameFormatter.TryProcessExpression(content, "FacilityManagement", out string result))
                     {
                         Log.Error(result);
                     }

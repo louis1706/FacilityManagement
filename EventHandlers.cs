@@ -126,25 +126,25 @@ namespace FacilityManagement
             {
                 string Debug = "[Custom914]\n";
                 {
-                    Debug += $"KnobChangeCooldown: {scp914._knobChangeCooldown} => {scp914Build.KnobChangeCooldown}\n";
-                    Debug += $"DoorOpenTime: {scp914._doorOpenTime} => {scp914Build.DoorOpenTime}\n";
-                    Debug += $"ItemUpgradeTime: {scp914._itemUpgradeTime} => {scp914Build.ItemUpgradeTime}\n";
-                    Debug += $"DoorCloseTime: {scp914._doorCloseTime} => {scp914Build.DoorCloseTime}\n";
-                    Debug += $"TotalSequenceTime: {scp914._totalSequenceTime} => {scp914Build.ActivationCooldown}\n";
+                    Debug += $"KnobChangeCooldown: {scp914.KnobChangeCooldown} => {scp914Build.KnobChangeCooldown}\n";
+                    Debug += $"DoorOpenTime: {scp914.DoorOpenTime} => {scp914Build.DoorOpenTime}\n";
+                    Debug += $"ItemUpgradeTime: {scp914.ItemUpgradeTime} => {scp914Build.ItemUpgradeTime}\n";
+                    Debug += $"DoorCloseTime: {scp914.DoorCloseTime} => {scp914Build.DoorCloseTime}\n";
+                    Debug += $"TotalSequenceTime: {scp914.TotalSequenceTime} => {scp914Build.ActivationCooldown}\n";
                 }
                 Log.Debug(Debug);
             }
 
             if (scp914Build.KnobChangeCooldown is not null)
-                scp914._knobChangeCooldown = scp914Build.KnobChangeCooldown.Value;
+                scp914.KnobChangeCooldown = scp914Build.KnobChangeCooldown.Value;
             if (scp914Build.DoorOpenTime is not null)
-                scp914._doorOpenTime = scp914Build.DoorOpenTime.Value;
+                scp914.DoorOpenTime = scp914Build.DoorOpenTime.Value;
             if (scp914Build.ItemUpgradeTime is not null)
-                scp914._itemUpgradeTime = scp914Build.ItemUpgradeTime.Value;
+                scp914.ItemUpgradeTime = scp914Build.ItemUpgradeTime.Value;
             if (scp914Build.DoorCloseTime is not null)
-                scp914._doorCloseTime = scp914Build.DoorCloseTime.Value;
+                scp914.DoorCloseTime = scp914Build.DoorCloseTime.Value;
             if (scp914Build.ActivationCooldown is not null)
-                scp914._totalSequenceTime = scp914Build.ActivationCooldown.Value;
+                scp914.TotalSequenceTime = scp914Build.ActivationCooldown.Value;
 
         }
         public void CustomWindow()
@@ -296,8 +296,8 @@ namespace FacilityManagement
                     string Debug = $"[CustomDoor] : {type}\n";
                     Debug += $"Health: {(breakabledoor is null ? "Nan" : breakabledoor.Health)} => {doorBuild.Health.Value}\n";
                     Debug += $"IgnoredDamageTypes: {(breakabledoor is null ? "Nan" : breakabledoor.IgnoredDamage)} => {doorBuild.DamageTypeIgnored}\n";
-                    Debug += $"RequiredPermissions: {door.RequiredPermissions.RequiredPermissions} => {doorBuild.RequiredPermission}\n";
-                    Debug += $"RequireAllPermission: {door.RequiredPermissions.RequireAll} => {doorBuild.RequireAllPermission}\n";
+                    Debug += $"RequiredPermissions: {door.KeycardPermissions} => {doorBuild.RequiredPermission}\n";
+                    Debug += $"RequireAllPermission: {door.Base.RequiredPermissions.RequireAll} => {doorBuild.RequireAllPermission}\n";
                     Log.Debug(Debug);
                 }
 
@@ -306,9 +306,9 @@ namespace FacilityManagement
                 if (doorBuild.DamageTypeIgnored is not null && breakabledoor is not null)
                     breakabledoor.IgnoredDamage = doorBuild.DamageTypeIgnored.Value;
                 if (doorBuild.RequiredPermission is not null)
-                    door.RequiredPermissions.RequiredPermissions = doorBuild.RequiredPermission.Value;
+                    door.KeycardPermissions = doorBuild.RequiredPermission.Value;
                 if (doorBuild.RequireAllPermission is not null)
-                    door.RequiredPermissions.RequireAll = doorBuild.RequireAllPermission.Value;
+                    door.Base.RequiredPermissions.RequireAll = doorBuild.RequireAllPermission.Value;
             }
         }
     }
