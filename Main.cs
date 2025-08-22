@@ -15,8 +15,7 @@
 	    public override string Name => "FacilityManagement";
 	    public override string Prefix => "FacilityManagement";
 	    public override string Author => "Yamato#8987";
-        public override Version Version { get; } = new(1,0,0);
-        public override Version RequiredExiledVersion  { get; } = new(8,8,0);
+        public override Version Version { get; } = new(8,3,7);
 
         public EventHandlers EventHandlers { get; private set; }
 
