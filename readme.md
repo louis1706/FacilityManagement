@@ -6,19 +6,19 @@ This plugin makes many things possible on your server.
 | **Name** | **TypeValue** | **Description** |
 | :-------------: | :---------: | :--------- |
 | IsEnabled | bool | Is the plugin enabled? |
-| InfiniteAmmo | List<[ItemType](https://exmod-team.github.io/articles/SCPSLRessources/NW_Documentation.html#itemtype)> | Items with InfiniteAmmo |
+| InfiniteAmmo | List<[ItemType](https://exmod-team.github.io/EXILED/articles/SCPSLRessources/NW_Documentation.html#itemtype)> | Items with InfiniteAmmo |
 | EnergyMicroHid | float | Multiplier consumption of MicroHID (0 = No energy drain \ 2 = Double energy drain) |
 | EnergyRadio | float | Multiplier consumption of EnergyRadio (Same as above) |
 | GeneratorDuration | float | Time for the generator to be activated after being enabled (-1 disables the config) |
-| LiftMoveDuration | Dictionary<[ElevatorType](https://exmod-team.github.io/api/Exiled.API.Enums.ElevatorType.html), float> | Change the times of elevator Animation |
-| StandardAmmoLimits | Dictionary<[AmmoType](https://exmod-team.github.io/articles/SCPSLRessources/NW_Documentation.html#ammotype), ushort> | Sets the standard ammo limits for the player |
+| LiftMoveDuration | Dictionary<[ElevatorType](https://exmod-team.github.io/EXILED/api/Exiled.API.Enums.ElevatorType.html), float> | Change the times of elevator Animation |
+| StandardAmmoLimits | Dictionary<[AmmoType](https://exmod-team.github.io/EXILED/api/Exiled.API.Enums.AmmoType.html), ushort> | Sets the standard ammo limits for the player |
 | StandardCategoryLimits | Dictionary<ItemCategory, sbyte> | Sets standard category limits |
-| CustomText | Dictionary<[Intercom.State](https://exmod-team.github.io/articles/SCPSLRessources/NW_Documentation.html#intercomstates), string> | Change the intercomText with specified State |
+| CustomText | Dictionary<[Intercom.State](https://exmod-team.github.io/EXILED/articles/SCPSLRessources/NW_Documentation.html#intercomstates), string> | Change the intercomText with specified State |
 | WarheadCleanup | bool | Remove all pickups and ragdoll in the facility (lower than y 500) |
 | CustomTesla | [TeslaBuild](https://github.com/louis1706/FacilityManagement#teslabuild) | (Null disables the change) |
 | CustomScp914 | [Scp914Build](https://github.com/louis1706/FacilityManagement#scp914build) | (Null disables the change) |
-| CustomWindows | Dictionary<[GlassType](https://exmod-team.github.io/api/Exiled.API.Enums.GlassType.html), [GlassBuild](https://github.com/louis1706/FacilityManagement#glassbuild)> | Modify all the properties of Window as desired (null makes no change) |
-| CustomDoors | Dictionary<[DoorType](https://exmod-team.github.io/api/Exiled.API.Enums.DoorType.html), [DoorBuild](https://github.com/louis1706/FacilityManagement#doorbuild)> | Modify all the properties of Door as desired (null makes no change) |
+| CustomWindows | Dictionary<[GlassType](https://exmod-team.github.io/EXILED/api/Exiled.API.Enums.GlassType.html), [GlassBuild](https://github.com/louis1706/FacilityManagement#glassbuild)> | Modify all the properties of Window as desired (null makes no change) |
+| CustomDoors | Dictionary<[DoorType](https://exmod-team.github.io/EXILED/api/Exiled.API.Enums.DoorType.html), [DoorBuild](https://github.com/louis1706/FacilityManagement#doorbuild)> | Modify all the properties of Door as desired (null makes no change) |
 | RoleTypeHumeShield | Dictionary<[RoleTypeId](https://github.com/Exiled-Team/EXILED/blob/dev/docs/docs/Resources/Intro.md#roletype-team-side-and-leadingteam), [AhpProccessBuild](https://github.com/louis1706/FacilityManagement#ahpproccessbuild)> | Create a custom AHP/HS for specified RoleType |
 | CustomItem | Dictionary<[ItemType](https://github.com/Exiled-Team/EXILED/blob/dev/docs/docs/Resources/Intro.md#itemtype), [ItemBuild](https://github.com/louis1706/FacilityManagement#itembuild)> | Create a custom AHP/HS for specified RoleType |
 | CustomRole | Dictionary<[RoleTypeId](https://github.com/Exiled-Team/EXILED/blob/dev/docs/docs/Resources/Intro.md#roletype-team-side-and-leadingteam), [RoleBuild](https://github.com/louis1706/FacilityManagement#rolebuild)>> | Create a custom AHP/HS for specified RoleType |
@@ -27,7 +27,7 @@ This plugin makes many things possible on your server.
 
 | **PropertyName** | **TypeValue** | **Description** |
 | :-------------: | :---------: | :--------- |
-| IgnoredRoles | List<[RoleTypeId](https://exmod-team.github.io/articles/SCPSLRessources/NW_Documentation.html#roletype-team-side-and-leadingteam)> | Tesla ignores players with this Role (Null disables the change) |
+| IgnoredRoles | List<[RoleTypeId](https://exmod-team.github.io/EXILED/articles/SCPSLRessources/NW_Documentation.html#roletype-team-side-and-leadingteam)> | Tesla ignores players with this Role (Null disables the change) |
 | TriggerRange | float? | Distance for tesla to be triggered (Null disables the change) |
 | IdleRange | float? | Distance for tesla to start idling (Null disables the change) |
 | ActivationTime | float? | Time for tesla to start (Null disables the change) |
@@ -55,7 +55,7 @@ This plugin makes many things possible on your server.
 | **PropertyName** | **TypeValue** | **Description** |
 | :-------------: | :---------: | :--------- |
 | Health | float? | Health of the door (Null disables the change) |
-| RequiredPermission | [KeycardPermissions](https://exmod-team.github.io/api/Exiled.API.Enums.KeycardPermissions.html) | Change the RequiredPermission for interaction with the Door (Null disables the change) |
+| RequiredPermission | [KeycardPermissions](https://exmod-team.github.io/EXILED/api/Exiled.API.Enums.KeycardPermissions.html) | Change the RequiredPermission for interaction with the Door (Null disables the change) |
 | RequireAllPermission | bool? | Require all the permissions of RequiredPermission (0 or None disables the change) |
 | DamageTypeIgnored | DoorDamageType | Modify the DamageType ignored by the Door (0 disables the change) |
 
@@ -72,7 +72,7 @@ This plugin makes many things possible on your server.
 
 This ItemBuild permits the creation of a highly configurable default item value.
 
-You can find all properties that you can modify in this [link](https://exmod-team.github.io/api/Exiled.API.Features.Pickups.html).
+You can find all properties that you can modify in this [link](https://exmod-team.github.io/EXILED/api/Exiled.API.Features.Pickups.html).
 You can only modify properties that have basic types like float, int, byte, Enum, Vector3. Some properties might not work; they need to be synced with Exiled.
 
 | **PropertyName** | **TypeValue** | **Description** |
@@ -83,7 +83,7 @@ You can only modify properties that have basic types like float, int, byte, Enum
 
 This RoleBuild permits the creation of a highly configurable default Role value.
 
-You can find all properties that you can modify in this [link](https://exmod-team.github.io/api/Exiled.API.Features.Roles.html).
+You can find all properties that you can modify in this [link](https://exmod-team.github.io/EXILED/api/Exiled.API.Features.Roles.html).
 You can only modify properties that have basic types like float, int, byte, Enum, Vector3.
 
 | **PropertyName** | **TypeValue** | **Description** |
