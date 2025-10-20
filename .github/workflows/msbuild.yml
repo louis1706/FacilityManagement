@@ -19,10 +19,10 @@ jobs:
     - name: Add MSBuild to PATH
       uses: microsoft/setup-msbuild@v1.0.2
       
-    - name: Download Exiled latest release
+    - name: Download ExMod-Team/EXILED latest release
       uses: robinraju/release-downloader@v1.4
       with: 
-        repository: "Exiled-Team/EXILED"
+        repository: "ExMod-Team/EXILED"
         latest: true
         out-file-path: ${{github.workspace}}
         
