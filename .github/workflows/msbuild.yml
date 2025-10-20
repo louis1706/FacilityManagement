@@ -3,7 +3,7 @@ name: MSBuild
 on: [push]
 
 env:
-  EXILED_REFERENCES_URL: https://www.exiled.host/build_deps/Master.zip
+  EXILED_REFERENCES_URL: https://exmod-team.github.io/SL-References/Dev.zip
   TEMP_PATH: ${{ github.workspace }}/Temp
   REFERENCES_PATH: ${{ github.workspace }}/References
   SOLUTION_FILE_PATH: FacilityManagement.csproj
