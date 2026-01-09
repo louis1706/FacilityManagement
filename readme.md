@@ -94,7 +94,7 @@ You can only modify properties that have basic types like float, int, byte, Enum
 
 This plugin makes it possible to customize the IntercomText on your server; it's updated every tick.
 
-This plugin uses [CommandInterpolation](https://en.scpslgame.com/index.php?title=Command_Interpolation) to allow you to create custom text that can change based on what is happening on the server.
+This plugin uses [CommandInterpolation](https://techwiki.scpslgame.com/books/server-guides/page/command-interpolation) to allow you to create custom text that can change based on what is happening on the server.
 
 We have added some CommandInterpolations for Intercom.
 
