@@ -13,7 +13,7 @@ This plugin makes many things possible on your server.
 | LiftMoveDuration | Dictionary<[ElevatorType](https://exmod-team.github.io/EXILED/api/Exiled.API.Enums.ElevatorType.html), float> | Change the times of elevator Animation |
 | StandardAmmoLimits | Dictionary<[AmmoType](https://exmod-team.github.io/EXILED/api/Exiled.API.Enums.AmmoType.html), ushort> | Sets the standard ammo limits for the player |
 | StandardCategoryLimits | Dictionary<ItemCategory, sbyte> | Sets standard category limits |
-| CustomText | Dictionary<[Intercom.State](https://exmod-team.github.io/EXILED/articles/SCPSLRessources/NW_Documentation.html#intercomstates), string> | Change the intercomText with specified State |
+| CustomText | Dictionary<[Intercom.State](https://exmod-team.github.io/EXILED/articles/SCPSLRessources/NW_Documentation.html#intercomstate), string> | Change the intercomText with specified State |
 | WarheadCleanup | bool | Remove all pickups and ragdoll in the facility (lower than y 500) |
 | CustomTesla | [TeslaBuild](https://github.com/louis1706/FacilityManagement#teslabuild) | (Null disables the change) |
 | CustomScp914 | [Scp914Build](https://github.com/louis1706/FacilityManagement#scp914build) | (Null disables the change) |
